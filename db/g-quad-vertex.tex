@@ -1,0 +1,37 @@
+\item Let $f$ be a quadratic function. Part of the graph of $f$ is shown below.\\*
+The vertex is at $P(2,1)$ and the $y$-intercept is at $Q(0, 3)$.\\*
+
+\begin{figure}[!htbp]
+\begin{center}
+\begin{tikzpicture}
+
+    %grid
+    %\draw [thin, color=lightgray,, xstep=1.0cm,ystep=1.0cm] (-5.5,-5.5) grid (5.5,5.5);
+    %\draw [thin, color=lightgray,, xstep=0.2cm,ystep=0.2cm] (-5.5,-1.5) grid (5.5,16.5);
+
+    \foreach \x in {-2, -1,1,2,3,4,5,6}
+    \draw[shift={(\x,0)},color=black] (0pt,-3pt) -- (0pt,3pt) node[below]  {$\x$};
+
+    \foreach \y in {-1,1,2,3,4,5,6}
+    \draw[shift={(0,\y)},color=black] (2pt,0pt) -- (-2pt,0pt) node[left]  {$\y$};
+
+    \draw [thick, ->] (-2.5,0) -- (+6.5,0) node [right] {$x$};
+    \draw [thick, ->] (0,-1.5) -- (0,6.5) node [left] {$y$};
+
+    \draw (2,1) circle[radius=2pt] node [below] {$P$};
+    \fill (2,1) circle[radius=2pt];
+    \draw (0,3) circle[radius=2pt] node [right] {$Q$};
+    \fill (0,3) circle[radius=2pt];
+
+    \draw [<->] plot[domain= -1:5] (\x, .5*\x*\x -2*\x +3);
+
+\end{tikzpicture}
+\end{center}
+\end{figure}
+
+\begin{enumerate}
+    \item Write down the equation of the axis of symmetry.
+    \item The function $f$ can be written in the form $f(x)=a(x-h)^2 +k$. \\*
+    Write down the value of $h$ and of $k$.
+    \item Find $a$.
+\end{enumerate}
