@@ -27,7 +27,7 @@ def makedoc(bank):
         output files are in the /out/ directory """
     outdir = "/Users/chris/GitHub/mathai/out/"
     dbdir = "/Users/chris/GitHub/mathai/db/"
-    outfile = outdir + "new.tex"
+    outfile = outdir + "newfile.tex"
     with open(outfile, "w") as newfile:
         with open(dbdir + "head.tex", "r") as head:
             for line in head:
@@ -42,11 +42,10 @@ def makedoc(bank):
             #worksheet comma-separated columns: standard, 1st prob,
             #number of problems, string to be used a subsection title
             for line in f:
-                lst=line.split(",") #this long preprocessing could be compressed
-                standard = lst[0]
-                s = int(lst[1])
-                n = int(lst[2])
-                section = lst[3]
+                line = line.split(",") #this long preprocessing could be compressed
+                standard, s, n, section = line
+                s = int(s)
+                n = int(n)
                 section = section.lstrip()
                 section = section.rstrip('\n')
                 newfile.write(r'\subsection*{'+ section +r'}'+'\n')
