@@ -1,30 +1,30 @@
 #requires standards.txt list of files to load and
-# associated problem files with .tex endings, in /tex subdirectory
+# associated problem files with .tex endings, in /db subdirectory
 def loadbank(standards):
     """returns data store of exercises, dict standard:problemlist
 
-        list of strings defining problem groups
-        dictionary of string:lists, returned with problems from files"""
-    problemdir = "/Users/chris/mathai/tex/"
+        argument - list of strings defining problem groups by file name
+        returns - dictionary of string:lists, list of problems from files"""
+    problemdir = "/Users/chris/GitHub/mathai/db/"
     bank = {}
     for standard in standards:
         filename = problemdir + standard + ".tex"
-        problems = open(filename, "r")
-        problemlist = []
-        for line in problems:
-            problemlist.append(line)
+        with open(filename, "r") as problems:
+            problemlist = []
+            for line in problems:
+                problemlist.append(line)
         bank[standard] = problemlist
     return bank
 
 #first load the standards file names
 def loadstandards():
-    """Load list of standards from config file, standards.txt in tex/"""
-    standardsdir = "/Users/chris/mathai/tex/"
+    """Load list of standards from config file, standards.txt in ./db/"""
+    standardsdir = "/Users/chris/GitHub/mathai/db/"
     filename = standardsdir + "standards.txt"
-    standardsfile = open(filename, "r")
-    standards = []
-    for line in standardsfile:
-        standards.append(line[0:-1]) #strip new lines at end of each filename string
+    with open(filename, "r") as standardsfile:
+        standards = []
+        for line in standardsfile:
+            standards.append(line[0:-1]) #strip new lines at end of each filename string
     return standards
 
 #run only if module is called from command line
