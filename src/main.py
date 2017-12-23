@@ -1,9 +1,10 @@
 #runs worksheet maker functions in an interactive session
 # $ python main.py    (from /Users/chris/GitHub/mathai/src directory)
-from makedoc import makedoc, makeset
-from loadbank import loadstandards, loadbank
 import sys
 import os
+from makedoc import makedoc, makeset
+from loadbank import loadstandards, loadbank
+from bankdb import savebank, loaddb
 
 print("running worksheet generator")
 arg = input("Type anything to run: ")
