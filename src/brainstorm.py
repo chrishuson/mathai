@@ -4,9 +4,9 @@ problem = {}
     #function to add new exercise, assigning unique id (integer)
     #problem(id)[0] returns text for the problem, [1] solution, [2] workspace]
 
-DBsection = {}
-    #section:[id1, id2, ...]
-    #DBsection(section) returns list of problem ids
+skill = {}
+    #standard:[id1, id2, ...]
+    #skill(standard) returns list of problem ids
 
 problem_meta = {}
     #id: (calc_type, difficulty, level, source) named tuple
@@ -34,10 +34,12 @@ problem_hist = {}
 standard = {}
     #source:[tree] problem hierarchy by standard-setting authority
     #source - ccss, ibqb, jmap, deltamath, webworks
+    #ccss (NYSE) tree is [category, [domain, [cluster, [standard]]]]
+    #jmap topics are mapped to ccss standards http://www.jmap.org/JMAP_RESOURCES_BY_TOPIC.htm#AII
     #webworks tree is [DBcourse, [DBchapter, [DBsection1, sect2,...]]]
 
 learner = {}
-    #id:(last, first, cohort)
+    #learner_id:(last, first, cohort) named tuple learner_profile
 
 learner_history = {}
     #learner_id:[(problem_id, date, correct), ...] history of solved problems

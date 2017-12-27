@@ -1,314 +1,222 @@
-algebra1,"numbers, operations and properties",Modeling Expressions,6.EE.A.2,0
-algebra1,"numbers, operations and properties",Order of Operations,6.EE.A.2,0
-algebra1,"numbers, operations and properties",Evaluating Expressions,6.EE.A.2,0
-algebra1,"numbers, operations and properties",Comparing Reals,8.NS.A.2,0
-algebra1,"numbers, operations and properties",Classifying Numbers,8.NS.A.1,0
-algebra1,"numbers, operations and properties",Identifying Properties,A.REI.A.1,2
-algebra1,"numbers, operations and properties",Set Theory,S.CP.A.1,0
-algebra1,graphs and statistics,Average Known with Missing Data,6.SP.B.5,0
-algebra1,graphs and statistics,Central Tendency and Dispersion,6.SP.B.5,0
-algebra1,graphs and statistics,Central Tendency and Dispersion,S.ID.A.2,5
-algebra1,graphs and statistics,Central Tendency and Dispersion,S.ID.A.3,2
-algebra1,graphs and statistics,Frequency Tables,S.ID.B.5,5
-algebra1,graphs and statistics,Frequency Histograms,S.ID.A.1,1
-algebra1,graphs and statistics,Box Plots,S.ID.A.1,2
-algebra1,graphs and statistics,Dot Plots,S.ID.A.1,1
-algebra1,graphs and statistics,Stem-and-Leaf Plots,S.ID.A.1,0
-algebra1,graphs and statistics,Circle Graphs,S.ID.A.1,0
-algebra1,graphs and statistics,Scatter Plots,S.ID.B.6,0
-algebra1,graphs and statistics,Analysis of Data,S.ID.C.9,3
-algebra1,graphs and statistics,Regression,S.ID.B.6,7
-algebra1,graphs and statistics,Correlation Coefficient,S.ID.C.8,7
-algebra1,graphs and statistics,Residuals,S.ID.B.6,5
-algebra1,expressions and equations,Dependent and Independent Variables,A.SSE.A.1,1
-algebra1,expressions and equations,Modeling Expressions,A.SSE.A.1,5
-algebra1,expressions and equations,Solving Linear Equations,A.REI.B.3,4
-algebra1,expressions and equations,Direct Variation,A.CED.A.1,0
-algebra1,expressions and equations,Modeling Linear Equations,A.CED.A.1,5
-algebra1,expressions and equations,Modeling Linear Equations,A.CED.A.2,1
-algebra1,expressions and equations,Modeling Linear Equations,A.CED.A.3,2
-algebra1,expressions and equations,Transforming Formulas,A.CED.A.4,11
-algebra1,rate,Percents,7.RP.A.3,0
-algebra1,rate,Error,7.RP.A.3,0
-algebra1,rate,Conversions,N.Q.A.1,5
-algebra1,rate,Using Rate,N.Q.A.2,2
-algebra1,rate,Speed,A.CED.A.2,2
-algebra1,rate,Rate of Change,F.IF.B.6,14
-algebra1,linear equations,Modeling Linear Functions,F.BF.A.1,4
-algebra1,linear equations,Modeling Linear Functions,F.LE.A.2,3
-algebra1,linear equations,Modeling Linear Functions,F.LE.B.5,7
-algebra1,linear equations,Modeling Linear Functions,S.ID.C.7,2
-algebra1,linear equations,Graphing Linear Functions,A.CED.A.2,3
-algebra1,linear equations,Graphing Linear Functions,F.BF.B.3,1
-algebra1,linear equations,Graphing Linear Functions,F.IF.B.4,3
-algebra1,linear equations,Writing Linear Equations,A.REI.D.10,2
-algebra1,linear equations,Identifying Solutions,A.REI.D.10,3
-algebra1,inequalities,Solving Linear Inequalities,A.REI.B.3,6
-algebra1,inequalities,Interpreting Solutions,A.REI.B.3,5
-algebra1,inequalities,Modeling Linear Inequalities,A.CED.A.1,4
-algebra1,inequalities,Modeling Linear Inequalities,A.CED.A.3,1
-algebra1,inequalities,Graphing Linear Inequalities,A.REI.D.12,6
-algebra1,absolute value,Graphing Absolute Value Functions,F.IF.C.7,2
-algebra1,absolute value,Graphing Absolute Value Functions,F.BF.B.3,3
-algebra1,quadratics,Solving Quadratics,A.SSE.B.3,9
-algebra1,quadratics,Solving Quadratics,A.REI.B.4,25
-algebra1,quadratics,Using the Discriminant,A.REI.B.4,1
-algebra1,quadratics,Modeling Quadratics,A.CED.A.1,2
-algebra1,quadratics,Geometric Applications of Quadratics,A.CED.A.1,8
-algebra1,quadratics,Vertex Form of a Quadratic,F.IF.C.8,6
-algebra1,quadratics,Graphing Quadratic Functions,F.IF.B.4,12
-algebra1,quadratics,Graphing Quadratic Functions,F.IF.C.7,0
-algebra1,systems,Solving Linear Systems,A.REI.C.5,5
-algebra1,systems,Solving Linear Systems,A.REI.C.6,4
-algebra1,systems,Modeling Linear Systems,A.CED.A.3,10
-algebra1,systems,Graphing Linear Systems,A.REI.C.6,6
-algebra1,systems,Modeling Systems of Linear Inequalities,A.CED.A.3,5
-algebra1,systems,Graphing Systems of Linear Inequalities,A.REI.D.12,9
-algebra1,systems,Quadratic-Linear Systems,A.REI.C.7,0
-algebra1,systems,Quadratic-Linear Systems,A.REI.D.11,6
-algebra1,systems,Other Systems,A.REI.D.11,7
-algebra1,powers,Multiplication of Powers,8.EE.A.1,0
-algebra1,powers,Division of Powers,8.EE.A.1,0
-algebra1,powers,Powers of Powers,8.EE.A.1,0
-algebra1,powers,Scientific Notation,8.EE.A.3,0
-algebra1,powers,Operations with Scientific Notation,8.EE.A.4,0
-algebra1,powers,Modeling Exponential Functions,A.SSE.B.3,5
-algebra1,powers,Modeling Exponential Functions,A.CED.A.1,1
-algebra1,powers,Modeling Exponential Functions,F.BF.A.1,4
-algebra1,powers,Modeling Exponential Functions,F.LE.A.2,4
-algebra1,powers,Modeling Exponential Functions,F.LE.B.5,8
-algebra1,powers,Graphing Exponential Functions,F.IF.C.7,0
-algebra1,polynomials,Operations with Polynomials,A.APR.A.1,12
-algebra1,polynomials,Factoring Polynomials,A.SSE.A.2,3
-algebra1,polynomials,Factoring the Difference of Perfect Squares,A.SSE.A.2,8
-algebra1,polynomials,Zeros of Polynomials,A.APR.B.3,13
-algebra1,polynomials,Graphing Polynomial Functions,F.BF.B.3,6
-algebra1,radicals,Square Roots,8.NS.A.2,0
-algebra1,radicals,Simplifying Radicals,N.RN.B.3,0
-algebra1,radicals,Operations with Radicals,N.RN.B.3,11
-algebra1,radicals,Graphing Root Functions,F.IF.C.7,4
-algebra1,functions,Defining Functions,F.IF.A.1,7
-algebra1,functions,Functional Notation,F.IF.A.2,8
-algebra1,functions,Evaluating Functions,F.IF.A.2,1
-algebra1,functions,Domain and Range,F.IF.A.2,6
-algebra1,functions,Domain and Range,F.IF.B.5,7
-algebra1,functions,Operations with Functions,F.BF.A.1,1
-algebra1,functions,Families of Functions,F.LE.A.1,14
-algebra1,functions,Families of Functions,F.LE.A.2,5
-algebra1,functions,Families of Functions,F.LE.A.3,6
-algebra1,functions,Transformations with Functions,F.BF.B.3,2
-algebra1,functions,Comparing Functions,F.IF.C.9,8
-algebra1,functions,Relating Graphs to Events,F.IF.B.4,5
-algebra1,functions,Graphing Piecewise-Defined Functions,F.IF.C.7,4
-algebra1,functions,Graphing Step Functions,F.IF.C.7,2
-algebra1,sequences and series,Sequences,F.IF.A.3,5
-algebra1,sequences and series,Sequences,F.LE.A.2,8
-geometry,tools of geometry,Planes,G.CO.A.1,0
-geometry,tools of geometry,Solids,G.MG.A.1,0
-geometry,tools of geometry,Rotations of Two-Dimensional Objects,G.GMD.B.4,6
-geometry,tools of geometry,Cross-Sections of Three-Dimensional Objects,G.GMD.B.4,5
-geometry,tools of geometry,Constructions,G.CO.D.12,7
-geometry,tools of geometry,Constructions,G.CO.D.13,5
-geometry,lines and angles,Midpoint,G.CO.A.1,0
-geometry,lines and angles,Distance,G.CO.A.1,0
-geometry,lines and angles,Directed Line Segments,G.GPE.B.6,9
-geometry,lines and angles,Lines and Angles,G.CO.C.9,6
-geometry,lines and angles,Parallel and Perpendicular Lines,G.GPE.B.5,8
-geometry,triangles,Pythagorean Theorem,G.SRT.C.8,3
-geometry,triangles,30-60-90 Triangles,G.SRT.C.8,1
-geometry,triangles,Isosceles Triangle Theorem,G.SRT.B.5,2
-geometry,triangles,Side Splitter Theorem,G.SRT.B.5,6
-geometry,triangles,Interior and Exterior Angles of Triangles,G.CO.C.10,3
-geometry,triangles,Exterior Angle Theorem,G.CO.C.10,1
-geometry,triangles,Triangle Inequality Theorem,G.CO.C.10,0
-geometry,triangles,Angle Side Relationship,G.CO.C.10,0
-geometry,triangles,"Medians, Altitudes and Bisectors",G.CO.C.10,0
-geometry,triangles,Midsegments,G.CO.C.10,2
-geometry,triangles,"Centroid, Orthocenter, Incenter and Circumcenter",G.CO.C.10,0
-geometry,triangles,Triangles in the Coordinate Plane,G.GPE.B.4,3
-geometry,polygons,Interior and Exterior Angles of Polygons,G.CO.C.11,5
-geometry,polygons,Parallelograms,G.CO.C.11,3
-geometry,polygons,Trapezoids,G.CO.C.11,0
-geometry,polygons,Special Quadrilaterals,G.CO.C.11,7
-geometry,polygons,Quadrilaterals in the Coordinate Plane,G.GPE.B.4,7
-geometry,polygons,Polygons in the Coordinate Plane,G.GPE.B.7,5
-geometry,conics,"Chords, Secants and Tangents",G.C.A.2,14
-geometry,conics,Inscribed Quadrilaterals,G.C.A.3,1
-geometry,conics,Equations of Circles,G.GPE.A.1,9
-geometry,conics,Circles in the Coordinate Plane,G.GPE.B.4,3
-geometry,measuring in the plane and space,Perimeter,G.MG.A.3,0
-geometry,measuring in the plane and space,Area of Polygons,G.MG.A.3,2
-geometry,measuring in the plane and space,Heron's Formula,G.MG.A.3,0
-geometry,measuring in the plane and space,Surface Area and Lateral Area,G.MG.A.3,1
-geometry,measuring in the plane and space,Circumference,G.GMD.A.1,2
-geometry,measuring in the plane and space,Area of Circles,G.GMD.A.1,0
-geometry,measuring in the plane and space,Compositions of Polygons and Circles,G.MG.A.3,0
-geometry,measuring in the plane and space,Arc Length,G.C.B.5,2
-geometry,measuring in the plane and space,Sectors,G.C.B.5,9
-geometry,measuring in the plane and space,Volume,G.GMD.A.1,3
-geometry,measuring in the plane and space,Volume,G.GMD.A.3,16
-geometry,measuring in the plane and space,Density,G.MG.A.2,15
-geometry,measuring in the plane and space,Similarity,G.SRT.B.5,19
-geometry,transformations,Line Dilations,G.SRT.A.1,13
-geometry,transformations,Symmetry,G.CO.A.5,0
-geometry,transformations,Rotations,G.CO.A.5,2
-geometry,transformations,Reflections,G.CO.A.5,1
-geometry,transformations,Translations,G.CO.A.5,0
-geometry,transformations,Dilations,G.SRT.A.2,6
-geometry,transformations,Mapping a Polygon onto Itself,G.CO.A.3,8
-geometry,transformations,Compositions of Transformations,G.CO.A.5,10
-geometry,transformations,Compositions of Transformations,G.SRT.A.2,6
-geometry,transformations,Properties of Transformations,G.CO.B.6,3
-geometry,transformations,Identifying Transformations,G.CO.A.2,9
-geometry,transformations,Analytical Representations of Transformations,G.CO.A.2,1
-geometry,trigonometry,Trigonometric Ratios,G.SRT.C.6,2
-geometry,trigonometry,Cofunctions,G.SRT.C.7,10
-geometry,trigonometry,Using Trigonometry to Find a Side,G.SRT.C.8,13
-geometry,trigonometry,Using Trigonometry to Find an Angle,G.SRT.C.8,7
-geometry,logic,Line and Angle Proofs,G.CO.C.9,0
-geometry,logic,Triangle Congruency,G.CO.B.7,9
-geometry,logic,Triangle Congruency,G.CO.B.8,1
-geometry,logic,Triangle Congruency,G.SRT.B.5,1
-geometry,logic,Triangle Proofs,G.CO.C.10,4
-geometry,logic,Triangle Proofs,G.SRT.B.5,4
-geometry,logic,Quadrilateral Proofs,G.CO.C.11,2
-geometry,logic,Quadrilateral Proofs,G.SRT.B.5,5
-geometry,logic,Circle Proofs,G.SRT.B.5,3
-geometry,logic,Similarity Proofs,G.SRT.A.3,4
-geometry,logic,Similarity Proofs,G.C.A.1,1
-algebra2,graphs and statistics,Analysis of Data,S.IC.A.2,4
-algebra2,graphs and statistics,Analysis of Data,S.IC.B.3,5
-algebra2,graphs and statistics,Analysis of Data,S.IC.B.4,3
-algebra2,graphs and statistics,Analysis of Data,S.IC.B.5,5
-algebra2,graphs and statistics,Analysis of Data,S.IC.B.6,2
-algebra2,graphs and statistics,Regression,S.ID.B.6,2
-algebra2,graphs and statistics,Normal Distributions,S.ID.A.4,6
-algebra2,probability,Sample Space,7.SP.C.8,0
-algebra2,probability,Probability Models,7.SP.C.7,0
-algebra2,probability,Theoretical Probability,7.SP.C.5,1
-algebra2,probability,Theoretical Probability,S.CP.A.2,1
-algebra2,probability,Theoretical Probability,S.CP.B.7,2
-algebra2,probability,Geometric Probability,7.SP.C.5,0
-algebra2,probability,Experimental Probability,7.SP.C.6,0
-algebra2,probability,Probability of Compound Events,7.SP.C.8,0
-algebra2,probability,Venn Diagrams,S.CP.A.1,0
-algebra2,probability,Conditional Probability,S.CP.A.3,1
-algebra2,probability,Conditional Probability,S.CP.A.4,4
-algebra2,probability,Conditional Probability,S.CP.B.6,2
-algebra2,rate,Rate of Change,F.IF.B.6,6
-algebra2,quadratics,Solving Quadratics,A.REI.B.4,5
-algebra2,quadratics,Using the Discriminant,A.REI.B.4,0
-algebra2,quadratics,Roots of Quadratics,A.REI.B.4,0
-algebra2,quadratics,Complex Conjugate Root Theorem,A.REI.B.4,1
-algebra2,quadratics,Graphing Quadratic Functions,G.GPE.A.2,5
-algebra2,systems,Solving Linear Systems,A.REI.C.6,3
-algebra2,systems,Quadratic-Linear Systems,A.REI.C.7,4
-algebra2,systems,Quadratic-Linear Systems,A.REI.D.11,1
-algebra2,systems,Other Systems,A.REI.D.11,8
-algebra2,powers,Modeling Exponential Functions,A.SSE.B.3,3
-algebra2,powers,Modeling Exponential Functions,F.IF.C.8,2
-algebra2,powers,Modeling Exponential Functions,F.BF.A.1,3
-algebra2,powers,Modeling Exponential Functions,F.LE.A.2,2
-algebra2,powers,Modeling Exponential Functions,F.LE.B.5,2
-algebra2,powers,Evaluating Exponential Expressions,F.IF.B.4,0
-algebra2,powers,Evaluating Logarithmic Expressions,F.IF.B.4,1
-algebra2,powers,Graphing Exponential Functions,F.BF.B.3,0
-algebra2,powers,Graphing Exponential Functions,F.IF.C.7,1
-algebra2,powers,Graphing Logarithmic Functions,F.IF.C.7,2
-algebra2,powers,"Exponential Equations, Exponential Growth, Exponential Decay",A.CED.A.1,2
-algebra2,powers,"Exponential Equations, Exponential Growth, Exponential Decay",F.LE.A.4,6
-algebra2,powers,Logarithmic Equations,F.LE.A.4,0
-algebra2,polynomials,Factoring Polynomials,A.SSE.A.2,7
-algebra2,polynomials,Factoring the Difference of Perfect Squares,A.SSE.A.2,0
-algebra2,polynomials,Zeros of Polynomials,A.APR.B.3,7
-algebra2,polynomials,Solving Polynomial Equations,A.APR.B.3,0
-algebra2,polynomials,Graphing Polynomial Functions,F.IF.B.4,2
-algebra2,polynomials,Graphing Polynomial Functions,F.IF.C.7,1
-algebra2,polynomials,Remainder Theorem,A.APR.B.2,8
-algebra2,polynomials,Polynomial Identities,A.APR.C.4,5
-algebra2,radicals,Simplifying Radicals,N.RN.A.2,0
-algebra2,radicals,Operations with Radicals,N.RN.A.2,1
-algebra2,radicals,Solving Radicals,A.REI.A.2,6
-algebra2,radicals,Radicals and Rational Exponents,N.RN.A.1,2
-algebra2,radicals,Radicals and Rational Exponents,N.RN.A.2,6
-algebra2,radicals,Square Roots of Negative Numbers,N.CN.A.2,0
-algebra2,radicals,Imaginary Numbers,N.CN.A.1,0
-algebra2,radicals,Operations with Complex Numbers,N.CN.A.2,6
-algebra2,rationals,Undefined Rationals,A.APR.D.6,1
-algebra2,rationals,Expressions with Negative Exponents,A.APR.D.6,1
-algebra2,rationals,Rational Expressions,A.APR.D.6,5
-algebra2,rationals,Division of Polynomials,A.APR.D.6,0
-algebra2,rationals,Modeling Rationals,A.CED.A.1,2
-algebra2,rationals,Solving Rationals,A.REI.A.2,6
-algebra2,functions,Domain and Range,F.IF.A.2,0
-algebra2,functions,Operations with Functions,F.BF.A.1,3
-algebra2,functions,Families of Functions,F.LE.A.2,0
-algebra2,functions,Comparing Functions,F.IF.C.9,2
-algebra2,functions,Even and Odd Functions,F.BF.B.3,3
-algebra2,functions,Inverse of Functions,F.BF.B.4,4
-algebra2,sequences and series,Sequences,F.LE.A.2,5
-algebra2,sequences and series,Sequences,F.IF.A.3,1
-algebra2,sequences and series,Sequences,F.BF.A.2,6
-algebra2,sequences and series,Sigma Notation,F.BF.B.6,1
-algebra2,sequences and series,Series,A.SSE.B.4,5
-algebra2,sequences and series,Series,F.BF.B.6,0
-algebra2,trigonometry,Radian Measure,F.TF.A.1,0
-algebra2,trigonometry,Unit Circle,F.TF.A.1,1
-algebra2,trigonometry,Unit Circle,F.TF.A.2,0
-algebra2,trigonometry,Reciprocal Trigonometric Relationships,F.TF.A.2,1
-algebra2,trigonometry,Finding the Terminal Side of an Angle,F.TF.A.2,0
-algebra2,trigonometry,Reference Angles,F.TF.A.2,1
-algebra2,trigonometry,Determining Trigonometric Functions,F.TF.A.2,2
-algebra2,trigonometry,Determining Trigonometric Functions,F.TF.C.8,2
-algebra2,trigonometry,Using Inverse Trigonometric Functions,F.TF.A.2,0
-algebra2,trigonometry,Simplifying Trigonometric Expressions,F.TF.C.8,1
-algebra2,trigonometry,Proving Trigonometric Identities,F.TF.C.8,0
-algebra2,trigonometry,Modeling Trigonometric Functions,F.TF.B.5,1
-algebra2,trigonometry,Graphing Trigonometric Functions,F.IF.B.4,6
-algebra2,trigonometry,Graphing Trigonometric Functions,F.IF.C.7,9
-algebra2,conics,Equations of Circles,G.GPE.A.1,1
-precalculus,"numbers, operations and properties",Matrices,N.VM.C.6,0
-precalculus,"numbers, operations and properties",Matrices,N.VM.C.7,0
-precalculus,"numbers, operations and properties",Matrices,N.VM.C.8,0
-precalculus,"numbers, operations and properties",Matrices,N.VM.C.11,0
-precalculus,"numbers, operations and properties",Matrices,N.VM.C.12,0
-precalculus,"numbers, operations and properties",Matrices,A.REI.C.14,0
-precalculus,probability,Multiplication Counting Principle,S.CP.B.9,0
-precalculus,probability,Permutations,S.CP.B.9,0
-precalculus,probability,Combinations,S.CP.B.9,0
-precalculus,probability,Differentiating Permutations and Combinations,S.CP.B.9,0
-precalculus,probability,Binomial Probability,S.CP.B.9,0
-precalculus,absolute value,Absolute Value Equations,A.REI.D.11,0
-precalculus,absolute value,Absolute Value Inequalities,A.REI.D.11,0
-precalculus,quadratics,Quadratic Inequalities,A.REI.D.11,0
-precalculus,systems,Other Systems,G.GPE.A.3,0
-precalculus,powers,Properties of Logarithms,F.BF.B.5,0
-precalculus,powers,Logarithmic Equations,F.BF.B.5,0
-precalculus,powers,Binomial Expansions,A.APR.C.5,0
-precalculus,radicals,Conjugates of Complex Numbers,N.CN.A.3,0
-precalculus,radicals,Division of Complex Numbers,N.CN.A.3,0
-precalculus,radicals,Moduli of Complex Numbers,N.CN.A.3,0
-precalculus,radicals,Graphing Complex Numbers,N.CN.B.4,0
-precalculus,radicals,Graphing Complex Numbers,N.CN.B.5,0
-precalculus,rationals,Graphing Rationals,F.IF.C.7,0
-precalculus,rationals,Multiplication and Division of Rationals,A.APR.D.7,0
-precalculus,rationals,Addition and Subtraction of Rationals,A.APR.D.7,0
-precalculus,rationals,Complex Fractions,A.APR.D.7,0
-precalculus,rationals,Rationalizing Denominators,A.APR.D.7,0
-precalculus,rationals,Inverse Variation,A.APR.D.7,0
-precalculus,rationals,Rational Inequalities,A.APR.D.7,0
-precalculus,functions,Defining Functions,F.BF.B.3,0
-precalculus,functions,Inverse of Functions,F.BF.B.4,0
-precalculus,functions,Compositions of Functions,F.BF.A.1,0
-precalculus,trigonometry,Graphing Trigonometric Functions,F.TF.B.6,0
-precalculus,trigonometry,Domain and Range,F.TF.B.6,0
-precalculus,trigonometry,Angle Sum and Difference Identities,F.TF.C.9,0
-precalculus,trigonometry,Double and Half Angle Identities,F.TF.C.9,0
-precalculus,trigonometry,Trigonometric Equations,F.TF.B.7,0
-precalculus,trigonometry,Using Trigonometry to Find Area,G.SRT.D.9,0
-precalculus,trigonometry,Law of Sines,G.SRT.D.11,0
-precalculus,trigonometry,Law of Sines - The Ambiguous Case,G.SRT.D.10,0
-precalculus,trigonometry,Law of Cosines,G.SRT.D.11,0
-precalculus,trigonometry,Vectors,N.VM.A.3,0
-precalculus,trigonometry,Vectors,G.SRT.D.11,0
-precalculus,conics,Equations of Conics,G.GPE.A.3,0
+6.EE.A.2,"Evaluate expressions at specific values of their variables. Include expressions that arise from formulas used in real-world problems. Perform arithmetic operations, including those involving whole-number exponents, in the conventional order when there are "
+6.SP.B.5,"Summarize numerical data sets in relation to their context, such as by: a. Reporting the number of observations. b. Describing the nature of the attribute under investigation, including how it was measured and its units of measurement. c. Giving quantitati"
+7.RP.A.3,"Use proportional relationships to solve multistep ratio and percent problems. Examples: simple interest, tax, markups and markdowns, gratuities and commissions, fees, percent increase and decrease, percent error."
+7.SP.C.5,"Understand that the probability of a chance event is a number between 0 and 1 that expresses the likelihood of the event occurring. Larger numbers indicate greater likelihood. A probability near 0 indicates an unlikely event, a probability around 1/2"
+7.SP.C.6,"Approximate the probability of a chance event by collecting data on the chance process that produces it and observing its long-run relative frequency, and predict the approximate relative frequency given the probability."
+7.SP.C.7,"Develop a probability model and use it to find probabilities of events. Compare probabilities from a model to observed frequencies; if the agreement is not good, explain possible sources of the discrepancy. a. Develop a uniform probability model by"
+7.SP.C.8,"Find probabilities of compound events using organized lists, tables, tree diagrams, and simulation. a. Understand that, just as with simple events, the probability of a compound event is the fraction of outcomes in the sample space for which the compound"
+7.SP.C.8,"Find probabilities of compound events using organized lists, tables, tree diagrams, and simulation. a. Understand that, just as with simple events, the probability of a compound event is the fraction of outcomes in the sample space for which the compound"
+8.EE.A.1,"Know and apply the properties of integer exponents to generate equivalent numerical expressions. For example, 32 _ 3–5 = 3–3 = 1/33 = 1/27."
+8.EE.A.3,"Use numbers expressed in the form of a single digit times a whole-number power of 10 to estimate very large or very small quantities, and to express how many times as much one is than the other. For example, estimate the population of the United States as "
+8.EE.A.4,"Perform operations with numbers expressed in scientific notation, including problems where both decimal and scientific notation are used. Use scientific notation and choose units of appropriate size for measurements of very large or very small quantities"
+8.NS.A.1,"Know that numbers that are not rational are called irrational. Understand informally every number has a decimal expansion; for rational numbers show that the decimal expansion repeats eventually, and convert a decimal expansion which repeats eventually"
+8.NS.A.2,"Use rational approximations of irrational numbers to compare the size of irrational numbers, locate them approximately on a number line diagram, and estimate the value of expressions."
+8.NS.A.2,"Use rational approximations of irrational numbers to compare the size of irrational numbers, locate them approximately on a number line diagram, and estimate the value of expressions."
+A.APR.A.1,"Understand that polynomials form a system analogous to the integers, namely, they are closed under the operations of addition, subtraction, and multiplication; add, subtract, and multiply polynomials."
+A.APR.B.2,"Know and apply the Remainder Theorem: For a polynomial p(x) and a number a, the remainder on division by x – a is p(a), so p(a) = 0 if and only if (x – a) is a factor of p(x)."
+A.APR.B.3,"Identify zeros of polynomials when suitable factorizations are available, and use the zeros to construct a rough graph of the function defined by the polynomial."
+A.APR.B.3,"Identify zeros of polynomials when suitable factorizations are available, and use the zeros to construct a rough graph of the function defined by the polynomial."
+A.APR.C.4,"Rewrite simple rational expressions in different forms; write a(x)/b(x) in the form q(x) + r(x)/b(x), where a(x), b(x), q(x), and r(x) are polynomials with the degree of r(x) less than the degree of b(x), using inspection, long division, or, for the more"
+A.APR.C.5,Use the Binomial Theorem for the expansion of (x+y)n for a positive integer n.
+A.APR.D.6,"Rewrite simple rational expressions in different forms; write a(x)/b(x) in the form q(x) + r(x)/b(x), where a(x), b(x), q(x), and r(x) are polynomials with the degree of r(x) less than the degree of b(x), using inspection, long division, or, for the more"
+A.APR.D.7,"Understand that rational expressions form a system analogous to the rational numbers, closed under addition, subtraction, multiplication, and division by a nonzero rational expression; add, subtract, multiply, and divide rational expressions."
+A.CED.A.1,"Create equations and inequalities in one variable and use them to solve problems. Include equations arising from linear and quadratic functions, and simple rational and exponential functions."
+A.CED.A.1,"Create equations and inequalities in one variable and use them to solve problems. Include equations arising from linear and quadratic functions, and simple rational and exponential functions."
+A.CED.A.1,"Create equations and inequalities in one variable and use them to solve problems. Include equations arising from linear and quadratic functions, and simple rational and exponential functions."
+A.CED.A.1,"Create equations and inequalities in one variable and use them to solve problems. Include equations arising from linear and quadratic functions, and simple rational and exponential functions."
+A.CED.A.1,"Create equations and inequalities in one variable and use them to solve problems. Include equations arising from linear and quadratic functions, and simple rational and exponential functions."
+A.CED.A.1,"Create equations and inequalities in one variable and use them to solve problems. Include equations arising from linear and quadratic functions, and simple rational and exponential functions."
+A.CED.A.2,Create equations in two or more variables to represent relationships between quantities; graph equations on coordinate axes with labels and scales.
+A.CED.A.2,Create equations in two or more variables to represent relationships between quantities; graph equations on coordinate axes with labels and scales.
+A.CED.A.2,Create equations in two or more variables to represent relationships between quantities; graph equations on coordinate axes with labels and scales.
+A.CED.A.3,"Represent constraints by equations or inequalities, and by systems of equations and/or inequalities, and interpret solutions as viable or non-viable options in a modeling context. For example, represent inequalities describing nutritional and cost constrai"
+A.CED.A.3,"Represent constraints by equations or inequalities, and by systems of equations and/or inequalities, and interpret solutions as viable or non-viable options in a modeling context. For example, represent inequalities describing nutritional and cost constrai"
+A.CED.A.3,"Represent constraints by equations or inequalities, and by systems of equations and/or inequalities, and interpret solutions as viable or non-viable options in a modeling context. For example, represent inequalities describing nutritional and cost constrai"
+A.CED.A.3,"Represent constraints by equations or inequalities, and by systems of equations and/or inequalities, and interpret solutions as viable or non-viable options in a modeling context. For example, represent inequalities describing nutritional and cost constrai"
+A.CED.A.4,"Rearrange formulas to highlight a quantity of interest, using the same reasoning as in solving equations.  For example, rearrange Ohm’s law V = IR to highlight resistance R  (linear, quadratic, exponential (integer inputs only), simple roots)."
+A.REI.A.1,"Explain each step in solving a simple equation as following from the equality of numbers asserted at the previous step, starting from the assumption that the original equation has a solution.  Construct a viable argument to justify a solution method"
+A.REI.A.2,"Solve simple rational and radical equations in one variable, and give examples showing how extraneous solutions may arise."
+A.REI.A.2,"Solve simple rational and radical equations in one variable, and give examples showing how extraneous solutions may arise."
+A.REI.B.3,"Solve linear equations and linear inequalities in one variable, including equations with coefficients represented by letters (literal that are linear in the variables being solved for)."
+A.REI.B.3,"Solve linear equations and linear inequalities in one variable, including equations with coefficients represented by letters (literal that are linear in the variables being solved for)."
+A.REI.B.4,Solve quadratic equations in one variable. a. Use the method of completing the square to transform any quadratic equation in x into an equation of the form (x – p)2 = q that has the same solutions. Derive the quadratic formula from this form. b. Solve quad
+A.REI.B.4,Solve quadratic equations in one variable. a. Use the method of completing the square to transform any quadratic equation in x into an equation of the form (x – p)2 = q that has the same solutions. Derive the quadratic formula from this form. b. Solve quad
+A.REI.C.5,"Prove that, given a system of two equations in two variables, replacing one equation by the sum of that equation and a multiple of the other produces a system with the same solutions."
+A.REI.C.6,"Solve systems of linear equations exactly and approximately (e.g., with graphs), focusing on pairs of linear equations in two variables."
+A.REI.C.6,"Solve systems of linear equations exactly and approximately (e.g., with graphs), focusing on pairs of linear equations in two variables."
+A.REI.C.6,"Solve systems of linear equations exactly and approximately (e.g., with graphs), focusing on pairs of linear equations in two variables."
+A.REI.C.7,"Solve a simple system consisting of a linear equation and a quadratic equation in two variables algebraically and graphically. For example, find the points of intersection between the line y=–3x and the circle x2+y2=3."
+A.REI.C.7,"Solve a simple system consisting of a linear equation and a quadratic equation in two variables algebraically and graphically. For example, find the points of intersection between the line y=–3x and the circle x2+y2=3."
+A.REI.D.10,"Understand that the graph of an equation in two variables is the set of all its solutions plotted in the coordinate plane, often forming a curve (which could be a line)."
+A.REI.D.11,"Explain why the x-coordinates of the points where the graphs of the equations y=f(x) and y=g(x) intersect are the solutions of the equation f(x)=g(x); find the solutions approximately, e.g., using technology to graph the functions, make tables of values, o"
+A.REI.D.11,"Explain why the x-coordinates of the points where the graphs of the equations y=f(x) and y=g(x) intersect are the solutions of the equation f(x)=g(x); find the solutions approximately, e.g., using technology to graph the functions, make tables of values, o"
+A.REI.D.11,"Explain why the x-coordinates of the points where the graphs of the equations y=f(x) and y=g(x) intersect are the solutions of the equation f(x)=g(x); find the solutions approximately, e.g., using technology to graph the functions, make tables of values, o"
+A.REI.D.11,"Explain why the x-coordinates of the points where the graphs of the equations y=f(x) and y=g(x) intersect are the solutions of the equation f(x)=g(x); find the solutions approximately, e.g., using technology to graph the functions, make tables of values, o"
+A.REI.D.12,"Graph the solutions to a linear inequality in two variables as a half-plane (excluding the boundary in the case of a strict inequality), and graph the solution set to a system of linear inequalities in two variables as the intersection of the corresponding"
+A.REI.D.12,"Graph the solutions to a linear inequality in two variables as a half-plane (excluding the boundary in the case of a strict inequality), and graph the solution set to a system of linear inequalities in two variables as the intersection of the corresponding"
+A.SSE.A.1,"Interpret expressions that represent a quantity in terms of its context.  Interpret parts of an expression, such as terms, factors, and coefficients.  Interpret complicated expressions by viewing one or more of their parts as a single entity. For example, "
+A.SSE.A.2,"Use the structure of an expression to identify ways to rewrite it. For example, see x4–y4 as (x2)2–(y2)2, thus recognizing it as a difference of squares that can be factored as (x2–y2)(x2+y2)."
+A.SSE.A.2,"Use the structure of an expression to identify ways to rewrite it. For example, see x4–y4 as (x2)2–(y2)2, thus recognizing it as a difference of squares that can be factored as (x2–y2)(x2+y2)."
+A.SSE.B.3,Choose and produce an equivalent form of an expression to reveal and explain properties of the quantity represented by the expression.   a. Factor a quadratic expression to reveal the zeros of the function it defines.  b. Complete the square in a quadratic
+A.SSE.B.3,Choose and produce an equivalent form of an expression to reveal and explain properties of the quantity represented by the expression.   a. Factor a quadratic expression to reveal the zeros of the function it defines.  b. Complete the square in a quadratic
+A.SSE.B.3,Choose and produce an equivalent form of an expression to reveal and explain properties of the quantity represented by the expression.   a. Factor a quadratic expression to reveal the zeros of the function it defines.  b. Complete the square in a quadratic
+A.SSE.B.4,"Derive the formula for the sum of a finite geometric series (when the common ratio is not 1), and use the formula to solve problems.  For example, calculate mortgage payments."
+F.BF.A.1,"Write a function that describes a relationship between two quantities.  a. Determine an explicit expression, a recursive process, or steps for calculation from a context.  b. Combine standard function types using arithmetic operations."
+F.BF.A.1,"Write a function that describes a relationship between two quantities.  a. Determine an explicit expression, a recursive process, or steps for calculation from a context.  b. Combine standard function types using arithmetic operations."
+F.BF.A.1,"Write a function that describes a relationship between two quantities.  a. Determine an explicit expression, a recursive process, or steps for calculation from a context.  b. Combine standard function types using arithmetic operations."
+F.BF.A.1,"Write a function that describes a relationship between two quantities.  a. Determine an explicit expression, a recursive process, or steps for calculation from a context.  b. Combine standard function types using arithmetic operations."
+F.BF.A.1,"Write a function that describes a relationship between two quantities.  a. Determine an explicit expression, a recursive process, or steps for calculation from a context.  b. Combine standard function types using arithmetic operations."
+F.BF.A.1,"Write a function that describes a relationship between two quantities.  a. Determine an explicit expression, a recursive process, or steps for calculation from a context.  b. Combine standard function types using arithmetic operations."
+F.BF.A.2,"Write arithmetic and geometric sequences both recursively and with an explicit formula, use them to model situations, and translate between the two forms."
+F.BF.B.3,"Identify the effect on the graph of replacing f(x) by f(x) + k, k f(x), f(kx), and f(x + k) for specific values of k (both positive and negative); find the value of k given the graphs.  Experiment with cases and illustrate an explanation of the effects on "
+F.BF.B.3,"Identify the effect on the graph of replacing f(x) by f(x) + k, k f(x), f(kx), and f(x + k) for specific values of k (both positive and negative); find the value of k given the graphs.  Experiment with cases and illustrate an explanation of the effects on "
+F.BF.B.3,"Identify the effect on the graph of replacing f(x) by f(x) + k, k f(x), f(kx), and f(x + k) for specific values of k (both positive and negative); find the value of k given the graphs.  Experiment with cases and illustrate an explanation of the effects on "
+F.BF.B.3,"Identify the effect on the graph of replacing f(x) by f(x) + k, k f(x), f(kx), and f(x + k) for specific values of k (both positive and negative); find the value of k given the graphs.  Experiment with cases and illustrate an explanation of the effects on "
+F.BF.B.3,"Identify the effect on the graph of replacing f(x) by f(x) + k, k f(x), f(kx), and f(x + k) for specific values of k (both positive and negative); find the value of k given the graphs.  Experiment with cases and illustrate an explanation of the effects on "
+F.BF.B.3,"Identify the effect on the graph of replacing f(x) by f(x) + k, k f(x), f(kx), and f(x + k) for specific values of k (both positive and negative); find the value of k given the graphs.  Experiment with cases and illustrate an explanation of the effects on "
+F.BF.B.3,"Identify the effect on the graph of replacing f(x) by f(x) + k, k f(x), f(kx), and f(x + k) for specific values of k (both positive and negative); find the value of k given the graphs.  Experiment with cases and illustrate an explanation of the effects on "
+F.BF.B.4,Find inverse functions. a. Solve an equation of the form f(x)=c for a simple function f that has an inverse and write an expression for the inverse.
+F.BF.B.4,Find inverse functions. a. Solve an equation of the form f(x)=c for a simple function f that has an inverse and write an expression for the inverse.
+F.BF.B.5,Understand the inverse relationship between exponents and logarithms and use this relationship to solve problems involving logarithms and exponents.
+F.BF.B.6,"Represent and evaluate the sum of a finite arithmetic or finite geometric series, using summation (sigma) notation."
+F.BF.B.6,"Represent and evaluate the sum of a finite arithmetic or finite geometric series, using summation (sigma) notation."
+F.IF.A.1,"Understand that a function from one set (called the domain) to another set (called the range) assigns to each element of the domain exactly one element of the range. If f is a function and x is an element of its domain, then f(x) denotes the output of f co"
+F.IF.A.2,"Use function notation, evaluate functions for inputs in their domains, and interpret statements that use function notation in terms of a context."
+F.IF.A.2,"Use function notation, evaluate functions for inputs in their domains, and interpret statements that use function notation in terms of a context."
+F.IF.A.3,"Recognize that sequences are functions, sometimes defined recursively, whose domain is a subset of the integers."
+F.IF.A.3,"Recognize that sequences are functions, sometimes defined recursively, whose domain is a subset of the integers."
+F.IF.B.4,"For a function that models a relationship between two quantities, interpret key features of graphs and tables in terms of the quantities, and sketch graphs showing key features given a verbal description of the relationship"
+F.IF.B.4,"For a function that models a relationship between two quantities, interpret key features of graphs and tables in terms of the quantities, and sketch graphs showing key features given a verbal description of the relationship"
+F.IF.B.4,"For a function that models a relationship between two quantities, interpret key features of graphs and tables in terms of the quantities, and sketch graphs showing key features given a verbal description of the relationship"
+F.IF.B.4,"For a function that models a relationship between two quantities, interpret key features of graphs and tables in terms of the quantities, and sketch graphs showing key features given a verbal description of the relationship"
+F.IF.B.4,"For a function that models a relationship between two quantities, interpret key features of graphs and tables in terms of the quantities, and sketch graphs showing key features given a verbal description of the relationship"
+F.IF.B.4,"For a function that models a relationship between two quantities, interpret key features of graphs and tables in terms of the quantities, and sketch graphs showing key features given a verbal description of the relationship"
+F.IF.B.5,"Relate the domain of a function to its graph and, where applicable, to the quantitative relationship it describes. For example, if the function h(n) gives the number of person-hours it takes to assemble n engines in a factory, then the positive integers"
+F.IF.B.6,"Calculate and interpret the average rate of change of a function (presented symbolically or as a table) over a specified interval.  Estimate the rate of change from a graph (linear, exponential and quadratic)."
+F.IF.B.6,"Calculate and interpret the average rate of change of a function (presented symbolically or as a table) over a specified interval.  Estimate the rate of change from a graph (linear, exponential and quadratic)."
+F.IF.C.7,"Graph functions expressed symbolically and show key features of the graph, by hand in simple cases and using technology for more complicated cases.  a. Graph linear and quadratic functions and show intercepts, maxima, and minima. b. Graph square root, cube"
+F.IF.C.7,"Graph functions expressed symbolically and show key features of the graph, by hand in simple cases and using technology for more complicated cases.  a. Graph linear and quadratic functions and show intercepts, maxima, and minima. b. Graph square root, cube"
+F.IF.C.7,"Graph functions expressed symbolically and show key features of the graph, by hand in simple cases and using technology for more complicated cases.  a. Graph linear and quadratic functions and show intercepts, maxima, and minima. b. Graph square root, cube"
+F.IF.C.7,"Graph functions expressed symbolically and show key features of the graph, by hand in simple cases and using technology for more complicated cases.  a. Graph linear and quadratic functions and show intercepts, maxima, and minima. b. Graph square root, cube"
+F.IF.C.7,"Graph functions expressed symbolically and show key features of the graph, by hand in simple cases and using technology for more complicated cases.  a. Graph linear and quadratic functions and show intercepts, maxima, and minima. b. Graph square root, cube"
+F.IF.C.7,"Graph functions expressed symbolically and show key features of the graph, by hand in simple cases and using technology for more complicated cases.  a. Graph linear and quadratic functions and show intercepts, maxima, and minima. b. Graph square root, cube"
+F.IF.C.7,"Graph functions expressed symbolically and show key features of the graph, by hand in simple cases and using technology for more complicated cases.  a. Graph linear and quadratic functions and show intercepts, maxima, and minima. b. Graph square root, cube"
+F.IF.C.7,"Graph functions expressed symbolically and show key features of the graph, by hand in simple cases and using technology for more complicated cases.  a. Graph linear and quadratic functions and show intercepts, maxima, and minima. b. Graph square root, cube"
+F.IF.C.7,"Graph functions expressed symbolically and show key features of the graph, by hand in simple cases and using technology for more complicated cases.  a. Graph linear and quadratic functions and show intercepts, maxima, and minima. b. Graph square root, cube"
+F.IF.C.8,"Write a function defined by an expression in different but equivalent forms to reveal and explain different properties of the function. a. Use the process of factoring and completing the square in a quadratic function to show zeros, extreme values, and"
+F.IF.C.8,"Write a function defined by an expression in different but equivalent forms to reveal and explain different properties of the function. a. Use the process of factoring and completing the square in a quadratic function to show zeros, extreme values, and"
+F.IF.C.9,"Compare properties of two functions each represented in a different way (algebraically, graphically, numerically in tables, or by verbal descriptions). For example, given a graph of one quadratic function and an algebraic expression for another, say which"
+F.IF.C.9,"Compare properties of two functions each represented in a different way (algebraically, graphically, numerically in tables, or by verbal descriptions). For example, given a graph of one quadratic function and an algebraic expression for another, say which"
+F.LE.A.1,"Distinguish between situations that can be modeled with linear functions and with exponential functions. Prove that linear functions grow by equal differences over equal intervals, and that exponential functions grow by equal factors over equal intervals. "
+F.LE.A.2,"Construct linear and exponential functions, including arithmetic and geometric sequences, given a graph, a description of a relationship, or two input-output pairs (include reading these from a table)."
+F.LE.A.2,"Construct linear and exponential functions, including arithmetic and geometric sequences, given a graph, a description of a relationship, or two input-output pairs (include reading these from a table)."
+F.LE.A.2,"Construct linear and exponential functions, including arithmetic and geometric sequences, given a graph, a description of a relationship, or two input-output pairs (include reading these from a table)."
+F.LE.A.2,"Construct linear and exponential functions, including arithmetic and geometric sequences, given a graph, a description of a relationship, or two input-output pairs (include reading these from a table)."
+F.LE.A.2,"Construct linear and exponential functions, including arithmetic and geometric sequences, given a graph, a description of a relationship, or two input-output pairs (include reading these from a table)."
+F.LE.A.2,"Construct linear and exponential functions, including arithmetic and geometric sequences, given a graph, a description of a relationship, or two input-output pairs (include reading these from a table)."
+F.LE.A.2,"Construct linear and exponential functions, including arithmetic and geometric sequences, given a graph, a description of a relationship, or two input-output pairs (include reading these from a table)."
+F.LE.A.3,"Observe using graphs and tables that a quantity increasing exponentially eventually exceeds a quantity increasing linearly, quadratically, or (more generally) as a polynomial function."
+F.LE.A.4,"For exponential models, express as a logarithm the solution to abct = d where a, c, and d are numbers and the base b is 2, 10, or e; evaluate the logarithm using technology."
+F.LE.B.5,Interpret the parameters in a linear or exponential function in terms of a context.
+F.LE.B.5,Interpret the parameters in a linear or exponential function in terms of a context.
+F.LE.B.5,Interpret the parameters in a linear or exponential function in terms of a context.
+F.TF.A.1,Understand radian measure of an angle as the length of the arc on the unit circle subtended by the angle.
+F.TF.A.2,"Explain how the unit circle in the coordinate plane enables the extension of trigonometric functions to all real numbers, interpreted as radian measures of angles traversed counterclockwise around the unit circle."
+F.TF.A.2,"Explain how the unit circle in the coordinate plane enables the extension of trigonometric functions to all real numbers, interpreted as radian measures of angles traversed counterclockwise around the unit circle."
+F.TF.B.5,"Choose trigonometric functions to model periodic phenomena with specified amplitude, frequency, and midline."
+F.TF.B.6,"Choose trigonometric functions to model periodic phenomena with specified amplitude, frequency, and midline."
+F.TF.B.7,Solve trigonometric equations analytically with inverse functions and graphically with technology and interpret solutions in terms of the context.
+F.TF.C.8,"Prove the Pythagorean identity sin2(_) + cos2(_) = 1 and use it to find sin(_), cos(_), or tan(_) given sin(_), cos(_), or tan(_) and the quadrant of the angle."
+F.TF.C.8,"Prove the Pythagorean identity sin2(_) + cos2(_) = 1 and use it to find sin(_), cos(_), or tan(_) given sin(_), cos(_), or tan(_) and the quadrant of the angle."
+F.TF.C.9,"Prove the sum and difference formulas for sine, cosine, and tangent and use them to solve problems."
+G.C.A.1,"Construct the inscribed and circumscribed circles of a triangle, and prove properties of angles for a quadrilateral inscribed in a circle."
+G.C.A.2,"Identify and describe relationships among inscribed angles, radii, and chords. Include the relationship between central, inscribed, and circumscribed angles; inscribed angles on a diameter are right angles; the radius of a circle is perpendicular"
+G.C.A.3,"Construct the inscribed and circumscribed circles of a triangle, and prove properties of angles for a quadrilateral inscribed in a circle."
+G.C.B.5,Derive the formula for the area of a sector
+G.CO.A.1,"Know precise definitions of angle, circle, perpendicular line, parallel line, and line segment, based on the undefined notions of point, line, distance along a line, and distance around a circular arc."
+G.CO.A.1,"Know precise definitions of angle, circle, perpendicular line, parallel line, and line segment, based on the undefined notions of point, line, distance along a line, and distance around a circular arc."
+G.CO.A.2,"Represent transformations in the plane using, e.g., transparencies and geometry software; describe transformations as functions that take points in the plane as inputs and give other points as outputs. Compare transformations that preserve distance and ang"
+G.CO.A.3,"Given a rectangle, parallelogram, trapezoid, or regular polygon, describe the rotations and reflections that carry it onto itself."
+G.CO.A.5,"Given a geometric figure and a rotation, reflection, or translation, draw the transformed figure using, e.g., graph paper, tracing paper, or geometry software. Specify a sequence of transformations that will carry a given figure onto another."
+G.CO.A.5,"Given a geometric figure and a rotation, reflection, or translation, draw the transformed figure using, e.g., graph paper, tracing paper, or geometry software. Specify a sequence of transformations that will carry a given figure onto another."
+G.CO.B.6,"Use geometric descriptions of rigid motions to transform figures and to predict the effect of a given rigid motion on a given figure; given two figures, use the definition of congruence in terms of rigid motions to decide if they are congruent."
+G.CO.B.7,Use the definition of congruence in terms of rigid motions to show that two triangles are congruent if and only if corresponding pairs of sides and corresponding pairs of angles are congruent.
+G.CO.B.8,"Explain how the criteria for triangle congruence (ASA, SAS, and SSS) follow from the definition of congruence in terms of rigid motions."
+G.CO.C.10,Prove theorems about triangles.
+G.CO.C.10,Prove theorems about triangles.
+G.CO.C.11,Prove theorems about parallelograms.
+G.CO.C.11,Prove theorems about parallelograms.
+G.CO.C.9,Prove theorems about lines and angles.
+G.CO.C.9,Prove theorems about lines and angles.
+G.CO.D.12,"Make formal geometric constructions with a variety of tools and methods (compass and straightedge, string, reflective devices, paper folding, dynamic geometric software, etc.)."
+G.CO.D.13,"Construct an equilateral triangle, a square, and a regular hexagon inscribed in a circle."
+G.GMD.A.1,"Give an informal argument for the formulas for the circumference of a circle, area of a circle, volume of a cylinder, pyramid, and cone. Use dissection arguments, Cavalieri’s principle, and informal limit arguments."
+G.GMD.A.1,"Give an informal argument for the formulas for the circumference of a circle, area of a circle, volume of a cylinder, pyramid, and cone. Use dissection arguments, Cavalieri’s principle, and informal limit arguments."
+G.GMD.A.3,"Use volume formulas for cylinders, pyramids, cones, and spheres to solve problems."
+G.GMD.B.4,"Identify the shapes of two-dimensional cross-sections of three-dimensional objects, and identify three-dimensional objects generated by rotations of two-dimensional objects."
+G.GPE.A.1,Derive the equation of a circle of given center and radius using the Pythagorean Theorem; complete the square to find the center and radius of a circle given by an equation.
+G.GPE.A.1,Derive the equation of a circle of given center and radius using the Pythagorean Theorem; complete the square to find the center and radius of a circle given by an equation.
+G.GPE.A.2,Derive the equation of a parabola given a focus and directrix.
+G.GPE.A.3,Derive the equations of ellipses and hyperbolas given the foci.  Use these equations to model real life situations.
+G.GPE.A.3,Derive the equations of ellipses and hyperbolas given the foci.  Use these equations to model real life situations.
+G.GPE.B.4,Use coordinates to prove simple geometric theorems algebraically.
+G.GPE.B.4,Use coordinates to prove simple geometric theorems algebraically.
+G.GPE.B.4,Use coordinates to prove simple geometric theorems algebraically.
+G.GPE.B.5,"Prove the slope criteria for parallel and perpendicular lines and use them to solve geometric problems (e.g., find the equation of a line parallel or perpendicular to a given line that passes through a given point)."
+G.GPE.B.6,Find the point on a directed line segment between two given points that partitions the segment in a given ratio.
+G.GPE.B.7,"Use coordinates to compute perimeters of polygons and areas of triangles and rectangles, e.g., using the distance formula."
+G.MG.A.1,"Use geometric shapes, their measures, and their properties to describe objects (e.g., modeling a tree trunk or a human torso as a cylinder)."
+G.MG.A.2,"Apply concepts of density based on area and volume in modeling situations (e.g., persons per square mile, BTUs per cubic foot)."
+G.MG.A.3,"Apply geometric methods to solve design problems (e.g., designing an object or structure to satisfy physical constraints or minimize cost; working with typographic grid systems based on ratios)."
+G.MG.A.3,"Apply geometric methods to solve design problems (e.g., designing an object or structure to satisfy physical constraints or minimize cost; working with typographic grid systems based on ratios)."
+G.SRT.A.1,"Verify experimentally the properties of dilations given by a center and a scale factor: a.A dilation takes a line not passing through the center of the dilation to a parallel line, and leaves a line passing through the center unchanged. b. The dilation of"
+G.SRT.A.2,"Given two figures, use the definition of similarity in terms of similarity transformations to decide if they are similar; explain using similarity transformations the meaning of similarity for triangles as the equality of all corresponding pairs of angles "
+G.SRT.A.2,"Given two figures, use the definition of similarity in terms of similarity transformations to decide if they are similar; explain using similarity transformations the meaning of similarity for triangles as the equality of all corresponding pairs of angles "
+G.SRT.A.3,Use the properties of similarity transformations to establish the AA criterion for two triangles to be similar.
+G.SRT.B.5,Use congruence and similarity criteria for triangles to solve problems and to prove relationships in geometric figures.
+G.SRT.B.5,Use congruence and similarity criteria for triangles to solve problems and to prove relationships in geometric figures.
+G.SRT.B.5,Use congruence and similarity criteria for triangles to solve problems and to prove relationships in geometric figures.
+G.SRT.B.5,Use congruence and similarity criteria for triangles to solve problems and to prove relationships in geometric figures.
+G.SRT.B.5,Use congruence and similarity criteria for triangles to solve problems and to prove relationships in geometric figures.
+G.SRT.C.6,"Understand that by similarity, side ratios in right triangles are properties of the angles in the triangle, leading to definitions of trigonometric ratios for acute angles."
+G.SRT.C.7,Explain and use the relationship between the sine and cosine of complementary angles
+G.SRT.C.8,Use trigonometric ratios and the Pythagorean Theorem to solve right triangles in applied problems.
+G.SRT.C.8,Use trigonometric ratios and the Pythagorean Theorem to solve right triangles in applied problems.
+G.SRT.D.10,"Prove the Law of Sines and the Law of Cosines and apply in all cases, including the ambiguous case."
+G.SRT.D.11,Understand and apply the Law of Sines and the Law of Cosines to find unknown measurements in right and non-right triangles.
+G.SRT.D.11,Understand and apply the Law of Sines and the Law of Cosines to find unknown measurements in right and non-right triangles.
+G.SRT.D.9,Justify and apply the formula A= _ab sin (C) to find the area of any triangle by drawing an auxiliary line from a vertex perpendicular to the opposite side.
+N.CN.A.1,"Know there is a complex number i such that i2 = –1, and every complex number has the form a + bi with a and b real."
+N.CN.A.2,"Use the relation i2=–1 and the commutative, associative, and distributive properties to add, subtract, and multiply complex numbers."
+N.CN.A.2,"Use the relation i2=–1 and the commutative, associative, and distributive properties to add, subtract, and multiply complex numbers."
+N.CN.A.3,Find the conjugate of a complex number; use conjugates to find moduli and quotients of complex numbers.
+N.Q.A.1,Use units as a way to understand problems and to guide the solution of multi-step problems; choose and interpret units consistently in formulas; choose and interpret the scale and the origin in graphs and data displays.
+N.Q.A.2,Define appropriate quantities for the purpose of descriptive modeling.
+N.RN.A.1,"Explain how the definition of the meaning of rational exponents follows from extending the properties of integer exponents to those values, allowing for a notation for radicals in terms of rational exponents."
+N.RN.A.2,Rewrite expressions involving radicals and rational exponents using the properties of exponents.
+N.RN.A.2,Rewrite expressions involving radicals and rational exponents using the properties of exponents.
+N.RN.B.3,Explain why the sum or product of two rational numbers is rational; that the sum of a rational number and an irrational number is irrational; and that the product of a nonzero rational number and an irrational number is irrational.
+S.CP.A.1,"Describe events as subsets of a sample space (the set of outcomes) using characteristics (or categories) of the outcomes, or as unions, intersections, or complements of other events (“or,” “and,” “not”)."
+S.CP.A.1,"Describe events as subsets of a sample space (the set of outcomes) using characteristics (or categories) of the outcomes, or as unions, intersections, or complements of other events (“or,” “and,” “not”)."
+S.CP.A.3,"Understand the conditional probability of A given B as P(A and B)/P(B), and interpret independence of A and B as saying that the conditional probability of A given B is the same as the probability of A, and the conditional probability of B given A is same"
+S.CP.A.4,Construct and interpret two-way frequency tables of data when two categories are associated with each object being classified. Use the two-way table as a sample space to decide if events are independent and to approximate conditional probabilities.
+S.CP.B.6,"Find the conditional probability of A given B as the fraction of B’s outcomes that also belong to A, and interpret the answer in terms of the model. "
+S.CP.B.7,"Apply the Addition Rule, P(A or B) = P(A) + P(B) – P(A and B), and interpret the answer in terms of the model."
+S.CP.B.9,Solve problems using permutations and combinations to compute probabilities of compound events.
+S.IC.A.2,"Decide if a specified model is consistent with results from a given data-generating process, e.g., using simulation."
+S.IC.B.3,"Recognize the purposes of and differences among sample surveys, experiments, and observational studies; explain how randomization relates to each."
+S.IC.B.4,Use data from a sample survey to estimate a population mean or proportion; develop a margin of error through the use of simulation models for random sampling.
+S.IC.B.5,Use data from a randomized experiment to compare two treatments; use simulations to decide if differences between parameters are significant.
+S.IC.B.6,Evaluate reports based on data.
+S.ID.A.1,"Represent data with plots on the real number line (dot plots, histograms, and box plots)."
+S.ID.A.2,"Use statistics appropriate to the shape of the data distribution to compare center (median, mean) and spread (interquartile range, standard deviation) of two or more different data sets."
+S.ID.A.3,"Interpret differences in shape, center, and spread in the context of the data sets, accounting for possible effects of extreme data points (outliers)."
+S.ID.A.4,"Use the mean and standard deviation of a data set to fit it to a normal distribution and to estimate population percentages. Recognize that there are data sets for which such a procedure is not appropriate. Use calculators, spreadsheets, and tables to esti"
+S.ID.B.5,"Summarize categorical data for two categories in two-way frequency tables. Interpret relative frequencies in the context of the data (including joint, marginal, and conditional relative frequencies). Recognize possible associations and trends in the data."
+S.ID.B.6,"Represent data on two quantitative variables on a scatter plot, and describe how the variables are related.  a. Fit a function to the data; use functions fitted to data to solve problems in the context of the data. Use given functions or choose a function"
+S.ID.B.6,"Represent data on two quantitative variables on a scatter plot, and describe how the variables are related.  a. Fit a function to the data; use functions fitted to data to solve problems in the context of the data. Use given functions or choose a function"
+S.ID.B.6,"Represent data on two quantitative variables on a scatter plot, and describe how the variables are related.  a. Fit a function to the data; use functions fitted to data to solve problems in the context of the data. Use given functions or choose a function"
+S.ID.B.6,"Represent data on two quantitative variables on a scatter plot, and describe how the variables are related.  a. Fit a function to the data; use functions fitted to data to solve problems in the context of the data. Use given functions or choose a function"
+S.ID.C.7,Interpret the slope (rate of change) and the intercept (constant term) of a linear model in the context of the data.
+S.ID.C.8,Compute (using technology) and interpret the correlation coefficient of a linear fit.
+S.ID.C.9,Distinguish between correlation and causation.
