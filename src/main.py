@@ -3,8 +3,7 @@
 import sys
 import os
 from makedoc import makedoc, makeset
-from loadbank import loadstandards, loadbank
-from bankdb import savebank, loaddb
+from loadstandards import print_tree
 
 print("running worksheet generator")
 arg = input("Type anything to run: ")

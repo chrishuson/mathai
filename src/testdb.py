@@ -1,6 +1,8 @@
 #test procedure of pickle db functions
+import pickle
 from loadbank import loadstandards, loadbank
 from bankdb import savebank, loaddb
+from loadstandards import loaddbfile, print_tree
 
 def testsave():
     standards = loadstandards()
@@ -16,9 +18,20 @@ def testload():
 if __name__ == "__main__":
     from loadbank import loadstandards, loadbank
     from bankdb import savebank, loaddb
-    prompt = input("Type 's' to create and save test bank to pickle file. \
-                   Else retrieve and print bank.:")
+    print("Test pickle file saving functions")
+    prompt = input("Type 's' to create and save problem bank. \
+                   'r' to retrieve and print problem bank. \
+                   'd' standards descriptions. 't' for tree: ")
     if prompt == 's':
         testsave()
-    else:
+    elif prompt == 'r':
         print("bank.pickle : ", testload())
+    elif prompt == 'd':
+        d = loaddbfile("standards_text_jmap")
+        print("standards_text_jmap")
+        for k in d.keys():
+            print(k)
+            print(d[k])
+    else:
+        t = loaddbfile("standards_tree_jmap")
+        print_tree(t)
