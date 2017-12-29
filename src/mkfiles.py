@@ -19,11 +19,12 @@ standards = loaddbfile("standards_tree_jmap")
 standards_desc = loaddbfile("standards_text_jmap")
 
 tmp_list = ['exponents', 'logs', \
-            'function-inverse', 'substitution', 'g-quad-vertex', \
-            'exponent-fin']
+            'function-inverse', 'substitution', \
+            'exponent-fin']  # 'g-quad-vertex',
 new_list = ['Evaluating Exponential Expressions', 'Evaluating Logarithmic Expressions', \
-            'Inverse of Functions', 'Evaluating Expressions', 'Graphing Quadratic Functions', \
+            'Inverse of Functions', 'Evaluating Expressions',  \
             'Exponential Equations, Exponential Growth, Exponential Decay']
+                #'Graphing Quadratic Functions',
 
 lookup_list = dict(zip(tmp_list, new_list))
 

@@ -8,16 +8,13 @@ from collections import namedtuple
 from makedoc import makedoc, makeset
 from loadstandards import print_tree, loaddbfile
 
-problem_set = {}
-    #set_id:(problem_ids, string), text composing problems in TeX format
-
 def make_set(problem_ids, pflag=1, sflag=0, wflag=0, numflag=1):
     """ Function to create string of problems in TeX format
 
         #ids is a list of problem ids, order is maintained
         #flags specify inclusion of problem text, solution & workspace
         #numflag: 1 prefix w "\item", 2 include "\begin{enumerate}"
-        Returns list of problems' texts (enhance to include set_id)
+        Returns tuple of 2 lists: problems' ids, texts (enhance to include set_id)
         """
     problem_texts = []
     for id in problem_ids:
@@ -45,9 +42,12 @@ def print_set(set_tuple, idflag=0, numflag=1):
         if numflag == 1:
             newfile.write(r'\begin{enumerate}'+'\n')
         for index in range(len(set_tuple[1])):
-            if idflag == 1:
-                newfile.write(set_tuple[0][index])
             newfile.write(set_tuple[1][index])
+            if idflag == 1:
+                problem_id = set_tuple[0][index]
+                s = str(problem_id) + " " + problem_meta[problem_id][0] + " " +\
+                 problem_meta[problem_id][1]
+                newfile.write(r'\\' + s + '\n')
 
         if numflag == 1:
             newfile.write(r'\end{enumerate}'+'\n')
@@ -68,10 +68,11 @@ skill = loaddbfile("skill")
 print("running worksheet generator")
 arg = input("Type anything to run: ")
 
-p = [1204, 1205, 1206, 1207]
+#p = [1204, 1205, 1206, 1207]
+p = [problem_id for problem_id in problem.keys()]
 #set_tuple = (p, make_set(p))
 #print(set_tuple)
-print_set(make_set(p))
+print_set(make_set(p), 1, 1)
 
 #standards = loadstandards()
 #bank = loadbank(standards)
