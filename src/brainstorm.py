@@ -1,15 +1,15 @@
 #Brain storming data structures and functions
 problem = {}
-    #id:[problem text, solution text, workspace text]
+    #id:[problem text, solution text, workspace text] list of problem sections
     #function to add new exercise, assigning unique id (integer)
     #problem(id)[0] returns text for the problem, [1] solution, [2] workspace]
 
 skill = {}
-    #standard:[id1, id2, ...]
-    #skill(standard) returns list of problem ids
+    #topic:[id1, id2, ...]
+    #skill(topic) returns list of problem ids
 
 problem_meta = {}
-    #id: (calc_type, difficulty, level, source) named tuple
+    #id:(topic, standard, calc_type, difficulty, level, source) named tuple
     #calc_type: 0 no calculator allowed, 1 allowed, 2 calc practice
     #difficulty 1-10
     #level 1-6 (webworks reference)

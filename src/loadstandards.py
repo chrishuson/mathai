@@ -97,6 +97,9 @@ if __name__ == "__main__":
     s = load_ccss_list()
     savedbfile(s, "standards_tree_jmap")
 
+#the standards file is a simple array, but could be restructured as a nested list:
+#tree = ["root", [["algebra1", [["rate",[["Percents", ["7.RP.A.3"]], ["Error", "7.RP.A.3"]]]]], [["geometry", [["triangles", [["Pythagorean Theorem", ["G.SRT.C.8"]]]]]]]]]
+
     #a = input("1 descriptions, 2 tree, else enter standard id ")
     #if a == "1":
         #for k in t.keys():
