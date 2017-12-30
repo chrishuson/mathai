@@ -6,3 +6,5 @@ tmp*.py
 src/temp*.py
 src/tmp*.py
 src/__pycache__/*
+*/*copy
+src/*copy.py

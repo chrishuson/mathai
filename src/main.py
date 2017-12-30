@@ -9,21 +9,54 @@ import os
 import csv
 import pickle
 from collections import namedtuple
-from makedoc import makedoc, makeset
-from loadstandards import print_tree, loaddbfile, savedbfile
+#from add import add_problem
 
-def make_set(problem_ids, pflag=1, sflag=0, wflag=0, numflag=1):
-    """ Function to create string of problems in TeX format
+def savedbfile(dbfile, filename):
+    """Saves persistent record using pickle
 
-        #ids is a list of problem ids, order is maintained
-        #flags specify inclusion of problem text, solution & workspace
-        #numflag: 1 prefix w "\item", 2 include "\begin{enumerate}"
-        Returns tuple of 2 lists: problems' ids, texts (enhance to include set_id)
+        dbfile - to be saved (problem records, standards files)
+        filename -  filename.pickle in /Users/chris/GitHub/mathai/db
+         ("bank", "standards_text_jmap", "standards_tree_jmap")
         """
-    problem_texts = []
-    for id in problem_ids:
-        problem_texts.append(problem[id][0]) #enhance to write solutions, workspace
-    return (problem_ids, problem_texts)
+    dbdir = "/Users/chris/GitHub/mathai/db/"
+    p = dbdir + filename + '.pickle'
+    with open(p, 'wb') as f:
+        pickle.dump(dbfile, f, pickle.HIGHEST_PROTOCOL)
+
+def loaddbfile(filename):
+    """Retrieves persistent record using Pickle
+
+        filename -  filename.pickle in /Users/chris/GitHub/mathai/db
+         ("bank", "standards_text_jmap", "standards_tree_jmap")
+        (problem records, standards files)
+        """
+    dbdir = "/Users/chris/GitHub/mathai/db/"
+    p = dbdir + filename + '.pickle'
+    with open(p, 'rb') as f:
+        return pickle.load(f)
+
+
+def print_tree(s):
+    """Print out nested list of standardsdir
+
+        s is a list of 4-tuples, i.e. the standards data structure
+        """
+    print(s[0][0])
+    print("   " + s[0][1])
+    print("      " + s[0][2] + "  " + s[0][3])
+    for i in range(1,len(s)):
+        if not s[i-1][0] == s[i][0]:
+            print(s[i][0])
+            print("   " + s[i][1])
+            print("      " + s[i][2] + "  " + s[i][3])
+        elif not s[i-1][1] == s[i][1]:
+            print("   " + s[i][1])
+            print("      " + s[i][2] + "  " + s[i][3])
+        elif not s[i-1][2] == s[i][2]:
+            print("      " + s[i][2] + "  " + s[i][3])
+        elif not s[i-1][3] == s[i][3]:
+            print("                       " + s[i][3])
+
 
 def print_set(problem_ids, title, pflag=1, sflag=0, wflag=0, idflag=0, numflag=1):
     """ Creates a worksheet LaTeX file
@@ -90,20 +123,23 @@ problem = loaddbfile("problem")
 problem_meta = loaddbfile("problem_meta")
 skill = loaddbfile("skill")
 
+#run only if module is called from command line
+if __name__ == "__main__":
+    print("running worksheet generator")
+    arg = input("Type 'all' , 'test', 'tree' or 'add': ")
 
-print("running worksheet generator")
-arg = input("Type 'all' , 'test', or 'add': ")
-
-if arg == "all":
-    p = [problem_id for problem_id in problem.keys()]
-    title = ("newfile", "ids in margin", "Inventory: Full List of Problems")
-    print_set(p, title, idflag=2)
-    print("Done: newfile.tex in out folder.")
-elif arg == "test":
-    print_test()
-    print("Four files newfile*.tex")
-elif arg == "add":
-    from add import add_problem
-    print("add not implemented")
-else:
-    print("Didn't do anything")
+    if arg == "all":
+        p = [problem_id for problem_id in problem.keys()]
+        title = ("newfile", "ids in margin", "Inventory: Full List of Problems")
+        print_set(p, title, idflag=2)
+        print("Done: newfile.tex in out folder.")
+    elif arg == "test":
+        print_test()
+        print("Four files newfile*.tex")
+    elif arg == "tree":
+        print_tree(standards)
+    elif arg == "add":
+        from add import add_problem
+        print("add not implemented")
+    else:
+        print("Didn't do anything")
