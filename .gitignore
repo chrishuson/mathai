@@ -1,0 +1,8 @@
+out/*
+db/*.xlsx
+db/*.xlsm
+temp*.py
+tmp*.py
+src/temp*.py
+src/tmp*.py
+src/__pycache__/*
