@@ -35,3 +35,7 @@ if __name__ == "__main__":
     else:
         t = loaddbfile("standards_tree_jmap")
         print_tree(t)
+
+
+#for dir in sys.path:
+#    print(dir)

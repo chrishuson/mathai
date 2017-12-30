@@ -15,8 +15,15 @@ problem_meta = {}
     #level 1-6 (webworks reference)
     #source - author, or history of exercise ("cjh")
 
+standard = {}
+    #source:[tree] problem hierarchy by standard-setting authority
+    #source - ccss, ibqb, jmap, deltamath, webworks
+    #ccss (NYSE) tree is [category, [domain, [cluster, [standard]]]]
+    #jmap topics are mapped to ccss standards http://www.jmap.org/JMAP_RESOURCES_BY_TOPIC.htm#AII
+    #webworks tree is [DBcourse, [DBchapter, [DBsection1, sect2,...]]]
+
 problem_set = {}
-    #set_id:(problem_ids, string), text composing problems in TeX format
+    #set_id:(problem_id_list, problem_text_list)
 
 make_set(problem_ids, pflag, sflag, wflag, numflag)
     #function to create string of problems in TeX format
@@ -30,13 +37,6 @@ assignment = (date, learner_id, set_id)
 problem_hist = {}
     #id:(assigned_date, learner)
     #tracks whether and when a problem has been used
-
-standard = {}
-    #source:[tree] problem hierarchy by standard-setting authority
-    #source - ccss, ibqb, jmap, deltamath, webworks
-    #ccss (NYSE) tree is [category, [domain, [cluster, [standard]]]]
-    #jmap topics are mapped to ccss standards http://www.jmap.org/JMAP_RESOURCES_BY_TOPIC.htm#AII
-    #webworks tree is [DBcourse, [DBchapter, [DBsection1, sect2,...]]]
 
 learner = {}
     #learner_id:(last, first, cohort) named tuple learner_profile

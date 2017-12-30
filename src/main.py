@@ -66,19 +66,11 @@ skill = loaddbfile("skill")
 
 
 print("running worksheet generator")
-arg = input("Type anything to run: ")
+arg = input("Type 'all' to print all, 'add' to add: ")
 
-#p = [1204, 1205, 1206, 1207]
-p = [problem_id for problem_id in problem.keys()]
-#set_tuple = (p, make_set(p))
-#print(set_tuple)
-print_set(make_set(p), 1, 1)
-
-#standards = loadstandards()
-#bank = loadbank(standards)
-#makedoc(bank)
-
-print("done. look for newfile.tex in out folder")
-
-#for dir in sys.path:
-#    print(dir)
+if arg == "all":
+    p = [problem_id for problem_id in problem.keys()]
+    print_set(make_set(p), 1, 1)
+    print("Done: newfile.tex in out folder.")
+elif arg == "add":
+    from add import add_problem
