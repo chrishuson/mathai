@@ -13,6 +13,9 @@ def testsave():
 def testload():
     return loaddb("bank")
 
+for id in problem_meta.keys():
+    print(problem_meta[id][0][:12],problem_meta[id][1], problem_meta[id][2], \
+          problem_meta[id][3], problem_meta[id][4])
 
 #run only if module is called from command line
 if __name__ == "__main__":

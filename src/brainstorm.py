@@ -25,8 +25,8 @@ standard = {}
 problem_set = {}
     #set_id:(problem_id_list, problem_text_list)
 
-make_set(problem_ids, pflag, sflag, wflag, numflag)
-    #function to create string of problems in TeX format
+print_set(problem_ids, pflag, sflag, wflag, numflag)
+    # Function to write problem set file in TeX format
     #ids is a list of problem ids, order is maintained
     #flags specify inclusion of problem text, solution & workspace
     #numflag: 1 prefix w "\item", 2 include "\begin{enumerate}"

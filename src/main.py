@@ -1,8 +1,8 @@
 #runs worksheet maker functions in an interactive session
 # $ python main.py    (from /Users/chris/GitHub/mathai/src directory)
 # For Hydrogen
-%pwd
-%cd src
+#%pwd
+#%cd src
 
 import sys
 import os
@@ -25,74 +25,85 @@ def make_set(problem_ids, pflag=1, sflag=0, wflag=0, numflag=1):
         problem_texts.append(problem[id][0]) #enhance to write solutions, workspace
     return (problem_ids, problem_texts)
 
-def print_set(set_tuple, idflag=0, numflag=1):
+def print_set(problem_ids, title, pflag=1, sflag=0, wflag=0, idflag=0, numflag=1):
     """ Creates a worksheet LaTeX file
 
-        set_tuple (list of problem_ids, list of problems' texts)
+        problem_ids: list of problem_ids to be included, in order
+        title: (out_filename, date, title)
+        #flags specify inclusion of problem text, solution & workspace
         idflag: 1 print problem id (enhance for standards & meta info)
         #numflag: 0 - no problem numbers; 1 prefix w "\item" &includes "\begin{enumerate}"
-        output files are in the /out/ directory
+        output file is out_filename.tex in the /out/ directory
         """
     outdir = "/Users/chris/GitHub/mathai/out/"
     dbdir = "/Users/chris/GitHub/mathai/db/"
-    outfile = outdir + "newfile.tex"
+    outfile = outdir + title[0] + ".tex"
+
     with open(outfile, "w") as newfile:
         with open(dbdir + "head.tex", "r") as head:
             for line in head:
                 newfile.write(line)
-        with open(dbdir + "title.tex", "r") as title:
-            for line in title:
-                newfile.write(line)
+        newfile.write(title[1] + r"\\*" + '\n' + r"\begin{center}{" + \
+                      title[2] + r"}\end{center}" + '\n')
+        #with open(dbdir + "title.tex", "r") as title:
+            #for line in title:
+                #newfile.write(line)
         if numflag == 1:
             newfile.write(r'\begin{enumerate}' + '\n')
-        for index in range(len(set_tuple[1])):
+
+        for id in problem_ids:
             if numflag == 1:
-                newfile.write(r'\item ' + set_tuple[1][index])
+                newfile.write(r'\item ' + problem[id][0])
             else:
-                newfile.write(set_tuple[1][index].rstrip("\n")+r'\\*'+'\n')
+                newfile.write(problem[id][0].rstrip("\n")+r'\\*'+'\n')
             if idflag == 1:
-                problem_id = set_tuple[0][index]
-                s = str(problem_id) + " " + problem_meta[problem_id][0] + " " +\
-                 problem_meta[problem_id][1]
+                s = str(id) + " " + problem_meta[id][0] + " " +\
+                 problem_meta[id][1]
                 newfile.write(r'\\' + s + '\n')
+            elif idflag == 2:
+                newfile.write(r'\marginpar{' + str(id) +r'}' + '\n')
 
         if numflag == 1:
             newfile.write(r'\end{enumerate}'+'\n')
-
         with open(dbdir + "foot.tex", "r") as foot:
             for line in foot:
                 newfile.write(line)
 
+def print_test():
+    """ Runs four configurations of print_set, saving four files
+        """
+    p = [problem_id for problem_id in problem.keys()]
+    p.sort()
+    title = ("newfile1", "numflag=0", "Inventory: Full List of Problems")
+    print_set(p, title, numflag=0)
+    title = ("newfile2", "default (numflag=1)", "Inventory: Full List of Problems")
+    print_set(p, title)
+    title = ("newfile3", "numflag=1 and idflag=1", "Inventory: Full List of Problems")
+    print_set(p, title, idflag=1, numflag=1)
+    title = ("newfile4", "numflag=1 and idflag=2", "Inventory: Full List of Problems")
+    print_set(p, title, idflag=2, numflag=1)
 
-#bank = loaddbfile("bank")
+
 standards = loaddbfile("standards_tree_jmap")
 standards_desc = loaddbfile("standards_text_jmap")
-problem = loaddbfile("problem2")
-problem_meta = loaddbfile("problem_meta2")
-skill = loaddbfile("skill2")
+problem = loaddbfile("problem")
+problem_meta = loaddbfile("problem_meta")
+skill = loaddbfile("skill")
 
-#p = [1003, 1004, 1005, 1006]
-#problem[1003] = ['$(3x)^{2}y^3 \\times \\frac{4}{9}x^3 y^{-1}$\n']
 
 print("running worksheet generator")
-arg = input("Type 'all' to print all, 'add' to add: ")
+arg = input("Type 'all' , 'test', or 'add': ")
 
 if arg == "all":
     p = [problem_id for problem_id in problem.keys()]
-    print_set(make_set(p), 1, 1)
+    title = ("newfile", "ids in margin", "Inventory: Full List of Problems")
+    print_set(p, title, idflag=2)
     print("Done: newfile.tex in out folder.")
+elif arg == "test":
+    print_test()
+    print("Four files newfile*.tex")
 elif arg == "add":
     from add import add_problem
-
-p = [problem_id for problem_id in problem.keys()]
-for id in problem.keys():
-    problem[id] = [problem[id][0].lstrip("\item ")]
-
-savedbfile(problem, "problem2")
-t = make_set(p)
-s = {1000:['\\item $15 text $\n']}
-np = {}
-np[1000] = [s[1000][0].lstrip("\item ")]
-np
-
-problem
+    print("add not implemented")
+else:
+    print("Didn't do anything")
