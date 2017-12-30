@@ -1,12 +1,16 @@
 #runs worksheet maker functions in an interactive session
 # $ python main.py    (from /Users/chris/GitHub/mathai/src directory)
+# For Hydrogen
+%pwd
+%cd src
+
 import sys
 import os
 import csv
 import pickle
 from collections import namedtuple
 from makedoc import makedoc, makeset
-from loadstandards import print_tree, loaddbfile
+from loadstandards import print_tree, loaddbfile, savedbfile
 
 def make_set(problem_ids, pflag=1, sflag=0, wflag=0, numflag=1):
     """ Function to create string of problems in TeX format
@@ -26,7 +30,7 @@ def print_set(set_tuple, idflag=0, numflag=1):
 
         set_tuple (list of problem_ids, list of problems' texts)
         idflag: 1 print problem id (enhance for standards & meta info)
-        #numflag: 1 prefix w "\item", 2 includes "\begin{enumerate}"
+        #numflag: 0 - no problem numbers; 1 prefix w "\item" &includes "\begin{enumerate}"
         output files are in the /out/ directory
         """
     outdir = "/Users/chris/GitHub/mathai/out/"
@@ -40,9 +44,12 @@ def print_set(set_tuple, idflag=0, numflag=1):
             for line in title:
                 newfile.write(line)
         if numflag == 1:
-            newfile.write(r'\begin{enumerate}'+'\n')
+            newfile.write(r'\begin{enumerate}' + '\n')
         for index in range(len(set_tuple[1])):
-            newfile.write(set_tuple[1][index])
+            if numflag == 1:
+                newfile.write(r'\item ' + set_tuple[1][index])
+            else:
+                newfile.write(set_tuple[1][index].rstrip("\n")+r'\\*'+'\n')
             if idflag == 1:
                 problem_id = set_tuple[0][index]
                 s = str(problem_id) + " " + problem_meta[problem_id][0] + " " +\
@@ -64,6 +71,8 @@ problem = loaddbfile("problem2")
 problem_meta = loaddbfile("problem_meta2")
 skill = loaddbfile("skill2")
 
+#p = [1003, 1004, 1005, 1006]
+#problem[1003] = ['$(3x)^{2}y^3 \\times \\frac{4}{9}x^3 y^{-1}$\n']
 
 print("running worksheet generator")
 arg = input("Type 'all' to print all, 'add' to add: ")
@@ -74,3 +83,16 @@ if arg == "all":
     print("Done: newfile.tex in out folder.")
 elif arg == "add":
     from add import add_problem
+
+p = [problem_id for problem_id in problem.keys()]
+for id in problem.keys():
+    problem[id] = [problem[id][0].lstrip("\item ")]
+
+savedbfile(problem, "problem2")
+t = make_set(p)
+s = {1000:['\\item $15 text $\n']}
+np = {}
+np[1000] = [s[1000][0].lstrip("\item ")]
+np
+
+problem

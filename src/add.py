@@ -1,7 +1,10 @@
 #add a new problem
+# For Hydrogen
+#%pwd
+#%cd src
+
 from collections import namedtuple
 from loadstandards import savedbfile, loaddbfile
-
 
 def add_problem(problem_id, p_meta, problem_text):
     """ Appends and saves to pickle files new problem_meta
@@ -33,10 +36,12 @@ problem_id = 1000
 
 indir = "/Users/chris/GitHub/mathai/in/"
 filename = indir + "add.txt"
-with open(filename, "r") as problems:
+with open(filename, "r") as add_file:
     problemlist = []
-    for line in problems:
-        problemlist.append(line)
+    for line in add_file:
+        l = line.lstrip("\\item ")
+        #Careful! This will strip any of these letters, not just the prefix
+        problemlist.append(l)
 
 for problem_text in problemlist:
     n = add_problem(problem_id, p_meta, problem_text)
