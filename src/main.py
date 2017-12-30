@@ -60,9 +60,9 @@ def print_set(set_tuple, idflag=0, numflag=1):
 #bank = loaddbfile("bank")
 standards = loaddbfile("standards_tree_jmap")
 standards_desc = loaddbfile("standards_text_jmap")
-problem = loaddbfile("problem")
-problem_meta = loaddbfile("problem_meta")
-skill = loaddbfile("skill")
+problem = loaddbfile("problem2")
+problem_meta = loaddbfile("problem_meta2")
+skill = loaddbfile("skill2")
 
 
 print("running worksheet generator")
