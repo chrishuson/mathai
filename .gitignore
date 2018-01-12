@@ -8,3 +8,8 @@ src/tmp*.py
 src/__pycache__/*
 */*copy
 src/*copy.py
+
+# MAC OSX
+*/.DS_Store
+.DS_Store
+.DS_Store?
