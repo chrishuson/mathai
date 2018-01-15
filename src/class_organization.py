@@ -1,16 +1,16 @@
 class Worksheet():
-	def __init__(self, some_class, topics, data_source, problem_bank):
+	def __init__(self, some_course, topics, data_source, problem_bank):
 		"""
-		some_class (class instance): details the relevant class to generate worksheets for
+		some_course (class instance): details the relevant course to generate worksheets for
 		topics (dict): {problem_type e.g. logs, vectors, etc. : (number of mc problems of that type, number of word problems of that type)}
 		data_source
 		"""
-		self.some_class = some_class
+		self.some_course = some_course
 		self.topics = topics
 		self.data_source = data_source
 		self.problem_bank = problem_bank
 		self.worksheets = []
-		for student in some_class:
+		for student in some_course:
 			self.worksheets.append(generate_worksheet(student))
 
 	def generate_worksheet(self, student):
@@ -35,7 +35,7 @@ class Worksheet():
 						#word_probs += 0
 
 		return student_worksheet
-					
+
 	def make_pdf(self):
 		for worksheet in self.worksheets:
 			#make pdf of worksheet data
@@ -60,7 +60,7 @@ class Problem():
 
 		return True
 
-class Class():
+class Course():
 	def __init__(self, students):
 		self.student_instances = self.make_student_instances(students)
 		self.students_skills = {}
@@ -88,19 +88,7 @@ class Student():
 
 
 #how to do this
-def post_worksheet_class_update(some_class):
+def post_worksheet_course_update(some_course):
 
 #initial input with skills update
 def initial_problem_bank(data_source):
-
-
-
-
-
-
-
-
-
-
-
-
