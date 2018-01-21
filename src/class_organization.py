@@ -40,8 +40,11 @@ class Worksheet():
 		for worksheet in self.worksheets:
 			#make pdf of worksheet data
 
-#make a dict of problem instances with key being the problem topic and value being the set of all problems that cover that topic
-#Example {'logs': {PROBLEM SET HERE w/ instances of Problem class}, 'vectors': {PROBLEM SET HERE w/ instances of Problem class}}
+#make a dict of problem instances with key being the problem topic and
+#value being the set of all problems that cover that topic
+#Example {'logs': {PROBLEM SET HERE w/ instances of Problem class},
+#'vectors': {PROBLEM SET HERE w/ instances of Problem class}}
+
 
 class Problem():
 	def __init__(self, mc = False, word = False, student, necessary_skills, problem_topic, data_source)
