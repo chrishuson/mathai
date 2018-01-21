@@ -2,7 +2,8 @@ class Worksheet():
 	def __init__(self, some_course, topics, data_source, problem_bank):
 		"""
 		some_course (class instance): details the relevant course to generate worksheets for
-		topics (dict): {problem_type e.g. logs, vectors, etc. : (number of mc problems of that type, number of word problems of that type)}
+		topics (dict): {problem_type e.g. logs, vectors, etc. : (number of mc problems
+		of that type, number of word problems of that type)}
 		data_source
 		"""
 		self.some_course = some_course
@@ -16,8 +17,9 @@ class Worksheet():
 	def generate_worksheet(self, student):
 		student_worksheet = []
 
-		#add a problem to a worksheet if the topics, problem_type, necessary skills of the student, and data_source match up with
-		#the specifications initialized
+		# add a problem to a worksheet if the topics, problem_type,
+		# necessary skills of the student, and data_source match up with
+		# the specifications initialized
 		for topic in topics:
 			mc_probs = 0
 			word_probs = 0
@@ -55,7 +57,7 @@ class Problem():
 		self.problem_topic = problem_topic
 		self.data_source = data_source
 
-	def check_compatability(self):
+	def check_compatibility(self):
 		#check compatability here for specifications above
 		for skill1 in self.necessary_skills:
 			if self.necessary_skills[skill1] < self.student.skillset[skill1] or self.necessary_skills[skill1] > self.student.skillset[skill1] + 1:

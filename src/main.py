@@ -1,6 +1,6 @@
 #runs worksheet maker functions in an interactive session
 # $ python main.py    (from /Users/chris/GitHub/mathai/src directory)
-# For Hydrogen
+# For Hydrogen:
 #%pwd
 #%cd src
 
@@ -12,7 +12,7 @@ from collections import namedtuple
 #from add import add_problem
 
 def savedbfile(dbfile, filename):
-    """Saves persistent record using pickle
+    """ Saves persistent record using pickle
 
         dbfile - to be saved (problem records, standards files)
         filename -  filename.pickle in /Users/chris/GitHub/mathai/db
@@ -23,8 +23,9 @@ def savedbfile(dbfile, filename):
     with open(p, 'wb') as f:
         pickle.dump(dbfile, f, pickle.HIGHEST_PROTOCOL)
 
+
 def loaddbfile(filename):
-    """Retrieves persistent record using Pickle
+    """ Returns persistent record that was saved with pickle
 
         filename -  filename.pickle in /Users/chris/GitHub/mathai/db
          ("bank", "standards_text_jmap", "standards_tree_jmap")
@@ -37,7 +38,7 @@ def loaddbfile(filename):
 
 
 def print_tree(s):
-    """Print out nested list of standardsdir
+    """ Print out nested list of standardsdir
 
         s is a list of 4-tuples, i.e. the standards data structure
         """
@@ -56,6 +57,15 @@ def print_tree(s):
             print("      " + s[i][2] + "  " + s[i][3])
         elif not s[i-1][3] == s[i][3]:
             print("                       " + s[i][3])
+
+
+def print_standards_descriptions(sd):
+    """ Prints the CCSS number and its text description, one per line.
+
+        sd is a dict, {ccss number, text description} from JMAP
+        """
+    for s in sd.keys():
+        print(s + " " + sd[s])
 
 
 def print_set(problem_ids, title, pflag=1, sflag=0, wflag=0, idflag=0, numflag=1):
@@ -102,6 +112,7 @@ def print_set(problem_ids, title, pflag=1, sflag=0, wflag=0, idflag=0, numflag=1
             for line in foot:
                 newfile.write(line)
 
+
 def print_test():
     """ Runs four configurations of print_set, saving four files
         """
@@ -118,15 +129,26 @@ def print_test():
 
 
 standards = loaddbfile("standards_tree_jmap")
+# list of 4-tuples, (course, chapter, topic, ccss number) from JMAP
 standards_desc = loaddbfile("standards_text_jmap")
+# dict of text descriptions of standards, {ccss number, description} from JMAP
 problem = loaddbfile("problem")
+# dict of problems, {id:[problem text, solution text, workspace text]}
 problem_meta = loaddbfile("problem_meta")
+# dict of problem information {id:(topic, standard, calc_type=1, difficulty=3,
+#                                  level=1, source='cjh')
+# calc_type: 0 no calculator allowed, 1 allowed, 2 calc practice
+# difficulty 1-10
+# level 1-6 (webworks reference)
+# source - author, or history of exercise ("cjh")
 skill = loaddbfile("skill")
+# dict of problem ids for each topic, {topic:[id1, id2, ...]}
+
 
 #run only if module is called from command line
 if __name__ == "__main__":
     print("running worksheet generator")
-    arg = input("Type 'all' , 'test', 'tree' or 'add': ")
+    arg = input("Type 'all' , 'test', 'tree', 'desc', or 'add': ")
 
     if arg == "all":
         p = [problem_id for problem_id in problem.keys()]
@@ -138,6 +160,8 @@ if __name__ == "__main__":
         print("Four files newfile*.tex")
     elif arg == "tree":
         print_tree(standards)
+    elif arg == "desc":
+        print_standards_descriptions(standards_desc)
     elif arg == "add":
         from add import add_problem
         print("add not implemented")
