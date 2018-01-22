@@ -66,8 +66,8 @@ class Problem():
 		return True
 
 class Course():
-	def __init__(self, students):
-		self.student_instances = self.make_student_instances(students)
+	def __init__(self, students, skillset):
+		self.student_instances = self.make_student_instances(students, skillset)
 		self.students_skills = {}
 		for student in self.student_instances:
 			self.students_skills[student.name] = student.skillset
@@ -91,6 +91,13 @@ class Student():
 			else:
 				self.skillset[skill] -= 1
 
+# Temporary testing section
+names = ["Elias", "Marcus"]
+skillset = {"Inverse of Functions":3, "Evaluating Expressions":2, \
+			"Evaluating Logarithmic Expressions":5}
+cIB1 = Course(names, skillset)
+for s in cIB1.student_instances:
+	print(s.name, s.skillset["Inverse of Functions"])
 
 #how to do this
 def post_worksheet_course_update(some_course):
