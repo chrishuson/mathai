@@ -67,6 +67,11 @@ class Problem():
 
 class Course():
 	def __init__(self, students, skillset):
+		""" Courses contain students and are used to make worksheet assignments
+
+			students - list of name strings
+			skillset - dict of {topic:integer value}
+			"""
 		self.student_instances = self.make_student_instances(students, skillset)
 		self.students_skills = {}
 		for student in self.student_instances:
@@ -81,6 +86,11 @@ class Course():
 
 class Student():
 	def __init__(self, name, skillset):
+		""" Student definition
+
+			name - single text string
+			skillset - dict of {topic:integer level of ability}
+			"""
 		self.name = name
 		self.skillset = skillset
 
