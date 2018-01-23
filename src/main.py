@@ -9,16 +9,24 @@ import os
 import csv
 import pickle
 from collections import namedtuple
+
+#from class_organization import Problem
 #from add import add_problem
+
+HOME = os.environ["HOME"]
+dbdir = HOME + "/GitHub/mathai/db/"
+outdir = HOME + "/GitHub/mathai/out/"
+
+print(outdir)
 
 def savedbfile(dbfile, filename):
     """ Saves persistent record using pickle
 
         dbfile - to be saved (problem records, standards files)
-        filename -  filename.pickle in /Users/chris/GitHub/mathai/db
+        filename -  filename.pickle in ~/GitHub/mathai/db
          ("bank", "standards_text_jmap", "standards_tree_jmap")
         """
-    dbdir = "/Users/chris/GitHub/mathai/db/"
+    #dbdir = "/Users/chris/GitHub/mathai/db/"
     p = dbdir + filename + '.pickle'
     with open(p, 'wb') as f:
         pickle.dump(dbfile, f, pickle.HIGHEST_PROTOCOL)
@@ -27,11 +35,11 @@ def savedbfile(dbfile, filename):
 def loaddbfile(filename):
     """ Returns persistent record that was saved with pickle
 
-        filename -  filename.pickle in /Users/chris/GitHub/mathai/db
+        filename -  filename.pickle in ~/GitHub/mathai/db
          ("bank", "standards_text_jmap", "standards_tree_jmap")
         (problem records, standards files)
         """
-    dbdir = "/Users/chris/GitHub/mathai/db/"
+    #dbdir = "/Users/chris/GitHub/mathai/db/"
     p = dbdir + filename + '.pickle'
     with open(p, 'rb') as f:
         return pickle.load(f)
@@ -78,8 +86,8 @@ def print_set(problem_ids, title, pflag=1, sflag=0, wflag=0, idflag=0, numflag=1
         #numflag: 0 - no problem numbers; 1 prefix w "\item" &includes "\begin{enumerate}"
         output file is out_filename.tex in the /out/ directory
         """
-    outdir = "/Users/chris/GitHub/mathai/out/"
-    dbdir = "/Users/chris/GitHub/mathai/db/"
+    #outdir = "/Users/chris/GitHub/mathai/out/"
+    #dbdir = "/Users/chris/GitHub/mathai/db/"
     outfile = outdir + title[0] + ".tex"
 
     with open(outfile, "w") as newfile:
