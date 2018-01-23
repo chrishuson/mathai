@@ -1,105 +1,137 @@
+import random
+
 class Worksheet():
-	def __init__(self, some_course, topics, data_source, problem_bank):
+	def __init__(self, student, topics, date):
 		"""
-		some_course (class instance): details the relevant course to generate worksheets for
-		topics (dict): {problem_type e.g. logs, vectors, etc. : (number of mc problems
-		of that type, number of word problems of that type)}
-		data_source
-		"""
-		self.some_course = some_course
+
+			student - Student class instance
+			topics - dict of {topic: number of problems}
+			date - day/month/year
+			"""
+		self.student = student
 		self.topics = topics
-		self.data_source = data_source
-		self.problem_bank = problem_bank
-		self.worksheets = []
-		for student in some_course:
-			self.worksheets.append(generate_worksheet(student))
+		self.date = date
+		self.problem_ids = get_problem_ids()
 
-	def generate_worksheet(self, student):
-		student_worksheet = []
+	def get_problem_ids():
+		#check here that a student's skill level in a topic corresponds to the
+		#appropriate difficulty
+		problem_ids = []
+		for topic in self.topics:
+			for problem_number in range(self.topics[topic]):
+				student_skill = student.skillset[topic]
+				#build up to the hardest question
+				question_difficulty = student_skill - problem_number + 1
+				#make problem_bank global variable to be able to access here
+				problem_ids.append(random.sample(problem_bank[topic][question_difficulty]), 1)
+				#increment the difficulty of the next question
+				question_difficulty += 1
 
-		# add a problem to a worksheet if the topics, problem_type,
-		# necessary skills of the student, and data_source match up with
-		# the specifications initialized
-		for topic in topics:
-			mc_probs = 0
-			word_probs = 0
+		return problem_ids
 
-			while mc_probs <= self.topics[topic][0]:
-				for problem in problem_bank[topic]:
-					#if all specifications are met:
-						#student_worksheet.append(problem)
-						#mc_probs += 0
 
-			while word_probs <= topics[topic][1]:
-				for problem in problem_bank[topic]:
-					#if all specifications are met:
-						#student_worksheet.append(problem)
-						#word_probs += 0
 
-		return student_worksheet
-
-	def make_pdf(self):
-		for worksheet in self.worksheets:
-			#make pdf of worksheet data
-
-#make a dict of problem instances with key being the problem topic and
-#value being the set of all problems that cover that topic
-#Example {'logs': {PROBLEM SET HERE w/ instances of Problem class},
-#'vectors': {PROBLEM SET HERE w/ instances of Problem class}}
 
 
 class Problem():
-	def __init__(self, mc = False, word = False, student, necessary_skills, problem_topic, data_source)
-		self.mc = mc
-		self.word = word
-		self.student = student
-		self.necessary_skills = necessary_skills
-		self.problem_topic = problem_topic
-		self.data_source = data_source
+	def __init__(self, topic, standard, calc_type, difficulty, level, text_inputs, text_flags, source):
+		""" A problem instance contains the followign specific attributes
 
-	def check_compatibility(self):
-		#check compatability here for specifications above
-		for skill1 in self.necessary_skills:
-			if self.necessary_skills[skill1] < self.student.skillset[skill1] or self.necessary_skills[skill1] > self.student.skillset[skill1] + 1:
-				return False
+			topic - string describing problem topic e.g. logarithms
+			standard - 
+			calc_type: 0 no calculator allowed, 1 allowed, 2 calc practice
+			difficulty: 1 - 10
+			level: 1-6 (webworks reference)
+			text_inputs - list of relevant texts for a problem, e.g. problem text, workspace
+						  text, solution text, reference text, etc.
+			text_flags - list of True/False that correspond to the text_inputs and whether or
+						 to in include the relevant input on the worksheet e.g.
+						 text_inputs = [problem_text, solution_text]
+						 text_flags = [True, False] indicates to include the problem_text, but
+						 not the solution_text on the worksheet
+			source - string describing the author, or history of exercise e.g. "cjh"
+			"""
+		self.topic = topic
+		self.standard = standard
+		self.calc_type = calc_type
+		self.difficulty = difficulty
+		self.level = level
+		self.text_inputs = text_inputs
+		self.text_flags = text_flags
+		self.source = source
 
-		return True
+
+#Initially load and update these files using pickle
+def make_worksheet(course_title):
+	#initial attempt at a make worksheet function to organize the various updates and storage
+	#that need to occur
+	for student in courses[course_title]:
+
+
+def initial_problem_bank_creation(problem_list):
+	problem_bank = {}
+	#Make initial problem bank here depending on the format of problem list w/ following
+	#data structure {Topic: {difficulty: {id: instance}}}
+
+	return problem_bank
+
+def add_problem():
+	#add problem here to problem bank in same format
+
+def inital_courses_creation(courses_dict):
+	#courses = {id: course_instance, ...}
+
+def add_course():
+
+def initial_student_creation(students):
+
+def add_student():
 
 class Course():
-	def __init__(self, students, skillset):
+	def __init__(self, title, roster):
 		""" Courses contain students and are used to make worksheet assignments
 
-			students - list of name strings
-			skillset - dict of {topic:integer value}
+			roster - list of name strings
 			"""
-		self.student_instances = self.make_student_instances(students, skillset)
-		self.students_skills = {}
-		for student in self.student_instances:
-			self.students_skills[student.name] = student.skillset
+		self.course_title = title
+		self.roster = {}
+		for student in roster:
+			self.roster[student.name] = student
 
-	def make_student_instances(self, student_names, skillset):
-		student_instances = []
-		for student in student_names:
-			student_instances.append(Student(student, skillset))
+		def update_student_skills(self, update_skills):
+			""" Function to update the students within a course based on improved/worsened abilites
 
-		return student_instances
+				update_skills - dict of {student: {skill: current skill level +/- integer value}}
+				"""
+			for student in update_skills:
+				updated_student = self.roster[student].update_skillset(update_skills[student])
+				self.roster[student] = updated_student
 
 class Student():
-	def __init__(self, name, skillset):
+	def __init__(self, name, skillset = None):
 		""" Student definition
 
 			name - single text string
-			skillset - dict of {topic:integer level of ability}
+			skillset - dict of {topic:integer level of ability}, level of ability from 0 to 10
 			"""
 		self.name = name
-		self.skillset = skillset
+		#still need to specify what default skillset would be
+		default_skillset = {}
 
-	def update_student_skills(self, skills, correct = True):
-		for skill in skills:
-			if correct:
-				self.skillset[skill] += 1
-			else:
-				self.skillset[skill] -= 1
+		#make sure a skillset has been specified, or make it the default if not
+		if skillset == None:
+			self.skillset = default_skillset
+		else:
+			self.skillset = skillset
+
+	def update_skillset(self, update_skills):
+		""" Function to update the student's skills
+
+			update_skills - dict of {skill: current skill level +/- integer value}
+			"""
+		for skill in update_skills:
+			self.skillset[skill] += update_skills[skill]
+
 
 # Temporary testing section
 names = ["Elias", "Marcus"]
@@ -108,9 +140,3 @@ skillset = {"Inverse of Functions":3, "Evaluating Expressions":2, \
 cIB1 = Course(names, skillset)
 for s in cIB1.student_instances:
 	print(s.name, s.skillset["Inverse of Functions"])
-
-#how to do this
-def post_worksheet_course_update(some_course):
-
-#initial input with skills update
-def initial_problem_bank(data_source):
