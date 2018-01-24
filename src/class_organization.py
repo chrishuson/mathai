@@ -34,21 +34,18 @@ class Worksheet():
 
 
 class Problem():
-	def __init__(self, topic, standard, calc_type, difficulty, level, text_inputs, text_flags, source):
+	def __init__(self, topic, texts, standard = None, calc_type = 1, \
+					difficulty = 3, level = 2, source = None):
 		""" A problem instance contains the followign specific attributes
 
 			topic - string describing problem topic e.g. logarithms
-			standard - 
+			texts - dict of relevant texts for a problem, keys: question,
+				resource (graphs and images), workspace, answer, solution, rubric
+			standard - ccss number, looked up if not an argument
 			calc_type: 0 no calculator allowed, 1 allowed, 2 calc practice
-			difficulty: 1 - 10
-			level: 1-6 (webworks reference)
-			text_inputs - list of relevant texts for a problem, e.g. problem text, workspace
-						  text, solution text, reference text, etc.
-			text_flags - list of True/False that correspond to the text_inputs and whether or
-						 to in include the relevant input on the worksheet e.g.
-						 text_inputs = [problem_text, solution_text]
-						 text_flags = [True, False] indicates to include the problem_text, but
-						 not the solution_text on the worksheet
+			difficulty: 1 - 10 (how hard it is)
+			level: 1-6 (webworks /wiki/Problem_Levels) 2 simple steps,
+					3 more complex algorithms, 5 word problems
 			source - string describing the author, or history of exercise e.g. "cjh"
 			"""
 		self.topic = topic
@@ -56,19 +53,40 @@ class Problem():
 		self.calc_type = calc_type
 		self.difficulty = difficulty
 		self.level = level
-		self.text_inputs = text_inputs
-		self.text_flags = text_flags
+		self.texts = texts
 		self.source = source
+
+	def format(self, text_flags):
+		""" Returns the LaTeX to be included in a .tex file for printing
+
+			text_flags - list of True/False that correspond to the text_inputs and whether or
+						 to in include the relevant input on the worksheet e.g.
+						 text_inputs = [problem_text, solution_text]
+						 text_flags = [True, False] indicates to include the problem_text, but
+						 not the solution_text on the worksheet
+			"""
+		problem_string = ""
+		if True:
+			problem_string += self.texts["question"]
+		return problem_string
+
 
 
 #Initially load and update these files using pickle
 def make_worksheet(course_title):
 	#initial attempt at a make worksheet function to organize the various updates and storage
 	#that need to occur
+	worksheet_list = []
+	# Would the result be a list of worksheet instances, one for each student?
 	for student in courses[course_title]:
-
+		ps = Worksheet(student, topics, date)
+		worksheet_list.append(ps)
+	return worksheet
 
 def initial_problem_bank_creation(problem_list):
+	""" Doc string
+
+		"""
 	problem_bank = {}
 	#Make initial problem bank here depending on the format of problem list w/ following
 	#data structure {Topic: {difficulty: {id: instance}}}
@@ -77,26 +95,36 @@ def initial_problem_bank_creation(problem_list):
 
 def add_problem():
 	#add problem here to problem bank in same format
+	return_object = [] # This is a dummy line so python doesn't complain on import
 
 def inital_courses_creation(courses_dict):
 	#courses = {id: course_instance, ...}
+	return_object = []
 
 def add_course():
+	return_object = []
 
 def initial_student_creation(students):
+	return_object = []
 
 def add_student():
+	return_object = []
 
 class Course():
 	def __init__(self, title, roster):
 		""" Courses contain students and are used to make worksheet assignments
 
-			roster - list of name strings
+			roster - list of student name strings
+			Might we want to add an optional arg default_skillset = None ?
 			"""
 		self.course_title = title
 		self.roster = {}
-		for student in roster:
-			self.roster[student.name] = student
+		for student in roster: # Perhaps we should use "name" instead of "student" in these two lines
+			self.roster[student] = Student(student)
+			#self.roster[student.name] = student
+			# I took out the .name attribute call. student here is the text name from roster
+			# Might be confusing that we init with a roster = list, but return self.roster is a dict
+			# Is self.roster a dict of {text name: student instance}, or a set of student instances?
 
 		def update_student_skills(self, update_skills):
 			""" Function to update the students within a course based on improved/worsened abilites
@@ -106,6 +134,17 @@ class Course():
 			for student in update_skills:
 				updated_student = self.roster[student].update_skillset(update_skills[student])
 				self.roster[student] = updated_student
+
+		def print_roster(self, skills_flag = 0):
+			""" Prints out the student names in a class, optionally with topic skill levels
+
+				"""
+			for student in self.roster:
+				print(self.roster[student].name)
+				print(skills_flag)
+				if skills_flag:
+					for topic in self.roster[student].skillset:
+						print(topic, self.roster[student].skillset[topic])
 
 class Student():
 	def __init__(self, name, skillset = None):
@@ -131,12 +170,3 @@ class Student():
 			"""
 		for skill in update_skills:
 			self.skillset[skill] += update_skills[skill]
-
-
-# Temporary testing section
-names = ["Elias", "Marcus"]
-skillset = {"Inverse of Functions":3, "Evaluating Expressions":2, \
-			"Evaluating Logarithmic Expressions":5}
-cIB1 = Course(names, skillset)
-for s in cIB1.student_instances:
-	print(s.name, s.skillset["Inverse of Functions"])
