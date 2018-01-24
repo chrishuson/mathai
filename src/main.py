@@ -2,7 +2,7 @@
 # $ python main.py    (from /Users/chris/GitHub/mathai/src directory)
 # For Hydrogen:
 #%pwd
-#%cd src
+%cd src
 
 import sys
 import os
@@ -10,14 +10,14 @@ import csv
 import pickle
 from collections import namedtuple
 
-#from class_organization import Problem
+from class_organization import ProblemSet, Problem, Course, Student
 #from add import add_problem
 
 HOME = os.environ["HOME"]
 dbdir = HOME + "/GitHub/mathai/db/"
 outdir = HOME + "/GitHub/mathai/out/"
+indir = HOME + "/GitHub/mathai/in/"
 
-print(outdir)
 
 def savedbfile(dbfile, filename):
     """ Saves persistent record using pickle
