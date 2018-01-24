@@ -1,6 +1,4 @@
-import random
-
-class Worksheet():
+class ProblemSet():
 	def __init__(self, student, topics, date):
 		"""
 
@@ -28,8 +26,6 @@ class Worksheet():
 				question_difficulty += 1
 
 		return problem_ids
-
-
 
 
 
@@ -76,39 +72,50 @@ class Problem():
 def make_worksheet(course_title):
 	#initial attempt at a make worksheet function to organize the various updates and storage
 	#that need to occur
-	worksheet_list = []
+	problem_set_list = []
 	# Would the result be a list of worksheet instances, one for each student?
 	for student in courses[course_title]:
-		ps = Worksheet(student, topics, date)
-		worksheet_list.append(ps)
-	return worksheet
+		ps = ProblemSet(student, topics, date)
+		problem_set_list.append(ps)
+	return problem_set_list
 
-def initial_problem_bank_creation(problem_list):
-	""" Doc string
 
-		"""
-	problem_bank = {}
-	#Make initial problem bank here depending on the format of problem list w/ following
-	#data structure {Topic: {difficulty: {id: instance}}}
+#THESE INITIAL GLOBAL CREATIONS DEPEND ON HOW THE DATA IS ORGANIZED FOR INPUT
 
-	return problem_bank
+#GLOBAL CREATION OF STUDENTS DICTIONARY {FULL STUDENT NAME: STUDENT INSTANCE}
+global_students_dict = {}
+for student_name in student_data_list:
+	add_student(student_name)
+
+#ADDS STUDENT TO GLOBAL STUDENTS DICTIONARY IN APPROPRIATE FORM
+def add_student(student_name):
+	first_name = ''
+	for letter in range(len(student_name)):
+		if student_name[letter] == ' ':
+			last_name = student_name[letter + 1:]
+			break
+		first_name += student_name[letter]
+	global_students_dict[student] = Student(first_name, last_name)
+
+
+#GLOBAL CREATION OF COURSES DICTIONARY {COURSE TITLE: COURSE INSTANCE}
+global_courses_dict = {}
+for course_title in courses_data_dict:
+	add_course(course_title, courses_data_dict[course])
+
+#ADDS COURSE TO GLOBAL COURSES DICTIONARY IN APPROPRIATE FORM
+def add_course(title, names):
+	global_courses_dict[title] = Course(title, names)
+
+
+#GLOBAL CREATION OF PROBLEM BANK DICTIONARY {TOPIC: {DIFFICULTY: {ID: INSTANCE}}}
+
+global_problem_dict = {}
+#for problem in x:
 
 def add_problem():
-	#add problem here to problem bank in same format
-	return_object = [] # This is a dummy line so python doesn't complain on import
-
-def inital_courses_creation(courses_dict):
-	#courses = {id: course_instance, ...}
-	return_object = []
-
-def add_course():
-	return_object = []
-
-def initial_student_creation(students):
-	return_object = []
-
-def add_student():
-	return_object = []
+	#SOMETHING HERE
+	return
 
 class Course():
 	def __init__(self, title, names):
@@ -130,8 +137,7 @@ class Course():
 				update_skills - dict of {student: {skill: current skill level +/- integer value}}
 				"""
 			for student in update_skills:
-				updated_student = self.roster[student].update_skillset(update_skills[student])
-				self.roster[student] = updated_student
+				self.roster[student].update_skillset(update_skills[student])
 
 		def print_roster(self, skills_flag = 0):
 			""" Prints out the student names in a class, optionally with topic skill levels
@@ -145,13 +151,16 @@ class Course():
 						print(topic, self.roster[student].skillset[topic])
 
 class Student():
-	def __init__(self, name, skillset = None):
+	def __init__(self, first_name, last_name, problem_set_history = [], course_history = [], skillset = None):
 		""" Student definition
 
 			name - single text string
 			skillset - dict of {topic:integer level of ability}, level of ability from 0 to 10
 			"""
-		self.name = name
+		self.first_name = first_name
+		self.last_name = last_name
+		self.problem_set_history = []
+		self.course_history = []
 		#still need to specify what default skillset would be
 		default_skillset = {}
 
