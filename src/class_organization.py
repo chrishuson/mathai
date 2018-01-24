@@ -32,7 +32,7 @@ class ProblemSet():
 class Problem():
 	def __init__(self, topic, texts, standard = None, calc_type = 1, \
 					difficulty = 3, level = 2, source = None):
-		""" A problem instance contains the followign specific attributes
+		""" A problem instance contains the following specific attributes
 
 			topic - string describing problem topic e.g. logarithms
 			texts - dict of relevant texts for a problem, keys: question,
@@ -84,6 +84,7 @@ def make_worksheet(course_title):
 
 #GLOBAL CREATION OF STUDENTS DICTIONARY {FULL STUDENT NAME: STUDENT INSTANCE}
 global_students_dict = {}
+student_data_list = {} #temporary line so classes will load
 for student_name in student_data_list:
 	add_student(student_name)
 
@@ -100,6 +101,7 @@ def add_student(student_name):
 
 #GLOBAL CREATION OF COURSES DICTIONARY {COURSE TITLE: COURSE INSTANCE}
 global_courses_dict = {}
+courses_data_dict = {} #temporary line so classes will load
 for course_title in courses_data_dict:
 	add_course(course_title, courses_data_dict[course])
 
