@@ -45,7 +45,7 @@ class Problem():
 			calc_type: 0 no calculator allowed, 1 allowed, 2 calc practice
 			difficulty: 1 - 10 (how hard it is)
 			level: 1-6 (webworks /wiki/Problem_Levels) 2 simple steps,
-					3 more complex algorithms, 5 word problems
+					3 more complex algorithms, 5 word problems, 6 writing prompts
 			source - string describing the author, or history of exercise e.g. "cjh"
 			"""
 		self.topic = topic
@@ -111,20 +111,18 @@ def add_student():
 	return_object = []
 
 class Course():
-	def __init__(self, title, roster):
+	def __init__(self, title, names):
 		""" Courses contain students and are used to make worksheet assignments
 
-			roster - list of student name strings
+			names - list of student name strings
 			Might we want to add an optional arg default_skillset = None ?
 			"""
 		self.course_title = title
 		self.roster = {}
-		for student in roster: # Perhaps we should use "name" instead of "student" in these two lines
-			self.roster[student] = Student(student)
-			#self.roster[student.name] = student
-			# I took out the .name attribute call. student here is the text name from roster
+		for name in names: # Perhaps we should use "name" instead of "student" in these two lines
+			self.roster[name] = Student(name)
 			# Might be confusing that we init with a roster = list, but return self.roster is a dict
-			# Is self.roster a dict of {text name: student instance}, or a set of student instances?
+			# Is self.roster a dict of {text name: student instance}
 
 		def update_student_skills(self, update_skills):
 			""" Function to update the students within a course based on improved/worsened abilites
