@@ -1,19 +1,101 @@
-class ProblemSet():
-	def __init__(self, student, topics, date):
-		"""
+#THESE INITIAL GLOBAL CREATIONS DEPEND ON HOW THE DATA IS ORGANIZED FOR INPUT
 
-			student - Student class instance
+#GLOBAL CREATION OF STUDENTS DICTIONARY {FULL STUDENT NAME: STUDENT INSTANCE}
+global_students_dict = {}
+for student_name in student_data_list:
+	add_student(student_name)
+
+#ADDS STUDENT TO GLOBAL STUDENTS DICTIONARY IN APPROPRIATE FORM
+def add_student(student_name):
+	first_and_last_name = student_name.split(' ')
+	global_students_dict[(first_and_last_name[1], first_and_last_name[0])] = \
+	Student(first_and_last_name[1], first_and_last_name[0])
+
+
+#GLOBAL CREATION OF COURSES DICTIONARY {COURSE TITLE: COURSE INSTANCE}
+global_courses_dict = {}
+for course_title in courses_data_dict:
+	add_course(course_title, courses_data_dict[course])
+
+#ADDS COURSE TO GLOBAL COURSES DICTIONARY IN APPROPRIATE FORM
+def add_course(title, names):
+	global_courses_dict[title] = Course(title, names)
+
+
+#GLOBAL CREATION OF PROBLEM BANK DICTIONARY {TOPIC: {DIFFICULTY: {ID: INSTANCE}}}
+
+global_problem_dict = {}
+for problem in problem_data_dict:
+	add_problem()
+
+def add_problem():
+	#SOMETHING HERE
+	return
+
+class ProblemSet():
+	def __init__(self, topics, date, course_title, average_class_skills = {}):
+		"""
 			topics - dict of {topic: number of problems}
 			date - day/month/year
+			course_title - title of the course as str, e.g. 'Algebra 2'
+			average_class_skills - set default dict to become a dict of
+			{topic: average skill level for student in the respective course}
+			in this __init__ method
+
 			"""
-		self.student = student
 		self.topics = topics
 		self.date = date
-		self.problem_ids = get_problem_ids()
+		self.course_title = course_title
+		self.problem_ids = {'general': self.general_problem_ids(students)}
+		self.average_class_skills = average_class_skills
+		for topic in self.topics:
+			#initialize both topic_score and student_count at 0
+			topic_score = 0
+			student_count = 0
+			#access each student's Student class instance from the course's roster
+			#to add their topic skill level to the topic_score
+			for student_name in global_courses_dict[self.course_title].roster:
+				topic_score += global_courses_dict[self.course_title].roster[student_name].skillset[topic]
+				student_count += 1
+			self.average_class_skills[topic] = round(topic_score/student_count)
 
-	def get_problem_ids():
-		#check here that a student's skill level in a topic corresponds to the
-		#appropriate difficulty
+	def general_problem_ids(self):
+		"""
+		Based on the average skill level of the class for each topic, generate a list of
+		problem_ids for this 'general' problem set
+
+			"""
+		problem_ids = []
+		for topic in self.topics:
+			students_skill = self.average_class_skills[topic]
+			for problem_number in range(self.topics[topic]):
+				problem_ids.append(random.sample(global_problem_dict[topic][students_skill]), 1)
+
+		return problem_ids
+
+class DifferentiatedProblemSet(ProblemSet):
+	def __init__(self, topics, date, course_title, average_class_skills, student_names):
+		"""
+			Inherited Attributes from ProblemSet class
+				topics - dict of {topic: number of problems}
+				date - day/month/year
+				course_title - title of the course as str, e.g. 'Algebra 2'
+				average_class_skills - dict of {topic: average skill level
+				for student in the respective course}
+
+			student_names - list of student name tuples, (last, first)
+			"""
+			ProblemSet.__init__(self, topics, date, course_title, average_class_skills)
+			self.problem_ids = {'general': [self.general_problem_ids()]}
+			self.student_names = student_names
+
+			#generate differentiated problems for the students specified
+			for student_name in self.student_names:
+				self.problem_ids[student_name] = [self.specific_problem_ids(student_name)]
+
+	def specific_problem_ids(self, student_name):
+		#access student instance of student names to base problem selections off student skillset
+		student = global_students_dict[student_name]
 		problem_ids = []
 		for topic in self.topics:
 			for problem_number in range(self.topics[topic]):
@@ -21,13 +103,17 @@ class ProblemSet():
 				#build up to the hardest question
 				question_difficulty = student_skill - problem_number + 1
 				#make problem_bank global variable to be able to access here
-				problem_ids.append(random.sample(problem_bank[topic][question_difficulty]), 1)
+				problem_ids.append(random.sample(global_problem_dict[topic][question_difficulty]), 1)
 				#increment the difficulty of the next question
 				question_difficulty += 1
 
 		return problem_ids
 
-
+def make_problem_set(course_title, topics, date, differentiated = False, specific_student_names = []):
+	#create an instance of the appropriate class depending on user specifications
+	if differentiated:
+		return DifferentiatedProblemSet(topics, date, course_title, {}, specific_student_names)
+	return ProblemSet(topics, date, course_title)
 
 class Problem():
 	def __init__(self, topic, texts, standard = None, calc_type = 1, \
@@ -66,59 +152,6 @@ class Problem():
 			problem_string += self.texts["question"]
 		return problem_string
 
-
-
-#Initially load and update these files using pickle
-def make_worksheet(course_title):
-	#initial attempt at a make worksheet function to organize the various updates and storage
-	#that need to occur
-	problem_set_list = []
-	# Would the result be a list of worksheet instances, one for each student?
-	for student in courses[course_title]:
-		ps = ProblemSet(student, topics, date)
-		problem_set_list.append(ps)
-	return problem_set_list
-
-
-#THESE INITIAL GLOBAL CREATIONS DEPEND ON HOW THE DATA IS ORGANIZED FOR INPUT
-
-#GLOBAL CREATION OF STUDENTS DICTIONARY {FULL STUDENT NAME: STUDENT INSTANCE}
-global_students_dict = {}
-student_data_list = {} #temporary line so classes will load
-for student_name in student_data_list:
-	add_student(student_name)
-
-#ADDS STUDENT TO GLOBAL STUDENTS DICTIONARY IN APPROPRIATE FORM
-def add_student(student_name):
-	first_name = ''
-	for letter in range(len(student_name)):
-		if student_name[letter] == ' ':
-			last_name = student_name[letter + 1:]
-			break
-		first_name += student_name[letter]
-	global_students_dict[student] = Student(first_name, last_name)
-
-
-#GLOBAL CREATION OF COURSES DICTIONARY {COURSE TITLE: COURSE INSTANCE}
-global_courses_dict = {}
-courses_data_dict = {} #temporary line so classes will load
-for course_title in courses_data_dict:
-	add_course(course_title, courses_data_dict[course])
-
-#ADDS COURSE TO GLOBAL COURSES DICTIONARY IN APPROPRIATE FORM
-def add_course(title, names):
-	global_courses_dict[title] = Course(title, names)
-
-
-#GLOBAL CREATION OF PROBLEM BANK DICTIONARY {TOPIC: {DIFFICULTY: {ID: INSTANCE}}}
-
-global_problem_dict = {}
-#for problem in x:
-
-def add_problem():
-	#SOMETHING HERE
-	return
-
 class Course():
 	def __init__(self, title, names):
 		""" Courses contain students and are used to make worksheet assignments
@@ -129,24 +162,27 @@ class Course():
 		self.course_title = title
 		self.roster = {}
 		for name in names: # Perhaps we should use "name" instead of "student" in these two lines
-			self.roster[name] = Student(name)
+			first_and_last_name = name.split(' ')
+			self.roster[(first_and_last_name[1], first_and_last_name[0])] = \
+			Student(first_and_last_name[1], first_and_last_name[0])
 			# Might be confusing that we init with a roster = list, but return self.roster is a dict
 			# Is self.roster a dict of {text name: student instance}
 
 		def update_student_skills(self, update_skills):
 			""" Function to update the students within a course based on improved/worsened abilites
 
-				update_skills - dict of {student: {skill: current skill level +/- integer value}}
+				update_skills - dict of {(student last name, student first name):
+				{skill: current skill level +/- integer value}}
 				"""
-			for student in update_skills:
-				self.roster[student].update_skillset(update_skills[student])
+			for student_name in update_skills:
+				self.roster[student_name].update_skillset(update_skills[student_name])
 
 		def print_roster(self, skills_flag = 0):
 			""" Prints out the student names in a class, optionally with topic skill levels
 
 				"""
-			for student in self.roster:
-				print(self.roster[student].name)
+			for student_name in self.roster:
+				print((self.roster[student_name].last_name, self.roster[student_name].first_name))
 				print(skills_flag)
 				if skills_flag:
 					for topic in self.roster[student].skillset:
@@ -156,7 +192,10 @@ class Student():
 	def __init__(self, first_name, last_name, problem_set_history = [], course_history = [], skillset = None):
 		""" Student definition
 
-			name - single text string
+			first_name - single text string
+			last_name - single text string
+			problem_set_history -
+			course_history -
 			skillset - dict of {topic:integer level of ability}, level of ability from 0 to 10
 			"""
 		self.first_name = first_name
