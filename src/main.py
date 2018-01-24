@@ -13,6 +13,7 @@ from collections import namedtuple
 from class_organization import ProblemSet, Problem, Course, Student
 #from add import add_problem
 
+
 HOME = os.environ["HOME"]
 dbdir = HOME + "/GitHub/mathai/db/"
 outdir = HOME + "/GitHub/mathai/out/"
@@ -151,6 +152,27 @@ problem_meta = loaddbfile("problem_meta")
 # source - author, or history of exercise ("cjh")
 skill = loaddbfile("skill")
 # dict of problem ids for each topic, {topic:[id1, id2, ...]}
+
+# == temp test lines ==
+question = "What is the equation of a line parallel to $y=-3x+6$ with a $y$-intercept of 5?"
+texts = {"question":question}
+topic = "Writing Linear Equations"
+
+p1 = Problem(topic, texts)
+
+print(p1.format(1))
+print(p1.texts["question"])
+# == END temp test lines ==
+
+title = ("1214IB1_Test-exponentials.tex", "ids in margin", \
+         "Parsed from file: in/1214IB1_Test-exponentials.tex")
+infile = indir + title + ".tex"
+
+with open(infile, "r") as texfile:
+    for line in texfile:
+
+
+
 
 
 #run only if module is called from command line
