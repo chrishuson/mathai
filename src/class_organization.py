@@ -1,3 +1,6 @@
+import time
+import random
+
 #THESE INITIAL GLOBAL CREATIONS DEPEND ON HOW THE DATA IS ORGANIZED FOR INPUT
 
 #GLOBAL CREATION OF STUDENTS DICTIONARY {FULL STUDENT NAME: STUDENT INSTANCE}
@@ -15,11 +18,12 @@ def add_student(student_name):
 #GLOBAL CREATION OF COURSES DICTIONARY {COURSE TITLE: COURSE INSTANCE}
 global_courses_dict = {}
 for course_title in courses_data_dict:
-	add_course(course_title, courses_data_dict[course])
+	student = {student: global_students_dict[student] for student in courses_data_dict[course]}
+	add_course(course_title, students)
 
 #ADDS COURSE TO GLOBAL COURSES DICTIONARY IN APPROPRIATE FORM
-def add_course(title, names):
-	global_courses_dict[title] = Course(title, names)
+def add_course(title, students):
+	global_courses_dict[title] = Course(title, students)
 
 
 #GLOBAL CREATION OF PROBLEM BANK DICTIONARY {TOPIC: {DIFFICULTY: {ID: INSTANCE}}}
@@ -33,7 +37,7 @@ def add_problem():
 	return
 
 class ProblemSet():
-	def __init__(self, topics, date, course_title, average_class_skills = {}):
+	def __init__(self, topics, date, course_title, average_class_skills = {}, assessment = "incomplete"):
 		"""
 			topics - dict of {topic: number of problems}
 			date - day/month/year
@@ -59,7 +63,7 @@ class ProblemSet():
 				student_count += 1
 			self.average_class_skills[topic] = round(topic_score/student_count)
 
-	def general_problem_ids(self):
+	def general_problem_ids(self, differentiated_students = []):
 		"""
 		Based on the average skill level of the class for each topic, generate a list of
 		problem_ids for this 'general' problem set
@@ -70,6 +74,14 @@ class ProblemSet():
 			students_skill = self.average_class_skills[topic]
 			for problem_number in range(self.topics[topic]):
 				problem_ids.append(random.sample(global_problem_dict[topic][students_skill]), 1)
+
+		#add assessment to student instance's problem set history w/ the appropriate date
+		current_date = time.strftime("%d/%m/%Y")
+		for student in global_courses_dict[self.course_title]:
+			if student not in differentiated_students:
+				global_students_dict[student].problem_set_history[current_date] = \
+				(Assessment(problem_ids))
+
 
 		return problem_ids
 
@@ -86,7 +98,7 @@ class DifferentiatedProblemSet(ProblemSet):
 			student_names - list of student name tuples, (last, first)
 			"""
 			ProblemSet.__init__(self, topics, date, course_title, average_class_skills)
-			self.problem_ids = {'general': [self.general_problem_ids()]}
+			self.problem_ids = {'general': [self.general_problem_ids([name for name in student_names])]}
 			self.student_names = student_names
 
 			#generate differentiated problems for the students specified
@@ -107,6 +119,11 @@ class DifferentiatedProblemSet(ProblemSet):
 				#increment the difficulty of the next question
 				question_difficulty += 1
 
+		#add assessment to student instance's problem set history w/ the appropriate date
+		current_date = time.strftime("%d/%m/%Y")
+		global_students_dict[student_name].problem_set_history[current_date] = \
+				(Assessment(problem_ids))		
+
 		return problem_ids
 
 def make_problem_set(course_title, topics, date, differentiated = False, specific_student_names = []):
@@ -114,6 +131,23 @@ def make_problem_set(course_title, topics, date, differentiated = False, specifi
 	if differentiated:
 		return DifferentiatedProblemSet(topics, date, course_title, {}, specific_student_names)
 	return ProblemSet(topics, date, course_title)
+
+
+class Assessment():
+	def __init__(self, problem_ids, assessment_status = "incomplete"):
+		""" An Assessent instance contains the following specific attributes
+
+			assessment_status - either str describing incomplete/complete status or dict
+								possibly indicating student score for specific problems
+	
+			"""
+		self.problem_ids = problem_ids
+		self.assessment_status = assessment_status
+
+	#FIGURE OUT HOW TO DO THIS
+	def update_assessment(self):
+		return
+
 
 class Problem():
 	def __init__(self, topic, texts, standard = None, calc_type = 1, \
@@ -153,20 +187,14 @@ class Problem():
 		return problem_string
 
 class Course():
-	def __init__(self, title, names):
+	def __init__(self, title, students):
 		""" Courses contain students and are used to make worksheet assignments
 
-			names - list of student name strings
-			Might we want to add an optional arg default_skillset = None ?
+			title - str description of course title
+			students - dict of {(last name, first name): Student instance}
 			"""
 		self.course_title = title
-		self.roster = {}
-		for name in names: # Perhaps we should use "name" instead of "student" in these two lines
-			first_and_last_name = name.split(' ')
-			self.roster[(first_and_last_name[1], first_and_last_name[0])] = \
-			Student(first_and_last_name[1], first_and_last_name[0])
-			# Might be confusing that we init with a roster = list, but return self.roster is a dict
-			# Is self.roster a dict of {text name: student instance}
+		self.roster = students
 
 		def update_student_skills(self, update_skills):
 			""" Function to update the students within a course based on improved/worsened abilites
@@ -189,19 +217,18 @@ class Course():
 						print(topic, self.roster[student].skillset[topic])
 
 class Student():
-	def __init__(self, first_name, last_name, problem_set_history = [], course_history = [], skillset = None):
+	def __init__(self, first_name, last_name, problem_set_history = {}, skillset = None):
 		""" Student definition
 
 			first_name - single text string
 			last_name - single text string
-			problem_set_history -
-			course_history -
+			problem_set_history - dict of {date: Assessment instance w/ problem_ids and
+			assessment_status as attributes}
 			skillset - dict of {topic:integer level of ability}, level of ability from 0 to 10
 			"""
 		self.first_name = first_name
 		self.last_name = last_name
 		self.problem_set_history = []
-		self.course_history = []
 		#still need to specify what default skillset would be
 		default_skillset = {}
 
