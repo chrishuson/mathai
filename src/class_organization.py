@@ -17,7 +17,7 @@ def add_student(student_name):
 #GLOBAL CREATION OF COURSES DICTIONARY {COURSE TITLE: COURSE INSTANCE}
 global_courses_dict = {}
 for course_title in courses_data_dict:
-	student = {student: global_students_dict[student] for student in courses_data_dict[course]}
+	students = {student:global_students_dict[student] for student in courses_data_dict[course]}
 	add_course(course_title, students)
 
 #ADDS COURSE TO GLOBAL COURSES DICTIONARY IN APPROPRIATE FORM
@@ -26,7 +26,6 @@ def add_course(title, students):
 
 
 #GLOBAL CREATION OF PROBLEM BANK DICTIONARY {TOPIC: {DIFFICULTY: {ID: INSTANCE}}}
-
 global_problem_dict = {}
 for problem in problem_data_dict:
 	add_problem()
@@ -95,15 +94,10 @@ class DifferentiatedProblemSet(ProblemSet):
 
 			student_names - list of student name tuples, (last, first)
 			"""
-<<<<<<< HEAD
-		ProblemSet.__init__(self, topics, date, course_title, average_class_skills)
-		self.problem_ids = {'general': [self.general_problem_ids()]}
-		self.student_names = student_names
-=======
 			ProblemSet.__init__(self, topics, date, course_title, average_class_skills)
-			self.problem_ids = {'general': [self.general_problem_ids([name for name in student_names])]}
+			self.problem_ids = {'general': self.general_problem_ids([name for name in student_names])}
+			# problem_ids IS DICT {STUDENT TUPLE: [PROBLEM IDs]}
 			self.student_names = student_names
->>>>>>> 64f1b9840211d3a37f5d703fcf75e59621d72405
 
 		#generate differentiated problems for the students specified
 		for student_name in self.student_names:
@@ -119,14 +113,14 @@ class DifferentiatedProblemSet(ProblemSet):
 				#build up to the hardest question
 				question_difficulty = student_skill - problem_number + 1
 				#make problem_bank global variable to be able to access here
-				problem_ids.append(random.sample(global_problem_dict[topic][question_difficulty]), 1)
+				problem_ids.extend(random.sample(global_problem_dict[topic][question_difficulty], 1))
 				#increment the difficulty of the next question
 				question_difficulty += 1
 
 		#add assessment to student instance's problem set history w/ the appropriate date
 		current_date = time.strftime("%d/%m/%Y")
 		global_students_dict[student_name].problem_set_history[current_date] = \
-				(Assessment(problem_ids))		
+				(Assessment(problem_ids))
 
 		return problem_ids
 
@@ -143,7 +137,7 @@ class Assessment():
 
 			assessment_status - either str describing incomplete/complete status or dict
 								possibly indicating student score for specific problems
-	
+
 			"""
 		self.problem_ids = problem_ids
 		self.assessment_status = assessment_status
@@ -199,17 +193,7 @@ class Course():
 			students - dict of {(last name, first name): Student instance}
 			"""
 		self.course_title = title
-<<<<<<< HEAD
-		self.roster = {}
-		for name in names:
-			first_and_last_name = name.split(' ')
-			self.roster[(first_and_last_name[1], first_and_last_name[0])] = \
-			Student(first_and_last_name[1], first_and_last_name[0])
-			# Might be confusing that we init with a roster = list, but return self.roster is a dict
-			# Is self.roster a dict of {text name: student instance}
-=======
 		self.roster = students
->>>>>>> 64f1b9840211d3a37f5d703fcf75e59621d72405
 
 		def update_student_skills(self, update_skills):
 			""" Function to update the students within a course based on improved/worsened abilites
@@ -243,7 +227,7 @@ class Student():
 			"""
 		self.first_name = first_name
 		self.last_name = last_name
-		self.problem_set_history = []
+		self.problem_set_history = problem_set_history
 		#still need to specify what default skillset would be
 		default_skillset = {}
 

@@ -13,7 +13,6 @@ from collections import namedtuple
 from class_organization import ProblemSet, Problem, Course, Student
 #from add import add_problem
 
-
 HOME = os.environ["HOME"]
 dbdir = HOME + "/GitHub/mathai/db/"
 outdir = HOME + "/GitHub/mathai/out/"
@@ -163,26 +162,57 @@ p1 = Problem(topic, texts)
 print(p1.format(1))
 print(p1.texts["question"])
 # == END temp test lines ==
+def parse_tex_into_problemset():
+    title = ("1214IB1_Test-exponentials", "ids in margin", \
+             "Parsed from file: in/1214IB1_Test-exponentials.tex")
+    infile = indir + title[0] + ".tex"
 
-title = ("1214IB1_Test-exponentials", "ids in margin", \
-         "Parsed from file: in/1214IB1_Test-exponentials.tex")
-infile = indir + title[0] + ".tex"
+    default_topic = "Writing Linear Equations"
+    topic = default_topic
+    with open(infile, "r") as texfile:
+        for line in texfile:
+            if line[:6] == "\\item ":
+                problem_text = line[6:]
+                p = Problem(topic, {"question":problem_text})
 
-default_topic = "Writing Linear Equations"
-topic = default_topic
-with open(infile, "r") as texfile:
-    for line in texfile:
-        if line[:6] == "\\item ":
-            problem_text = line[6:]
-            p = Problem(topic, {"question":problem_text})
-            
-        elif line[:5] == "\\subs":
-            topic = line[10:-2]
-            print(topic)
+            elif line[:5] == "\\subs":
+                topic = line[10:-2]
+                print(topic)
 
-line = "\item $5\%$ interest per annum, \$10,000 principal, one year"
-line[:6]
+    line = "\item $5\%$ interest per annum, \$10,000 principal, one year"
+    line[:6]
 
+# == temporary file import code ==
+infile = indir + "skillset_topics.csv"
+imported_topics = []
+with open(infile, "r", encoding='latin-1') as topics_file:
+    f = csv.reader(topics_file, delimiter=',', quotechar='"')
+    for row in f:
+        imported_topics.append(row[0])
+# Fix corruption of first character of first imported topics
+imported_topics[0] = "Modeling Exponential Functions"
+
+infile = indir + "roster+skillset.csv"
+imported_roster = []
+imported_skillset = {}
+with open(infile, "r", encoding='latin-1') as topics_file:
+    f = csv.reader(topics_file, delimiter=',', quotechar='"')
+    for row in f:
+        student_name = (row[0], row[1])
+        imported_roster.append(student_name)
+        student_skillset = dict(zip(imported_topics, row[2:]))
+        imported_skillset[student_name] = student_skillset
+
+
+
+print(imported_roster)
+print(imported_topics)
+print(imported_skillset)
+
+courses_data_dict = {"11.1 IB Math SL": imported_roster}
+"""{Course title: list of student name tuples}"""
+student_data_list = imported_roster
+""" List of tuples, (last, first)"""
 
 #run only if module is called from command line
 if __name__ == "__main__":
