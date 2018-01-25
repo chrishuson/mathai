@@ -1,5 +1,4 @@
 #THESE INITIAL GLOBAL CREATIONS DEPEND ON HOW THE DATA IS ORGANIZED FOR INPUT
-
 #GLOBAL CREATION OF STUDENTS DICTIONARY {FULL STUDENT NAME: STUDENT INSTANCE}
 global_students_dict = {}
 for student_name in student_data_list:
@@ -31,7 +30,6 @@ for problem in problem_data_dict:
 def add_problem():
 	#SOMETHING HERE
 	return
-
 class ProblemSet():
 	def __init__(self, topics, date, course_title, average_class_skills = {}):
 		"""
@@ -85,16 +83,10 @@ class DifferentiatedProblemSet(ProblemSet):
 
 			student_names - list of student name tuples, (last, first)
 			"""
-			ProblemSet.__init__(self, topics, date, course_title, average_class_skills)
-			self.problem_ids = {'general': [self.general_problem_ids()]}
-			self.student_names = student_names
 		ProblemSet.__init__(self, topics, date, course_title, average_class_skills)
 		self.problem_ids = {'general': [self.general_problem_ids()]}
 		self.student_names = student_names
 
-			#generate differentiated problems for the students specified
-			for student_name in self.student_names:
-				self.problem_ids[student_name] = [self.specific_problem_ids(student_name)]
 		#generate differentiated problems for the students specified
 		for student_name in self.student_names:
 			self.problem_ids[student_name] = [self.specific_problem_ids(student_name)]
@@ -128,7 +120,6 @@ class Problem():
 
 			topic - string describing problem topic e.g. logarithms
 			texts - dict of relevant texts for a problem, keys: question,
-				resource (graphs and images), workspace, answer, solution, rubric
 				resource (graphs and images), workspace, instructions, answer,
 				solution, rubric
 			standard - ccss number, looked up if not an argument
@@ -169,6 +160,7 @@ class Course():
 			"""
 		self.course_title = title
 		self.roster = {}
+		for name in names:
 			first_and_last_name = name.split(' ')
 			self.roster[(first_and_last_name[1], first_and_last_name[0])] = \
 			Student(first_and_last_name[1], first_and_last_name[0])
