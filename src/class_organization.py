@@ -88,10 +88,16 @@ class DifferentiatedProblemSet(ProblemSet):
 			ProblemSet.__init__(self, topics, date, course_title, average_class_skills)
 			self.problem_ids = {'general': [self.general_problem_ids()]}
 			self.student_names = student_names
+		ProblemSet.__init__(self, topics, date, course_title, average_class_skills)
+		self.problem_ids = {'general': [self.general_problem_ids()]}
+		self.student_names = student_names
 
 			#generate differentiated problems for the students specified
 			for student_name in self.student_names:
 				self.problem_ids[student_name] = [self.specific_problem_ids(student_name)]
+		#generate differentiated problems for the students specified
+		for student_name in self.student_names:
+			self.problem_ids[student_name] = [self.specific_problem_ids(student_name)]
 
 	def specific_problem_ids(self, student_name):
 		#access student instance of student names to base problem selections off student skillset
@@ -123,6 +129,8 @@ class Problem():
 			topic - string describing problem topic e.g. logarithms
 			texts - dict of relevant texts for a problem, keys: question,
 				resource (graphs and images), workspace, answer, solution, rubric
+				resource (graphs and images), workspace, instructions, answer,
+				solution, rubric
 			standard - ccss number, looked up if not an argument
 			calc_type: 0 no calculator allowed, 1 allowed, 2 calc practice
 			difficulty: 1 - 10 (how hard it is)
@@ -161,7 +169,6 @@ class Course():
 			"""
 		self.course_title = title
 		self.roster = {}
-		for name in names: # Perhaps we should use "name" instead of "student" in these two lines
 			first_and_last_name = name.split(' ')
 			self.roster[(first_and_last_name[1], first_and_last_name[0])] = \
 			Student(first_and_last_name[1], first_and_last_name[0])
