@@ -2,10 +2,10 @@ import pickle
 
 #Hydrogen path config workaround:
 #%cd src
-#%pwd
+%pwd
 
 from main import loaddbfile
-import class_organization
+from class_organization import ProblemSet, Problem, Course, Student
 
 #ct = loaddbfile("courses")
 

@@ -1,7 +1,7 @@
 #runs worksheet maker functions in an interactive session
 # $ python main.py    (from /Users/chris/GitHub/mathai/src directory)
 # For Hydrogen:
-#%pwd
+%pwd
 %cd src
 
 import sys
@@ -164,15 +164,24 @@ print(p1.format(1))
 print(p1.texts["question"])
 # == END temp test lines ==
 
-title = ("1214IB1_Test-exponentials.tex", "ids in margin", \
+title = ("1214IB1_Test-exponentials", "ids in margin", \
          "Parsed from file: in/1214IB1_Test-exponentials.tex")
-infile = indir + title + ".tex"
+infile = indir + title[0] + ".tex"
 
+default_topic = "Writing Linear Equations"
+topic = default_topic
 with open(infile, "r") as texfile:
     for line in texfile:
+        if line[:6] == "\\item ":
+            problem_text = line[6:]
+            p = Problem(topic, {"question":problem_text})
+            
+        elif line[:5] == "\\subs":
+            topic = line[10:-2]
+            print(topic)
 
-
-
+line = "\item $5\%$ interest per annum, \$10,000 principal, one year"
+line[:6]
 
 
 #run only if module is called from command line
