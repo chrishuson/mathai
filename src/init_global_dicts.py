@@ -12,7 +12,7 @@ import pickle
 from collections import namedtuple
 
 from main import init_directories, savedbfile, loaddbfile
-from class_organization import ProblemSet, Problem, Course, Student
+from class_organization import ProblemSet, Problem, Course, Student, add_student, add_course, add_problem
 
 init_directories()
 
