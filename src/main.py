@@ -1,8 +1,8 @@
 #runs worksheet maker functions in an interactive session
 # $ python main.py    (from /Users/chris/GitHub/mathai/src directory)
 # For Hydrogen:
-%pwd
-%cd src
+#%pwd
+#%cd src
 
 import sys
 import os
@@ -13,10 +13,15 @@ from collections import namedtuple
 from class_organization import ProblemSet, Problem, Course, Student
 #from add import add_problem
 
-HOME = os.environ["HOME"]
-dbdir = HOME + "/GitHub/mathai/db/"
-outdir = HOME + "/GitHub/mathai/out/"
-indir = HOME + "/GitHub/mathai/in/"
+def init_directories():
+    """ Sets directory paths allowing for home directory named
+
+        Assumes GitHub mathai repository below home folder
+        """
+    HOME = os.environ["HOME"]
+    dbdir = HOME + "/GitHub/mathai/db/"
+    outdir = HOME + "/GitHub/mathai/out/"
+    indir = HOME + "/GitHub/mathai/in/"
 
 
 def savedbfile(dbfile, filename):
@@ -182,37 +187,6 @@ def parse_tex_into_problemset():
     line = "\item $5\%$ interest per annum, \$10,000 principal, one year"
     line[:6]
 
-# == temporary file import code ==
-infile = indir + "skillset_topics.csv"
-imported_topics = []
-with open(infile, "r", encoding='latin-1') as topics_file:
-    f = csv.reader(topics_file, delimiter=',', quotechar='"')
-    for row in f:
-        imported_topics.append(row[0])
-# Fix corruption of first character of first imported topics
-imported_topics[0] = "Modeling Exponential Functions"
-
-infile = indir + "roster+skillset.csv"
-imported_roster = []
-imported_skillset = {}
-with open(infile, "r", encoding='latin-1') as topics_file:
-    f = csv.reader(topics_file, delimiter=',', quotechar='"')
-    for row in f:
-        student_name = (row[0], row[1])
-        imported_roster.append(student_name)
-        student_skillset = dict(zip(imported_topics, row[2:]))
-        imported_skillset[student_name] = student_skillset
-
-
-
-print(imported_roster)
-print(imported_topics)
-print(imported_skillset)
-
-courses_data_dict = {"11.1 IB Math SL": imported_roster}
-"""{Course title: list of student name tuples}"""
-student_data_list = imported_roster
-""" List of tuples, (last, first)"""
 
 #run only if module is called from command line
 if __name__ == "__main__":

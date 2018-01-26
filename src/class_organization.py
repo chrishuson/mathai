@@ -1,38 +1,25 @@
 import time
 import random
 
-#THESE INITIAL GLOBAL CREATIONS DEPEND ON HOW THE DATA IS ORGANIZED FOR INPUT
-#GLOBAL CREATION OF STUDENTS DICTIONARY {FULL STUDENT NAME: STUDENT INSTANCE}
-global_students_dict = {}
-for student_name in student_data_list:
-	add_student(student_name)
 
 #ADDS STUDENT TO GLOBAL STUDENTS DICTIONARY IN APPROPRIATE FORM
-def add_student(student_name):
-	first_and_last_name = student_name.split(' ')
-	global_students_dict[(first_and_last_name[1], first_and_last_name[0])] = \
-	Student(first_and_last_name[1], first_and_last_name[0])
+def add_student(student_name_tuple):
+	""" Arg (last name text: first name text)
 
+		Creates new instance of a student and adds entry to global students dict
+		"""
+	global_students_dict[student_name_tuple] = Student(student_name_tuple)
 
-#GLOBAL CREATION OF COURSES DICTIONARY {COURSE TITLE: COURSE INSTANCE}
-global_courses_dict = {}
-for course_title in courses_data_dict:
-	students = {student:global_students_dict[student] for student in courses_data_dict[course]}
-	add_course(course_title, students)
 
 #ADDS COURSE TO GLOBAL COURSES DICTIONARY IN APPROPRIATE FORM
 def add_course(title, students):
 	global_courses_dict[title] = Course(title, students)
 
 
-#GLOBAL CREATION OF PROBLEM BANK DICTIONARY {TOPIC: {DIFFICULTY: {ID: INSTANCE}}}
-global_problem_dict = {}
-for problem in problem_data_dict:
-	add_problem()
-
-def add_problem():
-	#SOMETHING HERE
+def add_problem(topic, difficulty = 3):
+	#SOMETHING HERE (PERHAPS THE __INIT__ FUNCTION SHOULD RECORD PROBLEM IN GLOBAL DICT)
 	return
+	
 class ProblemSet():
 	def __init__(self, topics, date, course_title, average_class_skills = {}, assessment = "incomplete"):
 		"""
@@ -94,10 +81,10 @@ class DifferentiatedProblemSet(ProblemSet):
 
 			student_names - list of student name tuples, (last, first)
 			"""
-			ProblemSet.__init__(self, topics, date, course_title, average_class_skills)
-			self.problem_ids = {'general': self.general_problem_ids([name for name in student_names])}
-			# problem_ids IS DICT {STUDENT TUPLE: [PROBLEM IDs]}
-			self.student_names = student_names
+		ProblemSet.__init__(self, topics, date, course_title, average_class_skills)
+		self.problem_ids = {'general': self.general_problem_ids([name for name in student_names])}
+		# problem_ids IS DICT {STUDENT TUPLE: [PROBLEM IDs]}
+		self.student_names = student_names
 
 		#generate differentiated problems for the students specified
 		for student_name in self.student_names:
