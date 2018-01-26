@@ -4,7 +4,7 @@ import random
 
 #ADDS STUDENT TO GLOBAL STUDENTS DICTIONARY IN APPROPRIATE FORM
 def add_student(student_name_tuple):
-	""" Arg (last name text: first name text)
+	""" Arg (last name text:, first name text)
 
 		Creates new instance of a student and adds entry to global students dict
 		"""
@@ -19,7 +19,7 @@ def add_course(title, students):
 def add_problem(topic, difficulty = 3):
 	#SOMETHING HERE (PERHAPS THE __INIT__ FUNCTION SHOULD RECORD PROBLEM IN GLOBAL DICT)
 	return
-	
+
 class ProblemSet():
 	def __init__(self, topics, date, course_title, average_class_skills = {}, assessment = "incomplete"):
 		"""
@@ -203,18 +203,22 @@ class Course():
 						print(topic, self.roster[student].skillset[topic])
 
 class Student():
-	def __init__(self, first_name, last_name, problem_set_history = {}, skillset = None):
+	def __init__(self, student_name_tuple, problem_set_history = {}, \
+					skillset = None, in_global_dict = True):
 		""" Student definition
 
-			first_name - single text string
-			last_name - single text string
+			(last_name, first_name text strings)
 			problem_set_history - dict of {date: Assessment instance w/ problem_ids and
 			assessment_status as attributes}
-			skillset - dict of {topic:integer level of ability}, level of ability from 0 to 10
+			skillset - dict of {topic:integer level of ability} from 0 to 10
 			"""
-		self.first_name = first_name
-		self.last_name = last_name
+		self.student_name = student_name_tuple
+		self.first_name = student_name_tuple[1]
+		self.last_name = student_name_tuple[0]
 		self.problem_set_history = problem_set_history
+		if in_global_dict:
+			global global_students_dict
+			global_students_dict[student_name_tuple] = self
 		#still need to specify what default skillset would be
 		default_skillset = {}
 

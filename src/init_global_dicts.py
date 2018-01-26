@@ -2,8 +2,8 @@
 # SETTING UP GLOBAL DICTS OF COURSES, STUDENTS, AND ProblemS
 
 # For Hydrogen:
-%pwd
-%cd src
+#%pwd
+#%cd src
 
 import sys
 import os
@@ -11,10 +11,15 @@ import csv
 import pickle
 from collections import namedtuple
 
-from main import init_directories, savedbfile, loaddbfile
-from class_organization import ProblemSet, Problem, Course, Student
+from main import savedbfile, loaddbfile
+from class_organization import ProblemSet, Problem, Course, Student, add_student, \
+        add_course, add_problem
 
-init_directories()
+HOME = os.environ["HOME"]
+dbdir = HOME + "/GitHub/mathai/db/"
+outdir = HOME + "/GitHub/mathai/out/"
+indir = HOME + "/GitHub/mathai/in/"
+
 
 # IMPORT INITIAL BATCH OF TOPICS AS LIST OF TEXTS
 infile = indir + "skillset_topics.csv"
@@ -45,9 +50,15 @@ problem_data_dict = {} # temporary to make code run
 global_students_dict = {} # First time only
 
 student_data_list = imported_roster
+
 # Input is list of tuples, (last, first)
 for student_name in student_data_list:
-	add_student(student_name)
+    print(student_name)
+
+student_data_list[0]
+alesha = Student(student_data_list[0])
+
+#add_student(student_name)
 
 # Input dict of courses data is {Course title: list of student name tuples}
 courses_data_dict = {"11.1 IB Math SL": imported_roster}

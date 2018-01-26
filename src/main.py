@@ -3,6 +3,8 @@
 # For Hydrogen:
 #%pwd
 #%cd src
+#print(PYTHONPATH)
+
 
 import sys
 import os
@@ -13,16 +15,12 @@ from collections import namedtuple
 from class_organization import ProblemSet, Problem, Course, Student
 #from add import add_problem
 
-def init_directories():
-    """ Sets directory paths allowing for home directory named
+HOME = os.environ["HOME"]
+dbdir = HOME + "/GitHub/mathai/db/"
+outdir = HOME + "/GitHub/mathai/out/"
+indir = HOME + "/GitHub/mathai/in/"
 
-        Assumes GitHub mathai repository below home folder
-        """
-    HOME = os.environ["HOME"]
-    dbdir = HOME + "/GitHub/mathai/db/"
-    outdir = HOME + "/GitHub/mathai/out/"
-    indir = HOME + "/GitHub/mathai/in/"
-
+print(os.environ["HOME"])
 
 def savedbfile(dbfile, filename):
     """ Saves persistent record using pickle
