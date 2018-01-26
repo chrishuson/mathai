@@ -21,7 +21,7 @@ def add_problem(topic, difficulty = 3):
 	return
 
 class ProblemSet():
-	def __init__(self, topics, date, course_title, average_class_skills = {}, assessment = "incomplete"):
+	def __init__(self, topics, date, course_title, assessment = "incomplete"):
 		"""
 			topics - dict of {topic: number of problems}
 			date - day/month/year
@@ -34,18 +34,9 @@ class ProblemSet():
 		self.topics = topics
 		self.date = date
 		self.course_title = course_title
+
+		#TO DO - MAKE PROBLEM_IDS INTO DICT OF {'GENERAL': {ID: INSTANCE}}
 		self.problem_ids = {'general': self.general_problem_ids(students)}
-		self.average_class_skills = average_class_skills
-		for topic in self.topics:
-			#initialize both topic_score and student_count at 0
-			topic_score = 0
-			student_count = 0
-			#access each student's Student class instance from the course's roster
-			#to add their topic skill level to the topic_score
-			for student_name in global_courses_dict[self.course_title].roster:
-				topic_score += global_courses_dict[self.course_title].roster[student_name].skillset[topic]
-				student_count += 1
-			self.average_class_skills[topic] = round(topic_score/student_count)
 
 	def general_problem_ids(self, differentiated_students = []):
 		"""
@@ -53,24 +44,39 @@ class ProblemSet():
 		problem_ids for this 'general' problem set
 
 			"""
-		problem_ids = []
+		past_problems = []
+		for student_name in global_courses_dict[self.course_title].roster and not in differentiated_students:
+			past_problems.extend(global_courses_dict[self.course_title].roster[student_name].problem_history.keys())
+
+		average_class_skills = {}
 		for topic in self.topics:
-			students_skill = self.average_class_skills[topic]
+			#initialize both topic_score and student_count at 0
+			topic_score = 0
+			student_count = 0
+			#access each student's Student class instance from the course's roster
+			#to add their topic skill level to the topic_score
+			for student_name in global_courses_dict[self.course_title].roster:
+				if student_name not in differentiated_students:
+					topic_score += global_courses_dict[self.course_title].roster[student_name].skillset[topic]
+					student_count += 1
+			average_class_skills[topic] = round(topic_score/student_count)
+
+		problem_ids = {}
+		for topic in self.topics:
+			students_skill = average_class_skills[topic]
+			available_problems = global_problem_dict[topic][students_skill].keys()
+			unused_problems =  set(available_problems) - set(past_problems)
+			unused_problems_dict = {unused_problem:global_problem_dict[topic][students_skill][unused_problem]\
+									for unused_problem in unused_problems}
+
 			for problem_number in range(self.topics[topic]):
-				problem_ids.append(random.sample(global_problem_dict[topic][students_skill]), 1)
-
-		#add assessment to student instance's problem set history w/ the appropriate date
-		current_date = time.strftime("%d/%m/%Y")
-		for student in global_courses_dict[self.course_title]:
-			if student not in differentiated_students:
-				global_students_dict[student].problem_set_history[current_date] = \
-				(Assessment(problem_ids))
-
+				problem_id = random.choice(unused_problems_dict.keys())
+				problem_ids[problem_id] = unused_problems_dict[problem_id]
 
 		return problem_ids
 
 class DifferentiatedProblemSet(ProblemSet):
-	def __init__(self, topics, date, course_title, average_class_skills, student_names):
+	def __init__(self, topics, date, course_title, student_names):
 		"""
 			Inherited Attributes from ProblemSet class
 				topics - dict of {topic: number of problems}
@@ -81,45 +87,70 @@ class DifferentiatedProblemSet(ProblemSet):
 
 			student_names - list of student name tuples, (last, first)
 			"""
-		ProblemSet.__init__(self, topics, date, course_title, average_class_skills)
+		ProblemSet.__init__(self, topics, date, course_title)
 		self.problem_ids = {'general': self.general_problem_ids([name for name in student_names])}
 		# problem_ids IS DICT {STUDENT TUPLE: [PROBLEM IDs]}
 		self.student_names = student_names
 
 		#generate differentiated problems for the students specified
 		for student_name in self.student_names:
-			self.problem_ids[student_name] = [self.specific_problem_ids(student_name)]
+			self.problem_ids[student_name] = self.specific_problem_ids(student_name)
 
 	def specific_problem_ids(self, student_name):
 		#access student instance of student names to base problem selections off student skillset
 		student = global_students_dict[student_name]
-		problem_ids = []
+		past_problems = global_courses_dict[self.course_title].roster[student_name].problem_history.keys()
+
+		problem_ids = {}
 		for topic in self.topics:
+			students_skill = student.skillset[topic]
+			available_problems = global_problem_dict[topic][students_skill].keys()
+			unused_problems =  set(available_problems) - set(past_problems)		
+			unused_problems_dict = {unused_problem:global_problem_dict[topic][students_skill][unused_problem]\
+									for unused_problem in unused_problems}
+
 			for problem_number in range(self.topics[topic]):
-				student_skill = student.skillset[topic]
 				#build up to the hardest question
 				question_difficulty = student_skill - problem_number + 1
 				#make problem_bank global variable to be able to access here
-				problem_ids.extend(random.sample(global_problem_dict[topic][question_difficulty], 1))
+				problem_id = random.choice(unused_problems_dict.keys())
+				problem_ids[problem_id] = unused_problems_dict[problem_id]
 				#increment the difficulty of the next question
 				question_difficulty += 1
-
-		#add assessment to student instance's problem set history w/ the appropriate date
-		current_date = time.strftime("%d/%m/%Y")
-		global_students_dict[student_name].problem_set_history[current_date] = \
-				(Assessment(problem_ids))
 
 		return problem_ids
 
 def make_problem_set(course_title, topics, date, differentiated = False, specific_student_names = []):
-	#create an instance of the appropriate class depending on user specifications
+	""" 
+		
+
+		"""
+	current_date = time.strftime("%d/%m/%Y")
 	if differentiated:
-		return DifferentiatedProblemSet(topics, date, course_title, {}, specific_student_names)
-	return ProblemSet(topics, date, course_title)
+		diff_problem_set = DifferentiatedProblemSet(topics, date, course_title, {}, specific_student_names)
+		for student_name in global_courses_dict[course_title].roster:
+			if student_name in specific_student_names:
+				global_students_dict[student_name].problem_set_history[current_date] = \
+					(Assessment(diff_problem_set.problem_ids[student_name], diff_problem_set))
+				global_students_dict[student_name].problem_history.update(diff_problem_set.problem_ids[student_name])
+			else:
+				global_students_dict[student_name].problem_set_history[current_date] = \
+					(Assessment(diff_problem_set.problem_ids['general'], diff_problem_set))	
+				global_students_dict[student_name].problem_history.update(diff_problem_set.problem_ids['general'])
+
+		return diff_problem_set
+
+	problem_set = ProblemSet(topics, date, course_title)
+	for student_name in global_courses_dict[course_title].roster:
+		global_students_dict[student_name].problem_set_history[current_date] = \
+			(Assessment(problem_set.problem_ids['general'], problem_set))	
+		global_students_dict[student_name].problem_history.update(problem_set.problem_ids['general'])
+
+	return problem_set
 
 
 class Assessment():
-	def __init__(self, problem_ids, assessment_status = "incomplete"):
+	def __init__(self, problem_ids, problem_set, assessment_status = "incomplete"):
 		""" An Assessent instance contains the following specific attributes
 
 			assessment_status - either str describing incomplete/complete status or dict
@@ -127,6 +158,7 @@ class Assessment():
 
 			"""
 		self.problem_ids = problem_ids
+		self.problem_set = problem_set
 		self.assessment_status = assessment_status
 
 	#FIGURE OUT HOW TO DO THIS
@@ -215,6 +247,7 @@ class Student():
 		self.student_name = student_name_tuple
 		self.first_name = student_name_tuple[1]
 		self.last_name = student_name_tuple[0]
+				self.problem_history = problem_history
 		self.problem_set_history = problem_set_history
 		if in_global_dict:
 			global global_students_dict
