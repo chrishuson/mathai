@@ -2,9 +2,6 @@
 # $ python main.py    (from /Users/chris/GitHub/mathai/src directory)
 # For Hydrogen:
 #%pwd
-#%cd src
-#print(PYTHONPATH)
-
 
 import sys
 import os
@@ -12,15 +9,14 @@ import csv
 import pickle
 from collections import namedtuple
 
-from class_organization import ProblemSet, Problem, Course, Student
-#from add import add_problem
+from class_organization import ProblemSet, DifferentiatedProblemSet, Assessment, \
+                                Problem, Course, Student, make_problem_set
 
 HOME = os.environ["HOME"]
 dbdir = HOME + "/GitHub/mathai/db/"
 outdir = HOME + "/GitHub/mathai/out/"
 indir = HOME + "/GitHub/mathai/in/"
 
-print(os.environ["HOME"])
 
 def savedbfile(dbfile, filename):
     """ Saves persistent record using pickle
@@ -46,6 +42,32 @@ def loaddbfile(filename):
     p = dbdir + filename + '.pickle'
     with open(p, 'rb') as f:
         return pickle.load(f)
+
+
+def lookup_new_problem_id(topic, difficulty = 3):
+    """ Selects an unused integer for use as key in the global_problem_dict
+
+        The topic and difficulty args are mapped to a starting place based on
+        giving each topic a thousand ids.
+        """
+    topic_ids = loaddbfile("topic_ids")
+    seed = 1
+    if topic in topic_ids.keys():
+        seed = int(topic_ids[topic]) + int(difficulty) * 100
+    while seed in global_problem_dict.keys():
+        seed += 1
+    return seed
+
+
+def lookup_standard(topic):
+    """ Return the CCSS standard number for a given problem topic
+        """
+    standards = loaddbfile("standards_tree_jmap")
+    # list of 4-tuples, (course, chapter, topic, ccss number) from JMAP
+    for i in range(0,len(standards)):
+        if standards[i][2] == topic:
+            return standards[i][3]
+    return None
 
 
 def print_tree(s):
@@ -155,6 +177,9 @@ problem_meta = loaddbfile("problem_meta")
 skill = loaddbfile("skill")
 # dict of problem ids for each topic, {topic:[id1, id2, ...]}
 
+topic_ids = loaddbfile("topic_ids")
+# dict {topic: starting problem_id number} 1000 for each of 233 topics
+
 # == temp test lines ==
 question = "What is the equation of a line parallel to $y=-3x+6$ with a $y$-intercept of 5?"
 texts = {"question":question}
@@ -185,6 +210,84 @@ def parse_tex_into_problemset():
     line = "\item $5\%$ interest per annum, \$10,000 principal, one year"
     line[:6]
 
+
+
+# IMPORT INITIAL BATCH OF TOPICS AS LIST OF TEXTS, called imported_topics
+infile = indir + "skillset_topics.csv"
+imported_topics = []
+with open(infile, "r", encoding='latin-1') as topics_file:
+    f = csv.reader(topics_file, delimiter=',', quotechar='"')
+    for row in f:
+        imported_topics.append(row[0])
+# Fix corruption of first character of first imported topics
+imported_topics[0] = "Modeling Exponential Functions"
+
+# IMPORT INITIAL ROSTER AND SKILLSETS, imported_roster [] and imported_skillset {}
+infile = indir + "roster+skillset.csv"
+imported_roster = []
+imported_skillset = {}
+with open(infile, "r", encoding='latin-1') as r_file:
+    f = csv.reader(r_file, delimiter=',', quotechar='"')
+    for row in f:
+        student_name = (row[0], row[1])
+        imported_roster.append(student_name)
+        student_skillset = dict(zip(imported_topics, row[2:]))
+        imported_skillset[student_name] = student_skillset
+
+#GLOBAL CREATION OF STUDENTS DICTIONARY {STUDENT NAME TUPLE: STUDENT INSTANCE}
+global_students_dict = {} # First time only
+global_courses_dict = loaddbfile("global_courses_dict")
+for student_name_tuple in imported_roster:
+    global_students_dict[student_name_tuple] = Student(student_name_tuple)
+
+# Input dict of courses data is {Course title: list of student name tuples}
+courses_data_dict = {"11.1 IB Math SL": imported_roster}
+#GLOBAL CREATION OF COURSES DICTIONARY {COURSE TITLE: COURSE INSTANCE}
+global_courses_dict = {} # First time only
+for course_title in courses_data_dict:
+	students = {student:global_students_dict[student] for student in courses_data_dict[course_title]}
+
+global_courses_dict[course_title] = Course(course_title, students)
+print(global_courses_dict[course_title].print_roster())
+
+savedbfile(global_courses_dict, "global_courses_dict")
+savedbfile(global_students_dict, "global_students_dict")
+print(global_problem_dict)
+
+# IMPORT PROBLEMS AND SET UP FOR DEC 14 PROBLEM SET as imported_problems {}
+# INFILE FIELDS: Topic,Difficulty,Calculator,Level,Text,Resource,Instructions
+global_problem_dict = {} # First time only
+#global_problem_dict = savedbfile("global_problem_dict")
+infile = indir + "problems.csv"
+i = 0
+with open(infile, "r", encoding='latin-1') as r_file:
+    f = csv.reader(r_file, delimiter=',', quotechar='"')
+    for row in f:
+        print(i)
+        i += 1
+        topic = row[0]
+        standard = lookup_standard(topic)
+        difficulty = row[1]
+        calculator = row[2]
+        level = row[3]
+        question = row[4]
+        resource = row[5]
+        instructions = row[5]
+        texts = {"question": question, "resource": resource, "instructions": instructions}
+        source = "cjh"
+        problem_id = lookup_new_problem_id(topic, difficulty)
+            #NOT YET IMPORTED: workspace, answer, solution, rubric
+#GLOBAL CREATION OF PROBLEM BANK DICTIONARY {TOPIC: {DIFFICULTY: {ID: INSTANCE}}}
+        global_problem_dict[topic] = {difficulty: {problem_id: \
+            Problem(topic, texts, standard, difficulty, level, calculator, source)}}
+
+savedbfile(global_problem_dict, "global_problem_dict")
+
+# PRINT STATEMENTS ARE ONLY TO TEST CODE
+if False:
+    print(imported_roster)
+    print(imported_topics)
+    print(imported_skillset)
 
 #run only if module is called from command line
 if __name__ == "__main__":

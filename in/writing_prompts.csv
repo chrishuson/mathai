@@ -5,5 +5,8 @@ Explain why adding a positive value to x before applying a function moves the cu
 Explain why multiplying the input of a function by a negative (x's coefficient) reflects the curve horizontally across the y-axis, while whereas taking the inverse of the function output  (negative  applied to the y) flips the curve vertically across the x-axis.
 Why is the function f(x)=abs(x) symmetric across the y-axis?
 Why does a polynomial function composed only of even powers of x look the same when the x inputs are multiplied by negative one? (i.e. it is invariant, that is f(-x)=f(x))
+How would you explain at middle school level that addition and subtraction can be thought of as walking on a number line. Use walking to the right as addition and to the left subtraction. Step backward for negative numbers. Include examples.
+If positive three is a zero of a polynomial function, why is a factor $(x-3)$? Explain why the sign changes. Use the term additive inverse.
+When we "complete the square," why do we make a note $(-\frac{b}{2a})^2$ after the first step?
 
 Why are errors sometimes essential to progress? Give an example and explain.

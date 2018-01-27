@@ -1,6 +1,7 @@
 out/*
 db/*.xlsx
 db/*.xlsm
+in/roster+skillset.csv
 temp*.py
 tmp*.py
 src/temp*.py
