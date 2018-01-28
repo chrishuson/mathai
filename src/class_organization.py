@@ -1,6 +1,14 @@
 import time
 import random
 
+from main import loaddbfile
+
+global_courses_dict = loaddbfile("global_courses_dict")
+
+global_students_dict = loaddbfile("global_students_dict")
+
+global_problem_dict = loaddbfile("global_problem_dict")
+
 
 class ProblemSet():
 	def __init__(self, course_title, unit, topics = {}, problem_ids = {'general': []}, \
@@ -106,7 +114,7 @@ class DifferentiatedProblemSet(ProblemSet):
 
 		return problem_ids
 
-def make_problem_set(course_title, unit, topics, date = None, differentiated = False, specific_student_names = []):
+def assign_problem_set(course_title, unit, topics, date = None, differentiated = False, specific_student_names = []):
 	""" Creates and returns a problem set instance, updating student histories
 
 		topics is dict {topic: number of problems of that type desired}
@@ -246,7 +254,7 @@ class Student():
 			(last_name, first_name text strings)
 			problem_set_history - dict of {date: Assessment instance w/ problem_ids and
 			assessment_status as attributes}
-			skillset - dict of {topic:integer level of ability} from 0 to 10
+			skillset - dict of {topic:integer level of ability} from 0 to 10, topic = "Default"
 			"""
 		self.student_name = student_name_tuple
 		self.first_name = student_name_tuple[1]

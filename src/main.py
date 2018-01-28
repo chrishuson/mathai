@@ -10,7 +10,7 @@ import pickle
 from collections import namedtuple
 
 from class_organization import ProblemSet, DifferentiatedProblemSet, Assessment, \
-                                Problem, Course, Student, make_problem_set
+                                Problem, Course, Student, assign_problem_set
 
 HOME = os.environ["HOME"]
 dbdir = HOME + "/GitHub/mathai/db/"
@@ -44,17 +44,22 @@ def loaddbfile(filename):
         return pickle.load(f)
 
 
-def lookup_new_problem_id(topic, difficulty = 3):
+def lookup_new_problem_id(topic, difficulty = 3): #TODO This has a bug
     """ Selects an unused integer for use as key in the global_problem_dict
-
+            topic = "Inverse of Functions"
         The topic and difficulty args are mapped to a starting place based on
         giving each topic a thousand ids.
         """
     topic_ids = loaddbfile("topic_ids")
+    existing_problem_ids = set()
+    for topic in global_problem_dict:
+        for difficulty in global_problem_dict[topic]:
+            for id in global_problem_dict[topic][difficulty]:
+                existing_problem_ids.add(id)
     seed = 1
     if topic in topic_ids.keys():
         seed = int(topic_ids[topic]) + int(difficulty) * 100
-    while seed in global_problem_dict.keys():
+    while seed in existing_problem_ids:
         seed += 1
     return seed
 
@@ -169,11 +174,11 @@ topic_ids = loaddbfile("topic_ids")
 # dict {topic: starting problem_id number} 1000 for each of 233 topics
 
 global_courses_dict = loaddbfile("global_courses_dict")
-
+#GLOBAL COURSES DICTIONARY {COURSE TITLE: COURSE INSTANCE}
 global_students_dict = loaddbfile("global_students_dict")
-
+#GLOBAL STUDENTS DICT {STUDENT NAME TUPLE: STUDENT INSTANCE}
 global_problem_dict = loaddbfile("global_problem_dict")
-#GLOBAL CREATION OF PROBLEM BANK DICTIONARY {TOPIC: {DIFFICULTY: {ID: INSTANCE}}}
+#GLOBAL PROBLEM DICT {TOPIC: {DIFFICULTY: {ID: INSTANCE}}} {'all':{'all':{}}}
 
 def test_global_load(long = False):
     """ Several short commands to confirm key data has loaded properly
@@ -221,7 +226,8 @@ def test_global_load(long = False):
 
     return comments
 
-print(test_global_load(1))
+if False:
+    print(test_global_load(1))
 
 problem = loaddbfile("problem") #TODO MIGRATE THIS TO global_problem_dict
 # dict of problems, {id:[problem text, solution text, workspace text]}
@@ -256,106 +262,122 @@ def parse_tex_into_problemset(): #TODO make this into a worksheet importer
     line[:6]
 
 
+def import_students_from_files(course_title = "11.1 IB Math SL"):
+    """ Upload student (& skills) data from text files in indir
 
-# IMPORT INITIAL BATCH OF TOPICS AS LIST OF TEXTS, called imported_topics
-infile = indir + "skillset_topics.csv"
-imported_topics = []
-with open(infile, "r", encoding='latin-1') as topics_file:
-    f = csv.reader(topics_file, delimiter=',', quotechar='"')
-    for row in f:
-        imported_topics.append(row[0])
-# Fix corruption of first character of first imported topics
-imported_topics[0] = "Modeling Exponential Functions"
+        internal data structures:
+        imported_topics - list, for problemset and skillset
+        imported_roster - list of tuples [(last, first_name), ...], into course & student global dicts
+        imported_skillset {student: {topic: int 0-10}}
+        course_title - str, for global_courses_dict
+        """
+    # IMPORT INITIAL BATCH OF TOPICS AS LIST OF TEXTS, called imported_topics
+    infile = indir + "skillset_topics.csv"
+    imported_topics = []
+    with open(infile, "r", encoding='latin-1') as topics_file:
+        f = csv.reader(topics_file, delimiter=',', quotechar='"')
+        for row in f:
+            imported_topics.append(row[0])
+    # Fix corruption of first character of first imported topics
+    imported_topics[0] = "Modeling Exponential Functions"
 
-# IMPORT INITIAL ROSTER AND SKILLSETS, imported_roster [] and imported_skillset {}
-infile = indir + "roster+skillset.csv"
-imported_roster = []
-imported_skillset = {}
-with open(infile, "r", encoding='latin-1') as r_file:
-    f = csv.reader(r_file, delimiter=',', quotechar='"')
-    for row in f:
-        student_name = (row[0], row[1])
-        imported_roster.append(student_name)
-        student_skillset = dict(zip(imported_topics, row[2:]))
-        imported_skillset[student_name] = student_skillset
+    # IMPORT INITIAL ROSTER AND SKILLSETS, imported_roster [] and imported_skillset {}
+    infile = indir + "roster+skillset.csv"
+    imported_roster = []
+    imported_skillset = {}
+    with open(infile, "r", encoding='latin-1') as r_file:
+        f = csv.reader(r_file, delimiter=',', quotechar='"')
+        for row in f:
+            student_name = (row[0], row[1])
+            imported_roster.append(student_name)
+            student_skillset = dict(zip(imported_topics, row[2:]))
+            imported_skillset[student_name] = student_skillset
 
-#GLOBAL CREATION OF STUDENTS DICTIONARY {STUDENT NAME TUPLE: STUDENT INSTANCE}
-global_students_dict = {} # First time only
-global_courses_dict = loaddbfile("global_courses_dict")
-for student_name_tuple in imported_roster:
-    global_students_dict[student_name_tuple] = Student(student_name_tuple)
+    #GLOBAL CREATION OF STUDENTS DICTIONARY {STUDENT NAME TUPLE: STUDENT INSTANCE}
+    for student in imported_roster:
+        global_students_dict[student] = Student(student)
+        global_students_dict[student].skillset = imported_skillset.get(student)
 
-# Input dict of courses data is {Course title: list of student name tuples}
-courses_data_dict = {"11.1 IB Math SL": imported_roster}
-#GLOBAL CREATION OF COURSES DICTIONARY {COURSE TITLE: COURSE INSTANCE}
-global_courses_dict = {} # First time only
-for course_title in courses_data_dict:
-	students = {student:global_students_dict[student] for student in courses_data_dict[course_title]}
-global_courses_dict[course_title] = Course(course_title, students)
+    courses_data_dict = {course_title: imported_roster}
+    #GLOBAL CREATION OF COURSES DICTIONARY {COURSE TITLE: COURSE INSTANCE}
+    for course_title in courses_data_dict:
+    	students = {student:global_students_dict[student] for student in courses_data_dict[course_title]}
+    global_courses_dict[course_title] = Course(course_title, students)
 
-len(students)
-course_title
-imported_skillset
-
-
-# IMPORT PROBLEMS AND SET UP FOR DEC 14 PROBLEM SET as imported_problems {}
-# INFILE FIELDS: Topic,Difficulty,Calculator,Level,Text,Resource,Instructions
-# global_problem_dict = {} # First time only
-infile = indir + "problems.csv"
-i = 0
-with open(infile, "r", encoding='latin-1') as r_file:
-    f = csv.reader(r_file, delimiter=',', quotechar='"')
-    for row in f:
-        print(i)
-        i += 1
-        topic = row[0]
-        standard = lookup_standard(topic)
-        difficulty = row[1]
-        calculator = row[2]
-        level = row[3]
-        question = row[4]
-        resource = row[5]
-        instructions = row[5]
-        texts = {"question": question, "resource": resource, "instructions": instructions}
-        source = "cjh"
-        problem_id = lookup_new_problem_id(topic, difficulty)
-            #NOT YET IMPORTED: workspace, answer, solution, rubric
-        global_problem_dict[topic] = {difficulty: {problem_id: \
-            Problem(topic, texts, standard, difficulty, level, calculator, source)}}
+    # PRINT STATEMENTS ARE ONLY TO TEST CODE
+    if False:
+        print(imported_roster)
+        print(imported_topics)
+        print(imported_skillset)
 
 
-for topic in global_problem_dict:
-    if topic[-3:] == "pic":
-        del global_problem_dict[topic]
+def import_problems_from_files():
+    """ Upload problems from indir problems files
 
-     if global_problem_dict[topic].keys() != "Difficulty":
-         print(topic)
+        problems.csv - flatfile, fields: Topic,Difficulty,Calculator,Level,Text,Resource,Instructions
+        """
+    # IMPORT PROBLEMS AND SET UP FOR DEC 14 PROBLEM SET as imported_problems {}
+    # INFILE
+    infile = indir + "problems.csv"
+    i = 0
+    with open(infile, "r", encoding='latin-1') as r_file:
+        f = csv.reader(r_file, delimiter=',', quotechar='"')
+        for row in f:
+            print(i)
+            i += 1
+            topic = row[0]
+            standard = lookup_standard(topic)
+            difficulty = row[1]
+            calculator = row[2]
+            level = row[3]
+            question = row[4]
+            resource = row[5]
+            instructions = row[5]
+            texts = {"question": question, "resource": resource, "instructions": instructions}
+            source = "cjh"
+            problem_id = lookup_new_problem_id(topic, difficulty)
+                #NOT YET IMPORTED: workspace, answer, solution, rubric
+            global_problem_dict[topic] = {difficulty: {problem_id: \
+                Problem(topic, texts, standard, difficulty, level, calculator, source)}}
 
-p_ids = []
-for topic in global_problem_dict:
-    for difficulty in global_problem_dict[topic]:
-        for id in global_problem_dict[topic][difficulty]:
-            p_ids.append(id)
-problem_ids = {'general': p_ids}
-unit = "powers"
-course_title
-print(p_ids)
+    # DELETE ENTRY WITH CORRUPT KEY FROM FIRST (TITLE) ROW IN IMPORTED FILE
+    for topic in global_problem_dict:
+        if topic[-3:] == "pic":
+            del global_problem_dict[topic]
 
-for p_id in p_ids:
-    print(p_id)
 
-# global_problemset_dict = {} # First time only
-global_problemset_dict = {course_title: {unit: {1214:ProblemSet(course_title, unit, problem_ids)}}}
+def refresh_problem_dict_all_all():
+    """ Loop through the global problem data to make a universal dictionary under ["all"]["all"]
 
-savedbfile(global_courses_dict, "global_courses_dict")
-savedbfile(global_students_dict, "global_students_dict")
-savedbfile(global_problem_dict, "global_problem_dict")
+        Makes it easy to lookup instance from problem id.
+        I INTEND FOR THIS TO BE A SHALLOW COPY
+        """
+    for topic in global_problem_dict:
+        if topic != "all":
+            for difficulty in global_problem_dict[topic]:
+                if difficulty != "all":
+                    for id in global_problem_dict[topic][difficulty]:
+                        global_problem_dict["all"]["all"][id] = global_problem_dict[topic][difficulty][id]
 
-# PRINT STATEMENTS ARE ONLY TO TEST CODE
-if False:
-    print(imported_roster)
-    print(imported_topics)
-    print(imported_skillset)
+
+def make_problem_set():
+    """ function Placeholder
+        """
+    p_ids = [46500, 59300, 167300, 159300, 61200, 178300, 74300, 42500, 60400, 73300]
+    problem_ids = {'general': p_ids} #Problemsets have problem_id lists by student
+    unit = "powers"
+    course_title = "11.1 IB Math SL"
+
+    global_problemset_dict = {course_title: {unit: {1214:ProblemSet(course_title, unit, problem_ids)}}}
+
+def save_global_files():
+    """ Placeholder function for pickle save commands
+        """
+    savedbfile(global_courses_dict, "global_courses_dict")
+    savedbfile(global_students_dict, "global_students_dict")
+    savedbfile(global_problem_dict, "global_problem_dict")
+    savedbfile(global_problemset_dict, "global_problemset_dict")
+
 
 # == temp test lines ==
 question = "What is the equation of a line parallel to $y=-3x+6$ with a $y$-intercept of 5?"
