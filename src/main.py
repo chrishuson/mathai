@@ -165,32 +165,77 @@ standards = loaddbfile("standards_tree_jmap")
 # list of 4-tuples, (course, chapter, topic, ccss number) from JMAP
 standards_desc = loaddbfile("standards_text_jmap")
 # dict of text descriptions of standards, {ccss number, description} from JMAP
-problem = loaddbfile("problem")
+topic_ids = loaddbfile("topic_ids")
+# dict {topic: starting problem_id number} 1000 for each of 233 topics
+
+global_courses_dict = loaddbfile("global_courses_dict")
+
+global_students_dict = loaddbfile("global_students_dict")
+
+global_problem_dict = loaddbfile("global_problem_dict")
+#GLOBAL CREATION OF PROBLEM BANK DICTIONARY {TOPIC: {DIFFICULTY: {ID: INSTANCE}}}
+
+def test_global_load(long = False):
+    """ Several short commands to confirm key data has loaded properly
+
+        """
+    comments = []
+    if len(standards) != 0:
+        comments.append(str(len(standards)) + " standards")
+    else:
+        comments.append("Error with standards")
+
+    if len(standards_desc) != 0:
+        comments.append(str(len(standards_desc)) + " standards_desc")
+    else:
+        comments.append("Error with standards_desc")
+
+    if len(topic_ids) != 0:
+        comments.append(str(len(topic_ids)) + " topic_ids")
+    else:
+        comments.append("Error with topic_ids")
+
+    if len(global_courses_dict) != 0:
+        comments.append(str(len(global_courses_dict)) + " courses")
+    else:
+        comments.append("Error with courses")
+
+    if len(global_students_dict) != 0:
+        comments.append(str(len(global_students_dict)) + " students")
+    else:
+        comments.append("Error with students")
+
+    if len(global_problem_dict) != 0:
+        comments.append(str(len(global_problem_dict)) + " problems")
+    else:
+        comments.append("Error with problems")
+
+    if long:
+        print(global_courses_dict[course_title].print_roster())
+        print(global_problem_dict)
+        for topic in global_problem_dict:
+            for difficulty in global_problem_dict[topic]:
+                for id in global_problem_dict[topic][difficulty]:
+                    print(topic, difficulty, id)
+                    #print(global_problem_dict[topic][difficulty][id].format(1))
+
+    return comments
+
+print(test_global_load(1))
+
+problem = loaddbfile("problem") #TODO MIGRATE THIS TO global_problem_dict
 # dict of problems, {id:[problem text, solution text, workspace text]}
-problem_meta = loaddbfile("problem_meta")
+problem_meta = loaddbfile("problem_meta") #TODO MIGRATE THIS TO global_problem_dict
 # dict of problem information {id:(topic, standard, calc_type=1, difficulty=3,
 #                                  level=1, source='cjh')
 # calc_type: 0 no calculator allowed, 1 allowed, 2 calc practice
 # difficulty 1-10
 # level 1-6 (webworks reference)
 # source - author, or history of exercise ("cjh")
-skill = loaddbfile("skill")
+skill = loaddbfile("skill") #TODO MIGRATE THIS TO global_problem_dict
 # dict of problem ids for each topic, {topic:[id1, id2, ...]}
 
-topic_ids = loaddbfile("topic_ids")
-# dict {topic: starting problem_id number} 1000 for each of 233 topics
-
-# == temp test lines ==
-question = "What is the equation of a line parallel to $y=-3x+6$ with a $y$-intercept of 5?"
-texts = {"question":question}
-topic = "Writing Linear Equations"
-
-p1 = Problem(topic, texts)
-
-print(p1.format(1))
-print(p1.texts["question"])
-# == END temp test lines ==
-def parse_tex_into_problemset():
+def parse_tex_into_problemset(): #TODO make this into a worksheet importer
     title = ("1214IB1_Test-exponentials", "ids in margin", \
              "Parsed from file: in/1214IB1_Test-exponentials.tex")
     infile = indir + title[0] + ".tex"
@@ -246,18 +291,16 @@ courses_data_dict = {"11.1 IB Math SL": imported_roster}
 global_courses_dict = {} # First time only
 for course_title in courses_data_dict:
 	students = {student:global_students_dict[student] for student in courses_data_dict[course_title]}
-
 global_courses_dict[course_title] = Course(course_title, students)
-print(global_courses_dict[course_title].print_roster())
 
-savedbfile(global_courses_dict, "global_courses_dict")
-savedbfile(global_students_dict, "global_students_dict")
-print(global_problem_dict)
+len(students)
+course_title
+imported_skillset
+
 
 # IMPORT PROBLEMS AND SET UP FOR DEC 14 PROBLEM SET as imported_problems {}
 # INFILE FIELDS: Topic,Difficulty,Calculator,Level,Text,Resource,Instructions
-global_problem_dict = {} # First time only
-#global_problem_dict = savedbfile("global_problem_dict")
+# global_problem_dict = {} # First time only
 infile = indir + "problems.csv"
 i = 0
 with open(infile, "r", encoding='latin-1') as r_file:
@@ -277,10 +320,35 @@ with open(infile, "r", encoding='latin-1') as r_file:
         source = "cjh"
         problem_id = lookup_new_problem_id(topic, difficulty)
             #NOT YET IMPORTED: workspace, answer, solution, rubric
-#GLOBAL CREATION OF PROBLEM BANK DICTIONARY {TOPIC: {DIFFICULTY: {ID: INSTANCE}}}
         global_problem_dict[topic] = {difficulty: {problem_id: \
             Problem(topic, texts, standard, difficulty, level, calculator, source)}}
 
+
+for topic in global_problem_dict:
+    if topic[-3:] == "pic":
+        del global_problem_dict[topic]
+
+     if global_problem_dict[topic].keys() != "Difficulty":
+         print(topic)
+
+p_ids = []
+for topic in global_problem_dict:
+    for difficulty in global_problem_dict[topic]:
+        for id in global_problem_dict[topic][difficulty]:
+            p_ids.append(id)
+problem_ids = {'general': p_ids}
+unit = "powers"
+course_title
+print(p_ids)
+
+for p_id in p_ids:
+    print(p_id)
+
+# global_problemset_dict = {} # First time only
+global_problemset_dict = {course_title: {unit: {1214:ProblemSet(course_title, unit, problem_ids)}}}
+
+savedbfile(global_courses_dict, "global_courses_dict")
+savedbfile(global_students_dict, "global_students_dict")
 savedbfile(global_problem_dict, "global_problem_dict")
 
 # PRINT STATEMENTS ARE ONLY TO TEST CODE
@@ -288,6 +356,17 @@ if False:
     print(imported_roster)
     print(imported_topics)
     print(imported_skillset)
+
+# == temp test lines ==
+question = "What is the equation of a line parallel to $y=-3x+6$ with a $y$-intercept of 5?"
+texts = {"question":question}
+topic = "Writing Linear Equations"
+
+p1 = Problem(topic, texts)
+
+print(p1.format(1))
+print(p1.texts["question"])
+# == END temp test lines ==
 
 #run only if module is called from command line
 if __name__ == "__main__":

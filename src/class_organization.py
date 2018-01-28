@@ -3,24 +3,26 @@ import random
 
 
 class ProblemSet():
-	def __init__(self, topics, date, course_title, assessment = "incomplete"):
-		"""
+	def __init__(self, course_title, unit, topics = {}, problem_ids = {'general': []}, \
+					date = None, assessment = "incomplete"):
+		""" Collection of problems that can be printed for assignment or discussion
+
+			course_title - str, title of the course e.g. 'Algebra 2'
+			unit - str, chapter in the course the ProblemSet is applicable to
 			topics - dict of {topic: number of problems}
+			problem_ids - dict of lists, problems by student {"general":[prob_ids]})
 			date - day/month/year
-			course_title - title of the course as str, e.g. 'Algebra 2'
 			average_class_skills - set default dict to become a dict of
 			{topic: average skill level for student in the respective course}
 			in this __init__ method
-
 			"""
-		self.topics = topics
-		self.date = date
 		self.course_title = course_title
+		self.unit = unit
+		self.topics = topics
+		self.problem_ids = problem_ids #I DECIDED TO SIMPLIFY TO AN ORDERED LIST OF IDS
+		self.date = date  # TODO convert to python date format
 
-		#TO DO - MAKE PROBLEM_IDS INTO DICT OF {'GENERAL': {ID: INSTANCE}}
-		self.problem_ids = {'general': self.general_problem_ids()}
-
-	def general_problem_ids(self, differentiated_students = []):
+	def general_problem_ids(self, differentiated_students = []): #TODO change return to dict of lists
 		""" Return dict {problem_id: problem instance}
 
 			Based on the average skill level of the class for each topic, generate a list of
@@ -59,18 +61,19 @@ class ProblemSet():
 		return problem_ids
 
 class DifferentiatedProblemSet(ProblemSet):
-	def __init__(self, topics, date, course_title, student_names):
+	def __init__(self, course_title, unit, topics = {}, problem_ids = {"general": []}, date = None, student_names = []):
 		"""
 			Inherited Attributes from ProblemSet class
+				course_title - str, title of the course e.g. 'Algebra 2'
+				unit - str, chapter in the course the ProblemSet is applicable to
 				topics - dict of {topic: number of problems}
+				problem_ids - dict of lists, problems by student {"general":[problem_ids]})
 				date - day/month/year
-				course_title - title of the course as str, e.g. 'Algebra 2'
 				average_class_skills - dict of {topic: average skill level
 				for student in the respective course}
-
 			student_names - list of student name tuples, (last, first)
 			"""
-		ProblemSet.__init__(self, topics, date, course_title)
+		ProblemSet.__init__(self, course_title, unit, topics, date)
 		self.problem_ids = {'general': self.general_problem_ids([name for name in student_names])}
 		# problem_ids IS DICT {STUDENT TUPLE: {PROBLEM ID:INSTANCE}}
 		self.student_names = student_names
@@ -103,14 +106,15 @@ class DifferentiatedProblemSet(ProblemSet):
 
 		return problem_ids
 
-def make_problem_set(course_title, topics, date, differentiated = False, specific_student_names = []):
-	""" Creates and returns a problem set instance
+def make_problem_set(course_title, unit, topics, date = None, differentiated = False, specific_student_names = []):
+	""" Creates and returns a problem set instance, updating student histories
 
-		topics is dict {topic: number of problems of that type}
+		topics is dict {topic: number of problems of that type desired}
+		TODO perhaps making a new problem set should be separated from assigning it, the latter updates history
 		"""
 	current_date = time.strftime("%d/%m/%Y")
 	if differentiated:
-		diff_problem_set = DifferentiatedProblemSet(topics, date, course_title, {}, specific_student_names)
+		diff_problem_set = DifferentiatedProblemSet(course_title, unit, topics, date, {}, specific_student_names)
 		for student_name in global_courses_dict[course_title].roster:
 			if student_name in specific_student_names:
 				global_students_dict[student_name].problem_set_history[current_date] = \
@@ -123,11 +127,11 @@ def make_problem_set(course_title, topics, date, differentiated = False, specifi
 
 		return diff_problem_set
 
-	problem_set = ProblemSet(topics, date, course_title)
-	for student_name in global_courses_dict[course_title].roster:
-		global_students_dict[student_name].problem_set_history[current_date] = \
+	problem_set = ProblemSet(course_title, unit, topics, date)
+	for student in global_courses_dict[course_title].roster:
+		global_students_dict[student].problem_set_history[current_date] = \
 			(Assessment(problem_set.problem_ids['general'], problem_set))
-		global_students_dict[student_name].problem_history.update(problem_set.problem_ids['general'])
+		global_students_dict[student].problem_history.update(problem_set.problem_ids['general'])
 
 	return problem_set
 
@@ -173,18 +177,36 @@ class Problem():
 		self.calc_type = calc_type
 		self.source = source
 
-	def format(self, text_flags):
+	def format(self, question = True, resource = False, workspace = False, \
+					instructions = False, answer = False, solution = False, \
+					rubric = False, meta = False):
 		""" Returns the LaTeX to be included in a .tex file for printing
 
-			text_flags - list of True/False that correspond to the text_inputs and whether or
-						 to in include the relevant input on the worksheet e.g.
-						 text_inputs = [problem_text, solution_text]
-						 text_flags = [True, False] indicates to include the problem_text, but
-						 not the solution_text on the worksheet
+			flags - whether to include that field of texts information
+			meta flat - whether to include the set of problem attributes
 			"""
 		problem_string = ""
-		if True:
-			problem_string += self.texts["question"]
+		if question:
+			problem_string += self.texts.get("question")
+		if resource:
+			problem_string += self.texts.get("resource")
+		if workspace:
+			problem_string += self.texts.get("workspace")
+		if instructions:
+			problem_string += self.texts.get("instructions")
+		if answer:
+			problem_string += self.texts.get("answer")
+		if solution:
+			problem_string += self.texts.get("solution")
+		if rubric:
+			problem_string += self.texts.get("rubric")
+		if meta:
+			problem_string += self.topic
+			problem_string += self.standard
+			problem_string += self.difficulty
+			problem_string += self.level
+			problem_string += self.calc_type
+			problem_string += self.source
 		return problem_string
 
 class Course():
