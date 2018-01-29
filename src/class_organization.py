@@ -6,6 +6,8 @@ import pickle
 
 HOME = os.environ["HOME"]
 dbdir = HOME + "/GitHub/mathai/db/"
+outdir = HOME + "/GitHub/mathai/out/"
+
 
 def load_global_data_files():
 	p = dbdir + "global_courses_dict" + '.pickle'
