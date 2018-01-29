@@ -25,7 +25,6 @@ def savedbfile(dbfile, filename):
         filename -  filename.pickle in ~/GitHub/mathai/db
          ("bank", "standards_text_jmap", "standards_tree_jmap")
         """
-    #dbdir = "/Users/chris/GitHub/mathai/db/"
     p = dbdir + filename + '.pickle'
     with open(p, 'wb') as f:
         pickle.dump(dbfile, f, pickle.HIGHEST_PROTOCOL)
@@ -38,13 +37,12 @@ def loaddbfile(filename):
          ("bank", "standards_text_jmap", "standards_tree_jmap")
         (problem records, standards files)
         """
-    #dbdir = "/Users/chris/GitHub/mathai/db/"
     p = dbdir + filename + '.pickle'
     with open(p, 'rb') as f:
         return pickle.load(f)
 
 
-def lookup_new_problem_id(topic, difficulty = 3): #TODO This has a bug
+def lookup_new_problem_id(topic, difficulty = 3):
     """ Selects an unused integer for use as key in the global_problem_dict
             topic = "Inverse of Functions"
         The topic and difficulty args are mapped to a starting place based on
@@ -52,11 +50,12 @@ def lookup_new_problem_id(topic, difficulty = 3): #TODO This has a bug
         """
     topic_ids = loaddbfile("topic_ids")
     existing_problem_ids = set()
-    for topic in global_problem_dict:
-        for difficulty in global_problem_dict[topic]:
-            for id in global_problem_dict[topic][difficulty]:
+    for t in global_problem_dict:
+        for d in global_problem_dict[t]:
+            for id in global_problem_dict[t][d]:
                 existing_problem_ids.add(id)
     seed = 1
+    #print(topic, difficulty, seed, len(existing_problem_ids))
     if topic in topic_ids.keys():
         seed = int(topic_ids[topic]) + int(difficulty) * 100
     while seed in existing_problem_ids:
@@ -105,8 +104,7 @@ def print_standards_descriptions(sd):
     for s in sd.keys():
         print(s + " " + sd[s])
 
-
-def print_set(problem_ids, title, pflag=1, sflag=0, wflag=0, idflag=0, numflag=1):
+def print_problemset(problem_ids, title, pflag=1, sflag=0, wflag=0, idflag=0, numflag=1):
     """ Creates a worksheet LaTeX file
 
         problem_ids: list of problem_ids to be included, in order
@@ -116,8 +114,53 @@ def print_set(problem_ids, title, pflag=1, sflag=0, wflag=0, idflag=0, numflag=1
         #numflag: 0 - no problem numbers; 1 prefix w "\item" &includes "\begin{enumerate}"
         output file is out_filename.tex in the /out/ directory
         """
-    #outdir = "/Users/chris/GitHub/mathai/out/"
-    #dbdir = "/Users/chris/GitHub/mathai/db/"
+    outfile = outdir + title[0] + ".tex"
+
+    with open(outfile, "w") as newfile:
+        with open(dbdir + "head.tex", "r") as head:
+            for line in head:
+                newfile.write(line)
+        newfile.write(title[1] + r"\\*" + '\n' + r"\begin{center}{" + \
+                      title[2] + r"}\end{center}" + '\n')
+        #with open(dbdir + "title.tex", "r") as title:
+            #for line in title:
+                #newfile.write(line)
+        if numflag == 1:
+            newfile.write(r'\begin{enumerate}' + '\n')
+
+        for id in problem_ids:
+            if numflag == 1:
+                newfile.write(r'\item ' + problem[id][0])
+            else:
+                newfile.write(problem[id][0].rstrip("\n")+r'\\*'+'\n')
+            if idflag == 1:
+                s = str(id) + " " + problem_meta[id][0] + " " +\
+                 problem_meta[id][1]
+                newfile.write(r'\\' + s + '\n')
+            elif idflag == 2:
+                newfile.write(r'\marginpar{' + str(id) +r'}' + '\n')
+
+        if numflag == 1:
+            newfile.write(r'\end{enumerate}'+'\n')
+        with open(dbdir + "foot.tex", "r") as foot:
+            for line in foot:
+                newfile.write(line)
+
+title = ("new_pset", "28 January 2018", "Test Run")
+
+if False:
+    global_problemset_dict["all"]["all"][1214].format(title)
+
+def print_set_legacy(problem_ids, title, pflag=1, sflag=0, wflag=0, idflag=0, numflag=1):
+    """ Creates a worksheet LaTeX file
+
+        problem_ids: list of problem_ids to be included, in order
+        title: (out_filename, date, title)
+        #flags specify inclusion of problem text, solution & workspace
+        idflag: 1 print problem id (enhance for standards & meta info)
+        #numflag: 0 - no problem numbers; 1 prefix w "\item" &includes "\begin{enumerate}"
+        output file is out_filename.tex in the /out/ directory
+        """
     outfile = outdir + title[0] + ".tex"
 
     with open(outfile, "w") as newfile:
@@ -154,7 +197,7 @@ def print_set(problem_ids, title, pflag=1, sflag=0, wflag=0, idflag=0, numflag=1
 def print_test():
     """ Runs four configurations of print_set, saving four files
         """
-    p = [problem_id for problem_id in problem.keys()]
+    p = [problem_id for problem_id in problem.keys()] # WHY DOESN'T PROBLEM NEED TO BE GLOBAL?
     p.sort()
     title = ("newfile1", "numflag=0", "Inventory: Full List of Problems")
     print_set(p, title, numflag=0)
@@ -165,20 +208,6 @@ def print_test():
     title = ("newfile4", "numflag=1 and idflag=2", "Inventory: Full List of Problems")
     print_set(p, title, idflag=2, numflag=1)
 
-
-standards = loaddbfile("standards_tree_jmap")
-# list of 4-tuples, (course, chapter, topic, ccss number) from JMAP
-standards_desc = loaddbfile("standards_text_jmap")
-# dict of text descriptions of standards, {ccss number, description} from JMAP
-topic_ids = loaddbfile("topic_ids")
-# dict {topic: starting problem_id number} 1000 for each of 233 topics
-
-global_courses_dict = loaddbfile("global_courses_dict")
-#GLOBAL COURSES DICTIONARY {COURSE TITLE: COURSE INSTANCE}
-global_students_dict = loaddbfile("global_students_dict")
-#GLOBAL STUDENTS DICT {STUDENT NAME TUPLE: STUDENT INSTANCE}
-global_problem_dict = loaddbfile("global_problem_dict")
-#GLOBAL PROBLEM DICT {TOPIC: {DIFFICULTY: {ID: INSTANCE}}} {'all':{'all':{}}}
 
 def test_global_load(long = False):
     """ Several short commands to confirm key data has loaded properly
@@ -215,6 +244,11 @@ def test_global_load(long = False):
     else:
         comments.append("Error with problems")
 
+    if len(global_problemset_dict) != 0:
+        comments.append(str(len(global_problemset_dict)) + " problem sets")
+    else:
+        comments.append("Error with problem sets")
+
     if long:
         print(global_courses_dict[course_title].print_roster())
         print(global_problem_dict)
@@ -240,6 +274,23 @@ problem_meta = loaddbfile("problem_meta") #TODO MIGRATE THIS TO global_problem_d
 # source - author, or history of exercise ("cjh")
 skill = loaddbfile("skill") #TODO MIGRATE THIS TO global_problem_dict
 # dict of problem ids for each topic, {topic:[id1, id2, ...]}
+
+standards = loaddbfile("standards_tree_jmap")
+# list of 4-tuples, (course, chapter, topic, ccss number) from JMAP
+standards_desc = loaddbfile("standards_text_jmap")
+# dict of text descriptions of standards, {ccss number, description} from JMAP
+topic_ids = loaddbfile("topic_ids")
+# dict {topic: starting problem_id number} 1000 for each of 233 topics
+
+global_courses_dict = loaddbfile("global_courses_dict")
+#GLOBAL COURSES DICTIONARY {COURSE TITLE: COURSE INSTANCE}
+global_students_dict = loaddbfile("global_students_dict")
+#GLOBAL STUDENTS DICT {STUDENT NAME TUPLE: STUDENT INSTANCE}
+global_problem_dict = loaddbfile("global_problem_dict")
+#GLOBAL PROBLEM DICT {TOPIC: {DIFFICULTY: {ID: INSTANCE}}} {'all':{'all':{}}}
+global_problemset_dict = loaddbfile("global_problemset_dict")
+# GLOBAL PROBLEM SET DICT {COURSE: {UNIT: {ID: INSTANCE}}}
+
 
 def parse_tex_into_problemset(): #TODO make this into a worksheet importer
     title = ("1214IB1_Test-exponentials", "ids in margin", \
@@ -352,6 +403,7 @@ def refresh_problem_dict_all_all():
         Makes it easy to lookup instance from problem id.
         I INTEND FOR THIS TO BE A SHALLOW COPY
         """
+    global global_problem_dict
     for topic in global_problem_dict:
         if topic != "all":
             for difficulty in global_problem_dict[topic]:
@@ -360,15 +412,17 @@ def refresh_problem_dict_all_all():
                         global_problem_dict["all"]["all"][id] = global_problem_dict[topic][difficulty][id]
 
 
-def make_problem_set():
+def make_problem_set(date_id):
     """ function Placeholder
         """
     p_ids = [46500, 59300, 167300, 159300, 61200, 178300, 74300, 42500, 60400, 73300]
     problem_ids = {'general': p_ids} #Problemsets have problem_id lists by student
     unit = "powers"
     course_title = "11.1 IB Math SL"
+    global global_problemset_dict
+    global_problemset_dict[course_title] = {unit: {date_id:ProblemSet(course_title, unit, problem_ids)}}
+    global_problemset_dict["all"]["all"][date_id] = global_problemset_dict[course_title][unit][date_id]
 
-    global_problemset_dict = {course_title: {unit: {1214:ProblemSet(course_title, unit, problem_ids)}}}
 
 def save_global_files():
     """ Placeholder function for pickle save commands
@@ -378,17 +432,6 @@ def save_global_files():
     savedbfile(global_problem_dict, "global_problem_dict")
     savedbfile(global_problemset_dict, "global_problemset_dict")
 
-
-# == temp test lines ==
-question = "What is the equation of a line parallel to $y=-3x+6$ with a $y$-intercept of 5?"
-texts = {"question":question}
-topic = "Writing Linear Equations"
-
-p1 = Problem(topic, texts)
-
-print(p1.format(1))
-print(p1.texts["question"])
-# == END temp test lines ==
 
 #run only if module is called from command line
 if __name__ == "__main__":

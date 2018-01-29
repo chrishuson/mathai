@@ -1,14 +1,27 @@
 import time
 import random
+import os
+import pickle
 
-from main import loaddbfile
 
-global_courses_dict = loaddbfile("global_courses_dict")
+HOME = os.environ["HOME"]
+dbdir = HOME + "/GitHub/mathai/db/"
 
-global_students_dict = loaddbfile("global_students_dict")
+def load_global_data_files():
+	p = dbdir + "global_courses_dict" + '.pickle'
+	with open(p, 'rb') as f:
+		global_courses_dict = pickle.load(f)
 
-global_problem_dict = loaddbfile("global_problem_dict")
+	p = dbdir + "global_students_dict" + '.pickle'
+	with open(p, 'rb') as f:
+		global_students_dict = pickle.load(f)
 
+	p = dbdir + "global_problem_dict" + '.pickle'
+	with open(p, 'rb') as f:
+		global_problem_dict = pickle.load(f)
+
+if False:
+	load_global_data_files()
 
 class ProblemSet():
 	def __init__(self, course_title, unit, topics = {}, problem_ids = {'general': []}, \
@@ -67,6 +80,45 @@ class ProblemSet():
 				problem_ids[problem_id] = unused_problems_dict[problem_id]
 
 		return problem_ids
+
+	def format(self, title, pflag=1, sflag=0, wflag=0, idflag=0, numflag=1):
+	    """ Creates a worksheet LaTeX file
+
+	        problem_ids: list of problem_ids to be included, in order
+	        title: (out_filename, date, header)
+	        #flags specify inclusion of problem text, solution & workspace
+	        idflag: 1 print problem id (enhance for standards & meta info)
+	        #numflag: 0 - no problem numbers; 1 prefix w "\item" &includes "\begin{enumerate}"
+	        output file is out_filename.tex in the /out/ directory
+	        """
+	    outfile = outdir + title[0] + ".tex"
+
+	    with open(outfile, "w") as newfile:
+	        with open(dbdir + "head.tex", "r") as head:
+	            for line in head:
+	                newfile.write(line)
+	        newfile.write(title[1] + r"\\*" + '\n' + r"\begin{center}{" + \
+	                      title[2] + r"}\end{center}" + '\n')
+	        if numflag == 1:
+	            newfile.write(r'\begin{enumerate}' + '\n')
+
+	        for id in self.problem_ids["general"]:
+	            if numflag == 1:
+	                newfile.write(r'\item ' + global_problem_dict["all"]["all"][id].format())
+	            else:
+	                newfile.write(global_problem_dict["all"]["all"][id].format().rstrip("\n")+r'\\*'+'\n')
+	            if idflag == 1:
+	                s = str(id) + " " + global_problem_dict["all"]["all"][id].format(question = False, meta = True)
+	                newfile.write(r'\\' + s + '\n')
+	            elif idflag == 2:
+	                newfile.write(r'\marginpar{' + str(id) +r'}' + '\n')
+
+	        if numflag == 1:
+	            newfile.write(r'\end{enumerate}'+'\n')
+	        with open(dbdir + "foot.tex", "r") as foot:
+	            for line in foot:
+	                newfile.write(line)
+
 
 class DifferentiatedProblemSet(ProblemSet):
 	def __init__(self, course_title, unit, topics = {}, problem_ids = {"general": []}, date = None, student_names = []):
