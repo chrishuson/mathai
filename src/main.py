@@ -147,12 +147,9 @@ def print_problemset(problem_ids, title, pflag=1, sflag=0, wflag=0, idflag=0, nu
                 newfile.write(line)
 
 title = ("new_pset", "28 January 2018", "Test Run")
-# course_title = "11.1 IB Math SL"
-# unit = powers
+
 if False:
-    global_problemset_dict["11.1 IB Math SL"]["powers"][1214].format(title)
-    for key in global_problemset_dict["11.1 IB Math SL"]["powers"]:
-        print(key)
+    global_problemset_dict["all"]["all"][1214].format(title)
 
 def print_set_legacy(problem_ids, title, pflag=1, sflag=0, wflag=0, idflag=0, numflag=1):
     """ Creates a worksheet LaTeX file
