@@ -51,11 +51,15 @@ class ProblemSet():
 			Based on the average skill level of the class for each topic, generate a list of
 			problem_ids for this 'general' problem set
 			"""
+
+		#ACCESS PROBLEMS ALREADY ASSIGNED TO STUDENTS
 		past_problems = []
 		for student_name in global_courses_dict[self.course_title].roster:
 			if student_name not in differentiated_students:
 				past_problems.extend(global_courses_dict[self.course_title].roster[student_name].problem_history.keys())
 
+		#MAKE DICTIONARY W/ ALL TOPICS FOR A SPECIFIC CLASS POINTING TO THE AVERAGE SKILL LEVEL
+		#FOR A STUDENT IN THAT CLASS
 		average_class_skills = {}
 		for topic in self.topics:
 			#initialize both topic_score and student_count at 0
@@ -69,6 +73,9 @@ class ProblemSet():
 					student_count += 1
 			average_class_skills[topic] = round(topic_score/student_count)
 
+		#AFTER ACCESSING ALL AVAILABLE PROBLEMS FOR A CERTAIN TOPIC AND DIFFICULTY
+		#REMOVE THE PROBLEMS ALREADY ASSIGNED TO STUDENTS AND GENERATE A RANDOM PROBLEM
+		#FOR THE PSET FROM THE APPRROPRIATE UNUSED PROBLEMS
 		problem_ids = {}
 		for topic in self.topics:
 			students_skill = average_class_skills[topic]
@@ -145,10 +152,13 @@ class DifferentiatedProblemSet(ProblemSet):
 			self.problem_ids[student_name] = self.specific_problem_ids(student_name)
 
 	def specific_problem_ids(self, student_name):
-		#access student instance of student names to base problem selections off student skillset
+		#ACCESS PROBLEMS ALREADY ASSIGNED TO STUDENT
 		student = global_students_dict[student_name]
 		past_problems = global_courses_dict[self.course_title].roster[student_name].problem_history.keys()
 
+		#AFTER ACCESSING ALL AVAILABLE PROBLEMS FOR A CERTAIN TOPIC AND DIFFICULTY
+		#REMOVE THE PROBLEMS ALREADY ASSIGNED TO THE STUDENT AND GENERATE A RANDOM PROBLEM
+		#FOR THE PSET FROM THE APPRROPRIATE UNUSED PROBLEMS
 		problem_ids = {}
 		for topic in self.topics:
 			students_skill = student.skillset[topic]
@@ -169,33 +179,70 @@ class DifferentiatedProblemSet(ProblemSet):
 		return problem_ids
 
 def assign_problem_set(course_title, unit, topics, date = None, differentiated = False, specific_student_names = []):
-	""" Creates and returns a problem set instance, updating student histories
+	""" Returns a problem set instance, while also updating student problem and problem set histories
 
-		topics is dict {topic: number of problems of that type desired}
-		TODO perhaps making a new problem set should be separated from assigning it, the latter updates history
+		course_title - str, title of the course e.g. 'Algebra 2'
+		unit - str, chapter in the course the ProblemSet is applicable to
+		topics - dict of {topic: number of problems}
+		date - day/month/year
+		differentiated - True/False specifying whether or not to generate only
+						a general pset or differentiated ones for specific
+						students as well
+		specific_student_names - if differentiated, a list that details the
+								students who should recieve a differentiated
+								problem set
 		"""
 	current_date = time.strftime("%d/%m/%Y")
+
+	problem_set = make_problem_set(course_title, unit, topics, date = None, differentiated = False, \
+				specific_student_names = [])
+
+	#INITIAL CHECK TO SEE IF USER REQUESTED DIFFERENTIATED PSET FOR SOME STUDENT COHORT
 	if differentiated:
-		diff_problem_set = DifferentiatedProblemSet(course_title, unit, topics, date, {}, specific_student_names)
+
+		#ADJUST RESPECTIVE STUDENT'S PROBLEM SET AND PROBLEM HISTORY BASED ON DIFFERENTIATED PROBLEM
+		#SET GENERATION
 		for student_name in global_courses_dict[course_title].roster:
 			if student_name in specific_student_names:
 				global_students_dict[student_name].problem_set_history[current_date] = \
-					(Assessment(diff_problem_set.problem_ids[student_name], diff_problem_set))
-				global_students_dict[student_name].problem_history.update(diff_problem_set.problem_ids[student_name])
+					(Assessment(problem_set.problem_ids[student_name], problem_set))
+				global_students_dict[student_name].problem_history.update(problem_set.problem_ids[student_name])
 			else:
 				global_students_dict[student_name].problem_set_history[current_date] = \
-					(Assessment(diff_problem_set.problem_ids['general'], diff_problem_set))
-				global_students_dict[student_name].problem_history.update(diff_problem_set.problem_ids['general'])
+					(Assessment(problem_set.problem_ids['general'], problem_set))
+				global_students_dict[student_name].problem_history.update(problem_set.problem_ids['general'])
 
-		return diff_problem_set
+		return problem_set
 
-	problem_set = ProblemSet(course_title, unit, topics, date)
+	#ADJUST ALL STUDENTS' PROBLEM SET AND PROBLEM HISTORY BASED ON PROBLEM SET GENERATED
 	for student in global_courses_dict[course_title].roster:
 		global_students_dict[student].problem_set_history[current_date] = \
 			(Assessment(problem_set.problem_ids['general'], problem_set))
 		global_students_dict[student].problem_history.update(problem_set.problem_ids['general'])
 
 	return problem_set
+
+def make_problem_set(course_title, unit, topics, date = None, differentiated = False, \
+				specific_student_names = []):
+	""" Returns a problem set instance8
+
+		course_title - str, title of the course e.g. 'Algebra 2'
+		unit - str, chapter in the course the ProblemSet is applicable to
+		topics - dict of {topic: number of problems}
+		date - day/month/year
+		differentiated - True/False specifying whether or not to generate only
+						a general pset or differentiated ones for specific
+						students as well
+		specific_student_names - if differentiated, a list that details the
+								students who should recieve a differentiated
+								problem set
+
+			"""
+
+	if differentiated:
+		return DifferentiatedProblemSet(course_title, unit, topics, date, {}, specific_student_names)
+
+	return ProblemSet(course_title, unit, topics, date)
 
 
 class Assessment():
