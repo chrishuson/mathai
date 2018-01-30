@@ -26,14 +26,14 @@ if False:
 	load_global_data_files()
 
 class ProblemSet():
-	def __init__(self, course_title, unit, topics = {}, problem_ids = {'general': []}, \
+	def __init__(self, course_title, unit, topics = {}, problem_ids = {('last', 'first'): []}, \
 					date = None, assessment = "incomplete"):
 		""" Collection of problems that can be printed for assignment or discussion
 
 			course_title - str, title of the course e.g. 'Algebra 2'
 			unit - str, chapter in the course the ProblemSet is applicable to
 			topics - dict of {topic: number of problems}
-			problem_ids - dict of lists, problems by student {"general":[prob_ids]})
+			problem_ids - dict of lists, problems by student {('last', 'first'):[prob_ids]})
 			date - day/month/year
 			average_class_skills - set default dict to become a dict of
 			{topic: average skill level for student in the respective course}
@@ -42,14 +42,17 @@ class ProblemSet():
 		self.course_title = course_title
 		self.unit = unit
 		self.topics = topics
-		self.problem_ids = problem_ids #I DECIDED TO SIMPLIFY TO AN ORDERED LIST OF IDS
+		if problem_ids[('last', 'first')] == []:
+			self.problem_ids[('last', 'first')] = self.general_problem_ids() #I DECIDED TO SIMPLIFY TO AN ORDERED LIST OF IDS
+		else:
+			self.problem_ids = problem_ids
 		self.date = date  # TODO convert to python date format
 
 	def general_problem_ids(self, differentiated_students = []): #TODO change return to dict of lists
 		""" Return dict {problem_id: problem instance}
 
 			Based on the average skill level of the class for each topic, generate a list of
-			problem_ids for this 'general' problem set
+			problem_ids for this ('last', 'first') problem set
 			"""
 
 		#ACCESS PROBLEMS ALREADY ASSIGNED TO STUDENTS
@@ -76,7 +79,7 @@ class ProblemSet():
 		#AFTER ACCESSING ALL AVAILABLE PROBLEMS FOR A CERTAIN TOPIC AND DIFFICULTY
 		#REMOVE THE PROBLEMS ALREADY ASSIGNED TO STUDENTS AND GENERATE A RANDOM PROBLEM
 		#FOR THE PSET FROM THE APPRROPRIATE UNUSED PROBLEMS
-		problem_ids = {}
+		problem_ids = []
 		for topic in self.topics:
 			students_skill = average_class_skills[topic]
 			available_problems = global_problem_dict[topic][students_skill].keys()
@@ -86,7 +89,7 @@ class ProblemSet():
 
 			for problem_number in range(self.topics[topic]):
 				problem_id = random.choice(unused_problems_dict.keys())
-				problem_ids[problem_id] = unused_problems_dict[problem_id]
+				problem_ids.append(problem_id)
 
 		return problem_ids
 
@@ -111,7 +114,7 @@ class ProblemSet():
 	        if numflag == 1:
 	            newfile.write(r'\begin{enumerate}' + '\n')
 
-	        for id in self.problem_ids["general"]:
+	        for id in self.problem_ids[('last', 'first')]:
 	            if numflag == 1:
 	                newfile.write(r'\item ' + global_problem_dict["all"]["all"][id].format())
 	            else:
@@ -130,21 +133,25 @@ class ProblemSet():
 
 
 class DifferentiatedProblemSet(ProblemSet):
-	def __init__(self, course_title, unit, topics = {}, problem_ids = {"general": []}, date = None, student_names = []):
+	def __init__(self, course_title, unit, topics = {}, problem_ids = {('last', 'first'): []}, date = None, student_names = []):
 		"""
 			Inherited Attributes from ProblemSet class
 				course_title - str, title of the course e.g. 'Algebra 2'
 				unit - str, chapter in the course the ProblemSet is applicable to
 				topics - dict of {topic: number of problems}
-				problem_ids - dict of lists, problems by student {"general":[problem_ids]})
+				problem_ids - dict of lists, problems by student {('last', 'first'):[problem_ids]})
 				date - day/month/year
 				average_class_skills - dict of {topic: average skill level
 				for student in the respective course}
 			student_names - list of student name tuples, (last, first)
 			"""
 		ProblemSet.__init__(self, course_title, unit, topics, date)
-		self.problem_ids = {'general': self.general_problem_ids([name for name in student_names])}
-		# problem_ids IS DICT {STUDENT TUPLE: {PROBLEM ID:INSTANCE}}
+
+		if problem_ids[('last', 'first')] == []:
+			self.problem_ids[('last', 'first')] = self.general_problem_ids() #I DECIDED TO SIMPLIFY TO AN ORDERED LIST OF IDS
+		else:
+			self.problem_ids = problem_ids
+
 		self.student_names = student_names
 
 		#generate differentiated problems for the students specified
@@ -159,7 +166,7 @@ class DifferentiatedProblemSet(ProblemSet):
 		#AFTER ACCESSING ALL AVAILABLE PROBLEMS FOR A CERTAIN TOPIC AND DIFFICULTY
 		#REMOVE THE PROBLEMS ALREADY ASSIGNED TO THE STUDENT AND GENERATE A RANDOM PROBLEM
 		#FOR THE PSET FROM THE APPRROPRIATE UNUSED PROBLEMS
-		problem_ids = {}
+		problem_ids = []
 		for topic in self.topics:
 			students_skill = student.skillset[topic]
 			available_problems = global_problem_dict[topic][students_skill].keys()
@@ -172,7 +179,7 @@ class DifferentiatedProblemSet(ProblemSet):
 				question_difficulty = student_skill - problem_number + 1
 				#make problem_bank global variable to be able to access here
 				problem_id = random.choice(unused_problems_dict.keys())
-				problem_ids[problem_id] = unused_problems_dict[problem_id]
+				problem_ids.append(problem_id)
 				#increment the difficulty of the next question
 				question_difficulty += 1
 
@@ -192,8 +199,6 @@ def assign_problem_set(course_title, unit, topics, date = None, differentiated =
 								students who should recieve a differentiated
 								problem set
 		"""
-	current_date = time.strftime("%d/%m/%Y")
-
 	problem_set = make_problem_set(course_title, unit, topics, date = None, differentiated = False, \
 				specific_student_names = [])
 
@@ -209,16 +214,16 @@ def assign_problem_set(course_title, unit, topics, date = None, differentiated =
 				global_students_dict[student_name].problem_history.update(problem_set.problem_ids[student_name])
 			else:
 				global_students_dict[student_name].problem_set_history[current_date] = \
-					(Assessment(problem_set.problem_ids['general'], problem_set))
-				global_students_dict[student_name].problem_history.update(problem_set.problem_ids['general'])
+					(Assessment(problem_set.problem_ids[('last', 'first')], problem_set))
+				global_students_dict[student_name].problem_history.update(problem_set.problem_ids[('last', 'first')])
 
 		return problem_set
 
 	#ADJUST ALL STUDENTS' PROBLEM SET AND PROBLEM HISTORY BASED ON PROBLEM SET GENERATED
 	for student in global_courses_dict[course_title].roster:
 		global_students_dict[student].problem_set_history[current_date] = \
-			(Assessment(problem_set.problem_ids['general'], problem_set))
-		global_students_dict[student].problem_history.update(problem_set.problem_ids['general'])
+			(Assessment(problem_set.problem_ids[('last', 'first')], problem_set))
+		global_students_dict[student].problem_history.update(problem_set.problem_ids[('last', 'first')])
 
 	return problem_set
 
@@ -238,7 +243,6 @@ def make_problem_set(course_title, unit, topics, date = None, differentiated = F
 								problem set
 
 			"""
-
 	if differentiated:
 		return DifferentiatedProblemSet(course_title, unit, topics, date, {}, specific_student_names)
 
@@ -349,10 +353,11 @@ class Course():
 
 class Student():
 	def __init__(self, student_name_tuple, problem_history = {}, problem_set_history = {}, \
-					skillset = None):
+					skillset = {"Default": 3}):
 		""" Student definition
 
 			(last_name, first_name text strings)
+			problem_history - dict of {problem_id: instance}
 			problem_set_history - dict of {date: Assessment instance w/ problem_ids and
 			assessment_status as attributes}
 			skillset - dict of {topic:integer level of ability} from 0 to 10, topic = "Default"
@@ -362,14 +367,7 @@ class Student():
 		self.last_name = student_name_tuple[0]
 		self.problem_history = problem_history
 		self.problem_set_history = problem_set_history
-		#still need to specify what default skillset would be
-		default_skillset = {}
-
-		#make sure a skillset has been specified, or make it the default if not
-		if skillset == None:
-			self.skillset = default_skillset
-		else:
-			self.skillset = skillset
+		self.skillset = skillset
 
 	def update_skillset(self, update_skills):
 		""" Function to update the student's skills
@@ -377,4 +375,10 @@ class Student():
 			update_skills - dict of {topic: current skill level +/- integer value}
 			"""
 		for topic in update_skills:
+			self.skillset[topic] = self.skillset.get(topic, self.skillset["Default"])
 			self.skillset[topic] += update_skills[topic]
+			if self.skillset[topic] < 0:
+				self.skillset[topic] = 0
+			elif self.skillset[topic] > 10:
+				self.skillset[topic] = 10
+				
