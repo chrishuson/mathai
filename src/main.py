@@ -18,6 +18,7 @@ outdir = HOME + "/GitHub/mathai/out/"
 indir = HOME + "/GitHub/mathai/in/"
 
 
+
 def savedbfile(dbfile, filename):
     """ Saves persistent record using pickle
 
@@ -291,27 +292,33 @@ global_problem_dict = loaddbfile("global_problem_dict")
 global_problemset_dict = loaddbfile("global_problemset_dict")
 # GLOBAL PROBLEM SET DICT {COURSE: {UNIT: {ID: INSTANCE}}}
 
-
 def parse_tex_into_problemset(): #TODO make this into a worksheet importer
     title = ("1214IB1_Test-exponentials", "ids in margin", \
              "Parsed from file: in/1214IB1_Test-exponentials.tex")
     infile = indir + title[0] + ".tex"
 
     default_topic = "Writing Linear Equations"
+    default_difficulty = 5
+
     topic = default_topic
+    difficulty = default_difficulty
     with open(infile, "r") as texfile:
         for line in texfile:
-            if line[:6] == "\\item ":
-                problem_text = line[6:]
-                p = Problem(topic, {"question":problem_text})
+            print(line)
+            if '\item' in line:
+                for index in range(len(line) - 6):
+                    if line[index:index+5] == '\item':
+                        global_problem_dict[topic][difficulty] = \
+                        {lookup_new_problem_id(topic, difficulty): Problem(topic, \
+                            {"question": line[index +6:]})}
 
-            elif line[:5] == "\\subs":
-                topic = line[10:-2]
-                print(topic)
+            elif "\subsection*" in line:
+                for index in range(len(line) - 13):
+                    if line[index:index+12] == "\subsection*":
+                        topic = line[index+13:-2]
 
-    line = "\item $5\%$ interest per annum, \$10,000 principal, one year"
-    line[:6]
-
+    # line = "\item $5\%$ interest per annum, \$10,000 principal, one year"
+    # line[:6]
 
 def import_students_from_files(course_title = "11.1 IB Math SL"):
     """ Upload student (& skills) data from text files in indir
@@ -360,7 +367,6 @@ def import_students_from_files(course_title = "11.1 IB Math SL"):
         print(imported_roster)
         print(imported_topics)
         print(imported_skillset)
-
 
 def import_problems_from_files():
     """ Upload problems from indir problems files
@@ -433,7 +439,7 @@ def save_global_files():
     savedbfile(global_problemset_dict, "global_problemset_dict")
 
 
-#run only if module is called from command line
+run only if module is called from command line
 if __name__ == "__main__":
     print("running worksheet generator")
     arg = input("Type 'all' , 'test', 'tree', 'desc', or 'add': ")

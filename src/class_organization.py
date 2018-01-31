@@ -8,23 +8,6 @@ HOME = os.environ["HOME"]
 dbdir = HOME + "/GitHub/mathai/db/"
 outdir = HOME + "/GitHub/mathai/out/"
 
-
-def load_global_data_files():
-	p = dbdir + "global_courses_dict" + '.pickle'
-	with open(p, 'rb') as f:
-		global_courses_dict = pickle.load(f)
-
-	p = dbdir + "global_students_dict" + '.pickle'
-	with open(p, 'rb') as f:
-		global_students_dict = pickle.load(f)
-
-	p = dbdir + "global_problem_dict" + '.pickle'
-	with open(p, 'rb') as f:
-		global_problem_dict = pickle.load(f)
-
-if False:
-	load_global_data_files()
-
 class ProblemSet():
 	def __init__(self, course_title, unit, topics = {}, problem_ids = {('last', 'first'): []}, \
 					date = None, assessment = "incomplete"):
@@ -42,7 +25,10 @@ class ProblemSet():
 		self.course_title = course_title
 		self.unit = unit
 		self.topics = topics
-		if problem_ids[('last', 'first')] == []:
+		self.problem_ids = problem_ids
+		if self.topics == {'all': 'all'}:
+			self.problem_ids[('last', 'first')] = list(global_problem_dict['all']['all'].keys())
+		elif problem_ids[('last', 'first')] == []:
 			self.problem_ids[('last', 'first')] = self.general_problem_ids() #I DECIDED TO SIMPLIFY TO AN ORDERED LIST OF IDS
 		else:
 			self.problem_ids = problem_ids
@@ -381,4 +367,17 @@ class Student():
 				self.skillset[topic] = 0
 			elif self.skillset[topic] > 10:
 				self.skillset[topic] = 10
+
+p = dbdir + "global_courses_dict" + '.pickle'
+with open(p, 'rb') as f:
+	global_courses_dict = pickle.load(f)
+
+p = dbdir + "global_students_dict" + '.pickle'
+with open(p, 'rb') as f:
+	global_students_dict = pickle.load(f)
+
+p = dbdir + "global_problem_dict" + '.pickle'
+with open(p, 'rb') as f:
+	global_problem_dict = pickle.load(f)
+
 				
