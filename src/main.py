@@ -422,7 +422,7 @@ def make_problem_set(date_id):
     """ function Placeholder
         """
     p_ids = [46500, 59300, 167300, 159300, 61200, 178300, 74300, 42500, 60400, 73300]
-    problem_ids = {'general': p_ids} #Problemsets have problem_id lists by student
+    problem_ids = {'general': p_ids, ('last','first'): p_ids[1:5]} #Problemsets have problem_id lists by student
     unit = "powers"
     course_title = "11.1 IB Math SL"
     global global_problemset_dict
@@ -439,7 +439,7 @@ def save_global_files():
     savedbfile(global_problemset_dict, "global_problemset_dict")
 
 
-run only if module is called from command line
+#run only if module is called from command line
 if __name__ == "__main__":
     print("running worksheet generator")
     arg = input("Type 'all' , 'test', 'tree', 'desc', or 'add': ")

@@ -16,7 +16,7 @@ class ProblemSet():
 			course_title - str, title of the course e.g. 'Algebra 2'
 			unit - str, chapter in the course the ProblemSet is applicable to
 			topics - dict of {topic: number of problems}
-			problem_ids - dict of lists, problems by student {('last', 'first'):[prob_ids]})
+			problem_ids - dict of lists, problems by student {('last', 'first'):[prob_ids]}
 			date - day/month/year
 			average_class_skills - set default dict to become a dict of
 			{topic: average skill level for student in the respective course}
@@ -26,9 +26,9 @@ class ProblemSet():
 		self.unit = unit
 		self.topics = topics
 		self.problem_ids = problem_ids
-		if self.topics == {'all': 'all'}:
+		if self.topics == {'all': 'all'}: #?? I thought values were int number of problems
 			self.problem_ids[('last', 'first')] = list(global_problem_dict['all']['all'].keys())
-		elif problem_ids[('last', 'first')] == []:
+		elif problem_ids[('last', 'first')] == []: #TODO this risks throwing a KeyError if ('last', 'first') is not a student tuple
 			self.problem_ids[('last', 'first')] = self.general_problem_ids() #I DECIDED TO SIMPLIFY TO AN ORDERED LIST OF IDS
 		else:
 			self.problem_ids = problem_ids
@@ -85,7 +85,7 @@ class ProblemSet():
 	        problem_ids: list of problem_ids to be included, in order
 	        title: (out_filename, date, header)
 	        #flags specify inclusion of problem text, solution & workspace
-	        idflag: 1 print problem id (enhance for standards & meta info)
+	        idflag: 2 print problem id (1: enhance for standards & meta info)
 	        #numflag: 0 - no problem numbers; 1 prefix w "\item" &includes "\begin{enumerate}"
 	        output file is out_filename.tex in the /out/ directory
 	        """
@@ -282,7 +282,7 @@ class Problem():
 		""" Returns the LaTeX to be included in a .tex file for printing
 
 			flags - whether to include that field of texts information
-			meta flat - whether to include the set of problem attributes
+			meta flag - whether to include the set of problem attributes
 			"""
 		problem_string = ""
 		if question:
@@ -300,7 +300,7 @@ class Problem():
 		if rubric:
 			problem_string += self.texts.get("rubric")
 		if meta:
-			problem_string += self.topic
+			problem_string += self.topic #TODO needs spacing added
 			problem_string += self.standard
 			problem_string += self.difficulty
 			problem_string += self.level
