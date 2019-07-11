@@ -32,7 +32,7 @@ def saveproblem(problem, topic="Writing Linear Equations", \
     return problemdict
     
 def trim_item_prefix(problem):
-    '''notes for deleting the initial r'\item' text from a problem'''
+    '''notes for deleting the initial 'item' text from a problem'''
     firstline = problem[0]
     if r'\item' in firstline:
         for index in range(len(firstline) - 6):
@@ -60,10 +60,14 @@ def parsetexfile(infile):
     header = []
     body = []
     
-    with open(infile, "r") as texfile:
-        lines = texfile.readlines()
-        print(len(lines))
-        
+    try:
+        with open(infile, "r") as texfile:
+            lines = texfile.readlines()
+            print(len(lines))
+    except FileNotFoundError:
+        print('Tried to open non-existent file: ' + infile)
+        return None, None, None
+
     line = lines.pop(0)
     print('1', line)
     while lines and r'\begin{document}' not in line:
@@ -93,7 +97,15 @@ def parsebody(body):
     problem = []
     problems = []
     
-    line = body.pop(0)
+    if type(body) != list:
+        print('body needs to be a list, but its type was: ', type(body))
+        return None, None
+    try:
+        line = body.pop(0)
+    except IndexError:
+        print('Tried to run parsebody on empty file')
+        return None, None
+
     while body:
         if r'\subsection' in line:
             spacing.append(line)
@@ -137,15 +149,30 @@ def runtest():
     print(len(problems))
     return problems, spacing, packages, header, savebody
     
-#title = ("1214IB1_Test-exponentials", "ids in margin", \
-#             "Parsed from file: in/1214IB1_Test-exponentials.tex")
-title = ("13-5HW-triangles", "ids in margin", \
-             "Parsed from file: in/13-5HW-triangles.tex")
-infile = indir + title[0] + ".tex"
+testtitles = []
+testtitles.append(('parse_test1', '07/11/2019', 'First file to parse'))
+testtitles.append(('parse_test2', '07/12/2019', '2nd file to parse'))
+testtitles.append('Title Error case: title is a single string')
+testtitles.append(("13-5HW-triangles", "ids in margin", \
+             "Parsed from file: in/13-5HW-triangles.tex")) #non-existent file
 
-packages, header, body = parsetexfile(infile)
-print(len(packages), len(header), len(body))
+for title in testtitles:
+    print('\n', 'running test on: ', title)
+    if type(title) != tuple:
+        print('title must be tuple of filename, date, heading note. it was:')
+        print(title)
+    else:
+        infile = indir + title[0] + ".tex"
 
-problems, spacing = parsebody(body)
-print(len(problems))
-print(problems[-1])
+        packages, header, body = parsetexfile(infile)
+        if packages and header and body:
+            print(len(packages), len(header), len(body))
+        else:
+            print('parsetexfile returned empty file(s)')
+
+        problems, spacing = parsebody(body)
+        if problems and spacing:
+            print(len(problems))
+            print(problems[-1])
+        else:
+            print('parsebody returned empty file(s)')

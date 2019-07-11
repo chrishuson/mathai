@@ -46,8 +46,11 @@ def loaddbfile(filename):
         (problem records, standards files)
         """
     p = dbdir + filename + '.pickle'
-    with open(p, 'rb') as f:
-        return pickle.load(f)
+    try:
+        with open(p, 'rb') as f:
+            return pickle.load(f)
+    except FileNotFoundError:
+        print('Tried to open non-existent file: ' + p)
 
 
 def lookup_new_problem_id(topic, difficulty = 3):
