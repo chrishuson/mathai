@@ -17,6 +17,13 @@ dbdir = HOME + "/GitHub/mathai/db/"
 outdir = HOME + "/GitHub/mathai/out/"
 indir = HOME + "/GitHub/mathai/in/"
 
+testflag = True
+if testflag:
+    dbdir = HOME + "/GitHub/mathai/test/db/"
+    outdir = HOME + "/GitHub/mathai/test/out/"
+    indir = HOME + "/GitHub/mathai/test/in/"
+
+
 
 
 def savedbfile(dbfile, filename):
@@ -201,13 +208,13 @@ def print_test():
     p = [problem_id for problem_id in problem.keys()] # WHY DOESN'T PROBLEM NEED TO BE GLOBAL?
     p.sort()
     title = ("newfile1", "numflag=0", "Inventory: Full List of Problems")
-    print_set(p, title, numflag=0)
+    print_set_legacy(p, title, numflag=0)
     title = ("newfile2", "default (numflag=1)", "Inventory: Full List of Problems")
-    print_set(p, title)
+    print_set_legacy(p, title)
     title = ("newfile3", "numflag=1 and idflag=1", "Inventory: Full List of Problems")
-    print_set(p, title, idflag=1, numflag=1)
+    print_set_legacy(p, title, idflag=1, numflag=1)
     title = ("newfile4", "numflag=1 and idflag=2", "Inventory: Full List of Problems")
-    print_set(p, title, idflag=2, numflag=1)
+    print_set_legacy(p, title, idflag=2, numflag=1)
 
 
 def test_global_load(long = False):
@@ -251,7 +258,9 @@ def test_global_load(long = False):
         comments.append("Error with problem sets")
 
     if long:
-        print(global_courses_dict[course_title].print_roster())
+        for course_title in global_courses_dict:
+            print('Roster follows for course: ' + course_title)
+            global_courses_dict[course_title].print_roster()
         print(global_problem_dict)
         for topic in global_problem_dict:
             for difficulty in global_problem_dict[topic]:
@@ -279,7 +288,7 @@ skill = loaddbfile("skill") #TODO MIGRATE THIS TO global_problem_dict
 standards = loaddbfile("standards_tree_jmap")
 # list of 4-tuples, (course, chapter, topic, ccss number) from JMAP
 standards_desc = loaddbfile("standards_text_jmap")
-# dict of text descriptions of standards, {ccss number: description} from JMAP
+# dict of text descriptions of standards, {ccss number, description} from JMAP
 topic_ids = loaddbfile("topic_ids")
 # dict {topic: starting problem_id number} 1000 for each of 233 topics
 
@@ -292,7 +301,7 @@ global_problem_dict = loaddbfile("global_problem_dict")
 global_problemset_dict = loaddbfile("global_problemset_dict")
 # GLOBAL PROBLEM SET DICT {COURSE: {UNIT: {ID: INSTANCE}}}
 
-def parse_tex_into_problemset(): #TODO make this into a worksheet importer
+def parse_tex_into_problemset(): #TODO Replace with sandbox version
     title = ("1214IB1_Test-exponentials", "ids in margin", \
              "Parsed from file: in/1214IB1_Test-exponentials.tex")
     infile = indir + title[0] + ".tex"
@@ -305,7 +314,7 @@ def parse_tex_into_problemset(): #TODO make this into a worksheet importer
     with open(infile, "r") as texfile:
         for line in texfile:
             print(line)
-            if '\item' in line:
+            if r'\item' in line:
                 for index in range(len(line) - 6):
                     if line[index:index+5] == '\item':
                         global_problem_dict[topic][difficulty] = \
@@ -447,7 +456,7 @@ if __name__ == "__main__":
     if arg == "all":
         p = [problem_id for problem_id in problem.keys()]
         title = ("newfile", "ids in margin", "Inventory: Full List of Problems")
-        print_set(p, title, idflag=2)
+        print_set_legacy(p, title, idflag=2)
         print("Done: newfile.tex in out folder.")
     elif arg == "test":
         print_test()
@@ -457,7 +466,7 @@ if __name__ == "__main__":
     elif arg == "desc":
         print_standards_descriptions(standards_desc)
     elif arg == "add":
-        from add import add_problem
+        # from add import add_problem  -- LEGACY
         print("add not implemented")
     else:
         print("Didn't do anything")
