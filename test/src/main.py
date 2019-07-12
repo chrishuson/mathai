@@ -55,7 +55,9 @@ def loaddbfile(filename):
 
 def lookup_new_problem_id(topic, difficulty = 3):
     """ Selects an unused integer for use as key in the global_problem_dict
-            topic = "Inverse of Functions"
+            
+        topic - str, in keys of topic_ids file/dictionary. eg "Inverse of Functions"
+        difficulty - int
         The topic and difficulty args are mapped to a starting place based on
         giving each topic a thousand ids.
         """
@@ -157,10 +159,6 @@ def print_problemset(problem_ids, title, pflag=1, sflag=0, wflag=0, idflag=0, nu
             for line in foot:
                 newfile.write(line)
 
-title = ("new_pset", "28 January 2018", "Test Run")
-
-if False:
-    global_problemset_dict["all"]["all"][1214].format(title)
 
 def print_set_legacy(problem_ids, title, pflag=1, sflag=0, wflag=0, idflag=0, numflag=1):
     """ Creates a worksheet LaTeX file
@@ -251,7 +249,8 @@ def test_global_load(long = False):
         comments.append("Error with students")
 
     if len(global_problem_dict) != 0:
-        comments.append(str(len(global_problem_dict)) + " problems")
+        comments.append(str(len(global_problem_dict)) 
+            + " problem topics in global_problem_dict")
     else:
         comments.append("Error with problems")
 
@@ -295,12 +294,14 @@ standards_desc = loaddbfile("standards_text_jmap")
 topic_ids = loaddbfile("topic_ids")
 # dict {topic: starting problem_id number} 1000 for each of 233 topics
 
+topic_ids['unassigned']=0
+
 global_courses_dict = loaddbfile("global_courses_dict")
 #GLOBAL COURSES DICTIONARY {COURSE TITLE: COURSE INSTANCE}
 global_students_dict = loaddbfile("global_students_dict")
 #GLOBAL STUDENTS DICT {STUDENT NAME TUPLE: STUDENT INSTANCE}
 global_problem_dict = loaddbfile("global_problem_dict")
-#GLOBAL PROBLEM DICT {TOPIC: {DIFFICULTY: {ID: INSTANCE}}} {'all':{'all':{}}}
+#GLOBAL PROBLEM DICT {TOPIC: {DIFFICULTY: {ID: INSTANCE}}} {'unassigned':{0:{}}}
 global_problemset_dict = loaddbfile("global_problemset_dict")
 # GLOBAL PROBLEM SET DICT {COURSE: {UNIT: {ID: INSTANCE}}}
 
@@ -329,8 +330,6 @@ def parse_tex_into_problemset(): #TODO Replace with sandbox version
                     if line[index:index+12] == "\subsection*":
                         topic = line[index+13:-2]
 
-    # line = "\item $5\%$ interest per annum, \$10,000 principal, one year"
-    # line[:6]
 
 def import_students_from_files(course_title = "11.1 IB Math SL"):
     """ Upload student (& skills) data from text files in indir
@@ -416,7 +415,7 @@ def import_problems_from_files():
 
 
 def refresh_problem_dict_all_all():
-    """ Loop through the global problem data to make a universal dictionary under ["all"]["all"]
+    """ Loop through the global_problem_dict to make a universal dictionary under ["all"][0]
 
         Makes it easy to lookup instance from problem id.
         I INTEND FOR THIS TO BE A SHALLOW COPY
