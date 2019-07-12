@@ -53,7 +53,7 @@ def loaddbfile(filename):
 
 
 def save_global_files():
-    """ Placeholder function for pickle save commands
+    """ Pickle global_dicts: courses, students, problem, problemset
         """
     savedbfile(global_courses_dict, "global_courses_dict")
     savedbfile(global_students_dict, "global_students_dict")
@@ -73,15 +73,15 @@ def lookup_new_problem_id(topic, difficulty = 3):
     existing_problem_ids = set()
     for t in global_problem_dict:
         for d in global_problem_dict[t]:
-            for id in global_problem_dict[t][d]:
-                existing_problem_ids.add(id)
-    seed = 1
+            for pid in global_problem_dict[t][d]:
+                existing_problem_ids.add(pid)
+    new_problem_id = 1
     #print(topic, difficulty, seed, len(existing_problem_ids))
     if topic in topic_ids.keys():
-        seed = int(topic_ids[topic]) + int(difficulty) * 100
-    while seed in existing_problem_ids:
-        seed += 1
-    return seed
+        new_problem_id = int(topic_ids[topic]) + int(difficulty) * 100
+    while new_problem_id in existing_problem_ids:
+        new_problem_id += 1
+    return new_problem_id
 
 
 def lookup_standard(topic):
@@ -305,7 +305,6 @@ def parsebody(body):
             problems.remove(newline)
         except:
             break
-    #print(problems)
     empty = []
     while True:
         try: 
@@ -425,9 +424,13 @@ def refresh_problem_dict_all_all():
     for topic in global_problem_dict:
         if topic != "all":
             for difficulty in global_problem_dict[topic]:
-                if difficulty != "all":
-                    for id in global_problem_dict[topic][difficulty]:
-                        global_problem_dict["all"]["all"][id] = global_problem_dict[topic][difficulty][id]
+                for problemid in global_problem_dict[topic][difficulty]:
+                    try:
+                        global_problem_dict["all"][0][problemid] = global_problem_dict[topic][difficulty][problemid]
+                    except KeyError:
+                        global_problem_dict["all"][0] = {0: 'null instance'}
+                        global_problem_dict["all"][0][problemid] = global_problem_dict[topic][difficulty][problemid]
+                        del global_problem_dict["all"][0][0]
 
 
 def make_problem_set(date_id):
@@ -505,8 +508,8 @@ def test_global_load(long = False):
         print(global_problem_dict)
         for topic in global_problem_dict:
             for difficulty in global_problem_dict[topic]:
-                for id in global_problem_dict[topic][difficulty]:
-                    print(topic, difficulty, id)
+                for problemid in global_problem_dict[topic][difficulty]:
+                    print(topic, difficulty, problemid)
                     #print(global_problem_dict[topic][difficulty][id].format(1))
 
     return comments
@@ -578,14 +581,14 @@ standards_desc = loaddbfile("standards_text_jmap")
 topic_ids = loaddbfile("topic_ids")
 # dict {topic: starting problem_id number} 1000 for each of 233 topics
 
-topic_ids['unassigned']=0
+#topic_ids['unassigned']=0
 
 global_courses_dict = loaddbfile("global_courses_dict")
 #GLOBAL COURSES DICTIONARY {COURSE TITLE: COURSE INSTANCE}
 global_students_dict = loaddbfile("global_students_dict")
 #GLOBAL STUDENTS DICT {STUDENT NAME TUPLE: STUDENT INSTANCE}
 global_problem_dict = loaddbfile("global_problem_dict")
-#GLOBAL PROBLEM DICT {TOPIC: {DIFFICULTY: {ID: INSTANCE}}} {'unassigned':{0:{}}}
+#GLOBAL PROBLEM DICT {TOPIC: {DIFFICULTY: {PROBLEMID: INSTANCE}}} {'unassigned':{0:{}}}
 global_problemset_dict = loaddbfile("global_problemset_dict")
 # GLOBAL PROBLEM SET DICT {COURSE: {UNIT: {ID: INSTANCE}}}
 
