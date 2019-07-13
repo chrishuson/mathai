@@ -8,6 +8,10 @@ import csv
 import pickle
 from collections import namedtuple
 
+testflag = True
+if testflag:
+    os.chdir('/Users/chris/GitHub/mathai/test/src')
+
 from class_organization import ProblemSet, DifferentiatedProblemSet, Assessment, \
                                 Problem, Course, Student, assign_problem_set
 #import test
@@ -18,7 +22,6 @@ dbdir = HOME + "/GitHub/mathai/db/"
 outdir = HOME + "/GitHub/mathai/out/"
 indir = HOME + "/GitHub/mathai/in/"
 
-testflag = True
 if testflag:
     dbdir = HOME + "/GitHub/mathai/test/db/"
     outdir = HOME + "/GitHub/mathai/test/out/"
@@ -558,6 +561,21 @@ def test_parse(testtitles = []):
                 print('parsebody returned empty file(s)')
     return problems, spacing, packages, header, savebody
 
+def summary():
+    """ Prints listing of global_problem_dict """
+    print('topic, difficulty, problemid, len of question text')
+    c = 0
+    for t in global_problem_dict:
+        for d in global_problem_dict[t]:
+            for pid in global_problem_dict[t][d]:
+                c += 1
+                print(c, t, d, pid, '    ', end='')
+                try:
+                    print('len: ', len(global_problem_dict[t][d][pid].texts['question']))
+                except:
+                    print('error getting texts.question')
+                    continue
+
 """
 if False:
     print(test_global_load(1))
@@ -593,6 +611,7 @@ global_problemset_dict = loaddbfile("global_problemset_dict")
 # GLOBAL PROBLEM SET DICT {COURSE: {UNIT: {ID: INSTANCE}}}
 
 #run only if module is called from command line
+"""
 if __name__ == "__main__":
     print("running worksheet generator")
     arg = input("Type 'all' , 'test', 'tree', 'desc', or 'add': ")
@@ -614,3 +633,4 @@ if __name__ == "__main__":
         print("add not implemented")
     else:
         print("Didn't do anything")
+"""
