@@ -21,6 +21,7 @@ class ProblemSet():
 			average_class_skills - set default dict to become a dict of   -- TODO delete or implement
 			{topic: average skill level for student in the respective course}
 			in this __init__ method
+			TODO the default values assigned as mutable objects leads to a problem, better =None, with and assignment within the init to and empty list or dictionary
 			"""
 		self.course_title = course_title
 		self.unit = unit
@@ -79,7 +80,7 @@ class ProblemSet():
 
 		return problem_ids
 
-	def format(self, title, pflag=1, sflag=0, wflag=0, idflag=0, numflag=1):
+	def tex(self, title, pflag=1, sflag=0, wflag=0, idflag=0, numflag=1):
 	    """ Creates a worksheet LaTeX file
 
 	        problem_ids: list of problem_ids to be included, in order
@@ -102,11 +103,11 @@ class ProblemSet():
 
 	        for id in self.problem_ids[('last', 'first')]:
 	            if numflag == 1:
-	                newfile.write(r'\item ' + global_problem_dict["all"]["all"][id].format())
+	                newfile.write(r'\item ' + global_problem_dict["all"]["all"][id].tex())
 	            else:
-	                newfile.write(global_problem_dict["all"]["all"][id].format().rstrip("\n")+r'\\*'+'\n')
+	                newfile.write(global_problem_dict["all"]["all"][id].tex().rstrip("\n")+r'\\*'+'\n')
 	            if idflag == 1:
-	                s = str(id) + " " + global_problem_dict["all"]["all"][id].format(question = False, meta = True)
+	                s = str(id) + " " + global_problem_dict["all"]["all"][id].tex(question = False, meta = True)
 	                newfile.write(r'\\' + s + '\n')
 	            elif idflag == 2:
 	                newfile.write(r'\marginpar{' + str(id) +r'}' + '\n')
@@ -254,10 +255,12 @@ class Assessment():
 
 
 class Problem():
-	def __init__(self, topic, texts, standard = None,  \
-					difficulty = 3, level = 2, calc_type = 1, source = None):
-		""" A problem instance contains the following specific attributes
+	def __init__(self, problemid = None, topic = 'unassigned', \
+				texts = None, standard = None, difficulty = 3, \
+				level = 2, calc_type = 1, source = None):
+		""" Class for problem tex texts with attributes
 
+			problemid - int, key in problemdb, instance name has prefix 'p'
 			topic - string describing problem topic e.g. logarithms
 			texts - dict of relevant texts for a problem, keys: question,
 				resource (graphs and images), workspace, instructions, answer,
@@ -265,19 +268,33 @@ class Problem():
 			standard - ccss number, looked up if not an argument (TODO)
 			difficulty: 1 - 10 (how hard it is)
 			level: 1-6 (webworks /wiki/Problem_Levels) 2 simple steps,
-					3 more complex algorithms, 5 word problems, 6 writing prompts
+					3 more complex algorithms, 5 word problems, 
+					6 writing prompts
 			calc_type: 0 no calculator allowed, 1 allowed, 2 calc practice
 			source - string describing the author, or history of exercise e.g. "cjh"
 			"""
+		self.problemid = problemid
 		self.topic = topic
-		self.texts = texts
+		if texts is None:
+			self.texts = {}
+		else:
+			self.texts = texts
 		self.standard = standard
-		self.difficulty = difficulty
-		self.level = level
-		self.calc_type = calc_type
+		try:
+			self.difficulty = int(difficulty)
+		except ValueError:
+			print('difficulty must be 1-10')
+		try:
+			self.level = int(level)
+		except ValueError:
+			print('level must be 1-6')
+		try:
+			self.calc_type = int(calc_type)
+		except ValueError:
+			print('calc_type must be 0, 1, or 2')
 		self.source = source
 
-	def format(self, question = True, resource = False, workspace = False, \
+	def tex(self, question = True, resource = False, workspace = False, \
 					instructions = False, answer = False, solution = False, \
 					rubric = False, meta = False):
 		""" Returns the LaTeX to be included in a .tex file for printing
@@ -301,12 +318,11 @@ class Problem():
 		if rubric:
 			problem_string += self.texts.get("rubric")
 		if meta:
-			problem_string += self.topic #TODO needs spacing added
-			problem_string += self.standard
-			problem_string += self.difficulty
-			problem_string += self.level
-			problem_string += self.calc_type
-			problem_string += self.source
+			problem_string += ('\n'
+				+ self.topic + ' ' + str(self.standard) + ' '
+				+ str(self.difficulty) + ' ' + str(self.level) + ' '
+				+ str(self.calc_type) + ' ' + self.source
+			)
 		return problem_string
 
 class Course():

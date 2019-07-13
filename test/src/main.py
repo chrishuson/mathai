@@ -513,7 +513,7 @@ def test_global_load(long = False):
             for difficulty in global_problem_dict[topic]:
                 for problemid in global_problem_dict[topic][difficulty]:
                     print(topic, difficulty, problemid)
-                    #print(global_problem_dict[topic][difficulty][id].format(1))
+                    #print(global_problem_dict[topic][difficulty][id].tex(1))
 
     return comments
 
@@ -576,7 +576,20 @@ def summary():
                     print('error getting texts.question')
                     continue
 
-"""
+def summary2(problemdb, columns=['problemid', 'topic', 'difficulty',
+        'standard', 'level', 'calc_type'], textslenflag=True):
+    """ Print table of problems' attributes in arg file.
+
+        problemdb - dict, id: Problem instance
+        """
+    print(columns)
+    for problemid in problemdb:
+        for attribute in columns:
+            print(getattr(problemdb[problemid], attribute), '  ', end = '')
+        if textslenflag:
+            print(len(problemdb[problemid].texts['question']))
+        print('\n')
+    
 if False:
     print(test_global_load(1))
     #legacy loading steps
@@ -601,6 +614,8 @@ topic_ids = loaddbfile("topic_ids")
 
 #topic_ids['unassigned']=0
 
+#problemdb = loaddbfile("problemdb") TODO sometimes this is an error
+#dict, problemid: Problem instance
 global_courses_dict = loaddbfile("global_courses_dict")
 #GLOBAL COURSES DICTIONARY {COURSE TITLE: COURSE INSTANCE}
 global_students_dict = loaddbfile("global_students_dict")
