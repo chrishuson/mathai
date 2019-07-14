@@ -8,6 +8,12 @@ HOME = os.environ["HOME"]
 dbdir = HOME + "/GitHub/mathai/db/"
 outdir = HOME + "/GitHub/mathai/out/"
 
+testflag = True
+if testflag:
+    dbdir = HOME + "/GitHub/mathai/test/db/"
+    outdir = HOME + "/GitHub/mathai/test/out/"
+    indir = HOME + "/GitHub/mathai/test/in/"
+
 class ProblemSet():
 	def __init__(self, course_title, unit, topics = {}, problem_ids = {('last', 'first'): []}, \
 					date = None, assessment = "incomplete"):
@@ -87,7 +93,7 @@ class ProblemSet():
 	        title: (out_filename, date, header)
 	        #flags specify inclusion of problem text, solution & workspace
 	        idflag: 2 print problem id (1: enhance for standards & meta info)
-	        #numflag: 0 - no problem numbers; 1 prefix w "\item" & includes "\begin{enumerate}"
+	        #numflag: 0 - no problem numbers; 1 prefix w "item" & includes "begin{enumerate}"
 	        output file is out_filename.tex in the /out/ directory
 	        """
 	    outfile = outdir + title[0] + ".tex"
@@ -101,16 +107,16 @@ class ProblemSet():
 	        if numflag == 1:
 	            newfile.write(r'\begin{enumerate}' + '\n')
 
-	        for id in self.problem_ids[('last', 'first')]:
+	        for pid in self.problem_ids[('last', 'first')]:
 	            if numflag == 1:
-	                newfile.write(r'\item ' + global_problem_dict["all"]["all"][id].tex())
+	                newfile.write(r'\item ' + global_problem_dict["all"]["all"][pid].tex())
 	            else:
-	                newfile.write(global_problem_dict["all"]["all"][id].tex().rstrip("\n")+r'\\*'+'\n')
+	                newfile.write(global_problem_dict["all"]["all"][pid].tex().rstrip("\n")+r'\\*'+'\n')
 	            if idflag == 1:
-	                s = str(id) + " " + global_problem_dict["all"]["all"][id].tex(question = False, meta = True)
+	                s = str(pid) + " " + global_problem_dict["all"]["all"][pid].tex(question = False, meta = True)
 	                newfile.write(r'\\' + s + '\n')
 	            elif idflag == 2:
-	                newfile.write(r'\marginpar{' + str(id) +r'}' + '\n')
+	                newfile.write(r'\marginpar{' + str(pid) +r'}' + '\n')
 
 	        if numflag == 1:
 	            newfile.write(r'\end{enumerate}'+'\n')
@@ -296,11 +302,15 @@ class Problem():
 
 	def tex(self, question = True, resource = False, workspace = False, \
 					instructions = False, answer = False, solution = False, \
-					rubric = False, meta = False):
+					rubric = False, meta = False, numflag=False, \
+					naked=True, head=None):
 		""" Returns the LaTeX to be included in a .tex file for printing
 
 			flags - whether to include that field of texts information
 			meta flag - whether to include the set of problem attributes
+			numflag - prefix with LaTeX "item" for numbering
+			naked - standalone problem tex, if True: wrap with head file
+			head - LaTeX file header to make problem.tex printable
 			"""
 		problem_string = ""
 		if question:
@@ -322,8 +332,29 @@ class Problem():
 				+ self.topic + ' ' + str(self.standard) + ' '
 				+ str(self.difficulty) + ' ' + str(self.level) + ' '
 				+ str(self.calc_type) + ' ' + self.source
-			)
+				)
+		if numflag:
+			problem_string = r'\item ' + problem_string
+		if not naked:
+			problem_string = (head 
+				+ r'\begin{enumerate}' + '\n'*2
+				+ problem_string + '\n'*2
+				+ r'\end{enumerate}' + '\n'
+				+ r'\end{document}' + '\n'
+				)
 		return problem_string
+
+	def maketexhead(self, title=None):
+		""" Reads the head.tex file for the first lines of a tex file
+
+			title - tuple, (str worksheet heading, str date, str other)
+			"""
+		with open(dbdir + 'head.tex', 'r') as f:
+			head = f.read()
+		if title is not None:
+			head = title[0] + '\n' + head
+		return head
+
 
 class Course():
 	def __init__(self, title, students):
@@ -353,6 +384,7 @@ class Course():
 			if skills_flag:
 				for topic in self.roster[student].skillset:
 					print(topic, self.roster[student].skillset[topic])
+
 
 class Student():
 	def __init__(self, student_name_tuple, problem_history = {}, problem_set_history = {}, \
@@ -384,6 +416,7 @@ class Student():
 				self.skillset[topic] = 0
 			elif self.skillset[topic] > 10:
 				self.skillset[topic] = 10
+
 
 p = dbdir + "global_courses_dict" + '.pickle'
 with open(p, 'rb') as f:
