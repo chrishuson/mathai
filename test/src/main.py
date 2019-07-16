@@ -427,12 +427,12 @@ def refresh_problem_dict_all_all():
     for topic in global_problem_dict:
         if topic != "all":
             for difficulty in global_problem_dict[topic]:
-                for problemid in global_problem_dict[topic][difficulty]:
+                for problem_id in global_problem_dict[topic][difficulty]:
                     try:
-                        global_problem_dict["all"][0][problemid] = global_problem_dict[topic][difficulty][problemid]
+                        global_problem_dict["all"][0][problem_id] = global_problem_dict[topic][difficulty][problem_id]
                     except KeyError:
                         global_problem_dict["all"][0] = {0: 'null instance'}
-                        global_problem_dict["all"][0][problemid] = global_problem_dict[topic][difficulty][problemid]
+                        global_problem_dict["all"][0][problem_id] = global_problem_dict[topic][difficulty][problem_id]
                         del global_problem_dict["all"][0][0]
 
 
@@ -511,8 +511,8 @@ def test_global_load(long = False):
         print(global_problem_dict)
         for topic in global_problem_dict:
             for difficulty in global_problem_dict[topic]:
-                for problemid in global_problem_dict[topic][difficulty]:
-                    print(topic, difficulty, problemid)
+                for problem_id in global_problem_dict[topic][difficulty]:
+                    print(topic, difficulty, problem_id)
                     #print(global_problem_dict[topic][difficulty][id].tex(1))
 
     return comments
@@ -561,9 +561,25 @@ def test_parse(testtitles = []):
                 print('parsebody returned empty file(s)')
     return problems, spacing, packages, header, savebody
 
+def test_problem_tex(problem_db=None, 
+            title=('My Worksheet title', '7/16/2019', '3rd string in title')):
+    """ Prints various configurations of the class problems' tex output string
+
+        problem_db - dict, of Problem instances to run the test on. 
+        title - 3-tuple, strings of worksheet title, date, comment
+        """
+    for problem_id in problem_db:
+        print('cycle for problem_id = ', problem_id)
+        print('#1', problem_db[problem_id].tex())
+        print('#2', problem_db[problem_id].tex(meta=True))
+        print('#3', problem_db[problem_id].tex(question=False, meta=True, head='short extra'))
+        print('#4', problem_db[problem_id].tex(naked=False, numflag=True))
+        print('#5', problem_db[problem_id].make_tex_head())
+        print('#6', problem_db[problem_id].make_tex_head(title=title))
+
 def summary():
     """ Prints listing of global_problem_dict """
-    print('topic, difficulty, problemid, len of question text')
+    print('topic, difficulty, problem_id, len of question text')
     c = 0
     for t in global_problem_dict:
         for d in global_problem_dict[t]:
@@ -576,18 +592,18 @@ def summary():
                     print('error getting texts.question')
                     continue
 
-def summary2(problemdb, columns=['problemid', 'topic', 'difficulty',
+def summary2(problem_db, columns=['problem_id', 'topic', 'difficulty',
         'standard', 'level', 'calc_type'], textslenflag=True):
     """ Print table of problems' attributes in arg file.
 
-        problemdb - dict, id: Problem instance
+        problem_db - dict, id: Problem instance
         """
     print(columns)
-    for problemid in problemdb:
+    for problem_id in problem_db:
         for attribute in columns:
-            print(getattr(problemdb[problemid], attribute), '  ', end = '')
+            print(getattr(problem_db[problem_id], attribute), '  ', end = '')
         if textslenflag:
-            print(len(problemdb[problemid].texts['question']))
+            print(len(problem_db[problem_id].texts['question']))
         print('\n')
     
 if False:
@@ -614,14 +630,14 @@ topic_ids = loaddbfile("topic_ids")
 
 #topic_ids['unassigned']=0
 
-#problemdb = loaddbfile("problemdb") TODO sometimes this is an error
-#dict, problemid: Problem instance
+#problem_db = loaddbfile("problem_db") #TODO sometimes this is an error
+#dict, problem_id: Problem instance
 global_courses_dict = loaddbfile("global_courses_dict")
 #GLOBAL COURSES DICTIONARY {COURSE TITLE: COURSE INSTANCE}
 global_students_dict = loaddbfile("global_students_dict")
 #GLOBAL STUDENTS DICT {STUDENT NAME TUPLE: STUDENT INSTANCE}
 global_problem_dict = loaddbfile("global_problem_dict")
-#GLOBAL PROBLEM DICT {TOPIC: {DIFFICULTY: {PROBLEMID: INSTANCE}}} {'unassigned':{0:{}}}
+#GLOBAL PROBLEM DICT {TOPIC: {DIFFICULTY: {PROBLEM_ID: INSTANCE}}} {'unassigned':{0:{}}}
 global_problemset_dict = loaddbfile("global_problemset_dict")
 # GLOBAL PROBLEM SET DICT {COURSE: {UNIT: {ID: INSTANCE}}}
 

@@ -80,7 +80,7 @@ class ProblemSet():
 			unused_problems_dict = {unused_problem:global_problem_dict[topic][students_skill][unused_problem]\
 									for unused_problem in unused_problems}
 
-			for problem_count in range(self.topics[topic]):
+			for _ in range(self.topics[topic]):
 				problem_id = random.choice(unused_problems_dict.keys())
 				problem_ids.append(problem_id)
 
@@ -261,12 +261,12 @@ class Assessment():
 
 
 class Problem():
-	def __init__(self, problemid = None, topic = 'unassigned', \
+	def __init__(self, problem_id = None, topic = 'unassigned', \
 				texts = None, standard = None, difficulty = 3, \
 				level = 2, calc_type = 1, source = None):
 		""" Class for problem tex texts with attributes
 
-			problemid - int, key in problemdb, instance name has prefix 'p'
+			problem_id - int, key in problemdb
 			topic - string describing problem topic e.g. logarithms
 			texts - dict of relevant texts for a problem, keys: question,
 				resource (graphs and images), workspace, instructions, answer,
@@ -279,7 +279,7 @@ class Problem():
 			calc_type: 0 no calculator allowed, 1 allowed, 2 calc practice
 			source - string describing the author, or history of exercise e.g. "cjh"
 			"""
-		self.problemid = problemid
+		self.problem_id = problem_id
 		self.topic = topic
 		if texts is None:
 			self.texts = {}
@@ -299,6 +299,11 @@ class Problem():
 		except ValueError:
 			print('calc_type must be 0, 1, or 2')
 		self.source = source
+		self.meta = (str(self.problem_id) + ' '
+				+ self.topic + ' ' + str(self.standard) + ' '
+				+ str(self.difficulty) + ' ' + str(self.level) + ' '
+				+ str(self.calc_type) + ' ' + str(self.source)
+				)
 
 	def tex(self, question = True, resource = False, workspace = False, \
 					instructions = False, answer = False, solution = False, \
@@ -328,32 +333,48 @@ class Problem():
 		if rubric:
 			problem_string += self.texts.get("rubric")
 		if meta:
-			problem_string += ('\n'
-				+ self.topic + ' ' + str(self.standard) + ' '
-				+ str(self.difficulty) + ' ' + str(self.level) + ' '
-				+ str(self.calc_type) + ' ' + self.source
-				)
+			problem_string += '\n' + self.meta
 		if numflag:
 			problem_string = r'\item ' + problem_string
+		print('Problem string is: ', problem_string)
 		if not naked:
-			problem_string = (head 
-				+ r'\begin{enumerate}' + '\n'*2
-				+ problem_string + '\n'*2
-				+ r'\end{enumerate}' + '\n'
-				+ r'\end{document}' + '\n'
-				)
+			if head is None:
+				head = self.make_tex_head()
+				print('head is: ', head)
+			return problem_string
+			#problem_string = (str(head) 
+			#	+ r'\begin{enumerate}' + '\n'*2
+			#	+ str(problem_string) + '\n'*2
+			#	+ r'\end{enumerate}' + '\n'
+			#	+ r'\end{document}' + '\n'
+			#	)
 		return problem_string
 
-	def maketexhead(self, title=None):
+	def make_tex_head(self, title=None):
 		""" Reads the head.tex file for the first lines of a tex file
 
 			title - tuple, (str worksheet heading, str date, str other)
 			"""
-		with open(dbdir + 'head.tex', 'r') as f:
-			head = f.read()
+		try:
+			with open(dbdir + 'head.tex', 'r') as f:
+				head = f.read()
+		except FileNotFoundError:
+				print('Found no file head.tex in directory', dbdir)
+				head = None
 		if title is not None:
-			head = title[0] + '\n' + head
+			head = str(head) + '\n' + title[0]
 		return head
+	"""
+	def print_all(problem_id):
+		print(problem_string)
+		print(str(self.problem_id))
+		print(self.topic)
+		print(str(self.standard))
+		print(str(self.difficulty))
+		print(str(self.level))
+		print(str(self.calc_type))
+		print(str(self.source))
+		"""
 
 
 class Course():
