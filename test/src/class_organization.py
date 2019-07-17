@@ -15,6 +15,60 @@ if testflag:
     indir = HOME + "/GitHub/mathai/test/in/"
 
 class ProblemSet():
+	def __init__(self, problem_set_id=None, problems=None, spacing=None,
+				problem_set_title=None, course_title=None, unit=None):
+		""" Collection of problems that can be printed for assignment or discussion
+
+			problem_set_id - int, key in problem_set_db
+			problems - list, problem instances included in the problem set
+			spacing - list, tex file layout information (e.g. newline location)
+			problem_set_title - 3-tuple, header title str, date str, comment str
+			course_title - str, title of the course e.g. 'Algebra 2'
+			unit - str, chapter in the course the ProblemSet is applicable to
+			"""
+		
+		self.problem_set_id = problem_set_id
+		if problems is None:
+			self.problems = []
+		else:
+			self.problems = problems
+		self.spacing = spacing
+		self.problem_set_title = problem_set_title
+		self.course_title = course_title
+		self.unit = unit
+
+	def tex(self, title=None, texts_content_flags=None, meta=True, 
+			numflag=True, head=None):
+		""" Creates a worksheet LaTeX file that can be saved and rendered as pdf
+
+	        title - 3-tuple, header title str, date str, comment str
+				if absent, defaults to the problem_set title
+	        text_content_flags - list, problem.tex options. Defaults to 'question'
+			numflag - bool, number problems, i.e. prefix problems with "item"
+			naked - bool, standalone problem tex, if True: wrap with head file
+			head - str, LaTeX header to make problem.tex printable
+			"""
+		if title is None:
+			title = self.problem_set_title
+		problem_set_string = ''
+		if head is None:
+			try:
+				with open(dbdir + 'head.tex', 'r') as f:
+					head = f.read()
+			except FileNotFoundError:
+				print('Found no file head.tex in directory', dbdir)
+				head = ''
+		problem_set_string += head
+		if title is not None:
+			problem_set_string += '\n' + str(title[0]) + '\n'
+		problem_set_string += r'\begin{enumerate}' + '\n'*2
+		for problem in self.problems:
+			problem_set_string += problem.tex(meta=meta, numflag=numflag) + '\n'
+		problem_set_string += r'\end{enumerate}' + '\n' + r'\end{document}' + '\n'
+		return problem_set_string
+
+
+class LegacyProblemSet():
 	def __init__(self, course_title, unit, topics = {}, problem_ids = {('last', 'first'): []}, \
 					date = None, assessment = "incomplete"):
 		""" Collection of problems that can be printed for assignment or discussion
@@ -125,7 +179,7 @@ class ProblemSet():
 	                newfile.write(line)
 
 
-class DifferentiatedProblemSet(ProblemSet):
+class DifferentiatedProblemSet(LegacyProblemSet):
 	def __init__(self, course_title, unit, topics = {}, problem_ids = {('last', 'first'): []}, date = None, student_names = []):
 		"""
 			Inherited Attributes from ProblemSet class
@@ -261,9 +315,9 @@ class Assessment():
 
 
 class Problem():
-	def __init__(self, problem_id = None, topic = 'unassigned', \
-				texts = None, standard = None, difficulty = 3, \
-				level = 2, calc_type = 1, source = None):
+	def __init__(self, problem_id=None, topic='unassigned', \
+				texts=None, standard=None, difficulty=3, \
+				level=2, calc_type=1, source=None):
 		""" Class for problem tex texts with attributes
 
 			problem_id - int, key in problemdb
@@ -299,23 +353,23 @@ class Problem():
 		except ValueError:
 			print('calc_type must be 0, 1, or 2')
 		self.source = source
-		self.meta = (str(self.problem_id) + ' '
+		self.meta = (str(self.problem_id) + ' ' #TODO static value is not right
 				+ self.topic + ' ' + str(self.standard) + ' '
 				+ str(self.difficulty) + ' ' + str(self.level) + ' '
 				+ str(self.calc_type) + ' ' + str(self.source)
 				)
 
-	def tex(self, question = True, resource = False, workspace = False, \
-					instructions = False, answer = False, solution = False, \
-					rubric = False, meta = False, numflag=False, \
+	def tex(self, question=True, resource=False, workspace=False, \
+					instructions=False, answer=False, solution=False, \
+					rubric=False, meta=False, numflag=False, \
 					naked=True, head=None):
 		""" Returns the LaTeX to be included in a .tex file for printing
 
 			flags - whether to include that field of texts information
 			meta flag - whether to include the set of problem attributes
-			numflag - prefix with LaTeX "item" for numbering
-			naked - standalone problem tex, if True: wrap with head file
-			head - LaTeX file header to make problem.tex printable
+			numflag - bool, prefix with LaTeX "item" for numbering
+			naked - bool, standalone problem tex, if True: wrap with head file
+			head - str, LaTeX header to make problem.tex printable
 			"""
 		problem_string = ""
 		if question:
@@ -337,7 +391,7 @@ class Problem():
 		if numflag:
 			problem_string = r'\item ' + problem_string
 		#print('Problem string is: ', problem_string)
-		if not naked:
+		if not naked: #TODO with numflag==0 will lead to a LaTeX problem
 			if head is None:
 				head = self.make_tex_head()
 				#print('\nhead is now: ', head)

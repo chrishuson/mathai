@@ -612,13 +612,6 @@ def summary2(problem_db, columns=['problem_id', 'topic', 'difficulty',
             print(len(problem_db[problem_id].texts['question']))
         print('\n')
 
-def make_test_problem_db_main():
-    test_problem_db = {}
-    test_problem_db[1] = Problem(1, 'unassigned', {'question':'text for problem number 3 \nwith a second line'}, 'Arc Length', 4, 5, 0, 'test')
-    test_problem_db[2] = Problem(2, 'Area of Circles', {'question':'more text for problem number 3 \nwith a second line'}, 'Sector', 4, 5, 0, 'test')
-    test_problem_db[3] = Problem(3, 'unassigned', {'question':'even more text for problem number 3 \nwith a second line'}, 'Arc Length', 4, 5, 0, 'test')
-    return test_problem_db
-
 if False:
     print(test_global_load(1))
     #legacy loading steps

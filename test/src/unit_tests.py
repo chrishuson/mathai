@@ -3,7 +3,7 @@
 
 import os
 
-from class_organization import Problem
+from class_organization import Problem, ProblemSet
 
 HOME = os.environ["HOME"]
 dbdir = HOME + "/GitHub/mathai/test/db/"
@@ -19,8 +19,18 @@ def make_test_problem_db():
     return test_problem_db
 
 
-def test_print():
-    print('hello world')
+def make_problem_set(problem_set_id=1):
+    test_problem_db = make_test_problem_db()
+    problems = [test_problem_db[problem_id] for problem_id in test_problem_db]
+    spacing = []
+    title = ('1.1 Test Worksheet title', '17 July 2019', 'Unit testing - print functionality')
+    course_title = '11.1 IB Math SL'
+    unit = 'powers'
+    return ProblemSet(problem_set_id, problems, spacing, title, course_title, unit)
+
+def make_suite():
+    test_problem_db = unit_tests.make_test_problem_db() #delete module prefix
+    test_problem_set_db = {1: unit_tests.make_problem_set()} #
 
 
 def test_global_load(long = False):
