@@ -8,13 +8,13 @@ import csv
 import pickle
 from collections import namedtuple
 
-testflag = True
-if testflag:
+TESTFLAG = True
+if TESTFLAG:
     os.chdir('/Users/chris/GitHub/mathai/test/src')
+    import unit_tests
 
 from class_organization import ProblemSet, DifferentiatedProblemSet, Assessment, \
                                 Problem, Course, Student, assign_problem_set
-#import test
 
 
 HOME = os.environ["HOME"]
@@ -22,7 +22,7 @@ dbdir = HOME + "/GitHub/mathai/db/"
 outdir = HOME + "/GitHub/mathai/out/"
 indir = HOME + "/GitHub/mathai/in/"
 
-if testflag:
+if TESTFLAG:
     dbdir = HOME + "/GitHub/mathai/test/db/"
     outdir = HOME + "/GitHub/mathai/test/out/"
     indir = HOME + "/GitHub/mathai/test/in/"
@@ -570,12 +570,18 @@ def test_problem_tex(problem_db=None,
         """
     for problem_id in problem_db:
         print('cycle for problem_id = ', problem_id)
-        print('#1', problem_db[problem_id].tex())
-        print('#2', problem_db[problem_id].tex(meta=True))
-        print('#3', problem_db[problem_id].tex(question=False, meta=True, head='short extra'))
-        print('#4', problem_db[problem_id].tex(naked=False, numflag=True))
-        print('#5', problem_db[problem_id].make_tex_head())
-        print('#6', problem_db[problem_id].make_tex_head(title=title))
+        print('#1 arguments: ', 'no function arguments')
+        print(problem_db[problem_id].tex())
+        print('#2 arguments: ', 'meta=True')
+        print(problem_db[problem_id].tex(meta=True))
+        print('#3 arguments: ', "question=False, meta=True, head='short extra'")
+        print(problem_db[problem_id].tex(question=False, meta=True, head='short extra'))
+        print('#4 arguments: ', 'naked=False, numflag=True')
+        print(problem_db[problem_id].tex(naked=False, numflag=True))
+        print('#5 runs make_tex_head with no arguments')
+        print(problem_db[problem_id].make_tex_head())
+        print('#6 runs make_tex_head with given title tuple argument')
+        print(problem_db[problem_id].make_tex_head(title=title))
 
 def summary():
     """ Prints listing of global_problem_dict """
@@ -605,7 +611,14 @@ def summary2(problem_db, columns=['problem_id', 'topic', 'difficulty',
         if textslenflag:
             print(len(problem_db[problem_id].texts['question']))
         print('\n')
-    
+
+def make_test_problem_db_main():
+    test_problem_db = {}
+    test_problem_db[1] = Problem(1, 'unassigned', {'question':'text for problem number 3 \nwith a second line'}, 'Arc Length', 4, 5, 0, 'test')
+    test_problem_db[2] = Problem(2, 'Area of Circles', {'question':'more text for problem number 3 \nwith a second line'}, 'Sector', 4, 5, 0, 'test')
+    test_problem_db[3] = Problem(3, 'unassigned', {'question':'even more text for problem number 3 \nwith a second line'}, 'Arc Length', 4, 5, 0, 'test')
+    return test_problem_db
+
 if False:
     print(test_global_load(1))
     #legacy loading steps

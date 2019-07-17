@@ -336,18 +336,18 @@ class Problem():
 			problem_string += '\n' + self.meta
 		if numflag:
 			problem_string = r'\item ' + problem_string
-		print('Problem string is: ', problem_string)
+		#print('Problem string is: ', problem_string)
 		if not naked:
 			if head is None:
 				head = self.make_tex_head()
-				print('head is: ', head)
-			return problem_string
-			#problem_string = (str(head) 
-			#	+ r'\begin{enumerate}' + '\n'*2
-			#	+ str(problem_string) + '\n'*2
-			#	+ r'\end{enumerate}' + '\n'
-			#	+ r'\end{document}' + '\n'
-			#	)
+				#print('\nhead is now: ', head)
+			#return problem_string
+			problem_string = (str(head) 
+				+ r'\begin{enumerate}' + '\n'*2
+				+ str(problem_string) + '\n'*2
+				+ r'\end{enumerate}' + '\n'
+				+ r'\end{document}' + '\n'
+				)
 		return problem_string
 
 	def make_tex_head(self, title=None):
@@ -438,7 +438,7 @@ class Student():
 			elif self.skillset[topic] > 10:
 				self.skillset[topic] = 10
 
-
+"""
 p = dbdir + "global_courses_dict" + '.pickle'
 with open(p, 'rb') as f:
 	global_courses_dict = pickle.load(f)
@@ -450,5 +450,5 @@ with open(p, 'rb') as f:
 p = dbdir + "global_problem_dict" + '.pickle'
 with open(p, 'rb') as f:
 	global_problem_dict = pickle.load(f)
-
+"""
 				
