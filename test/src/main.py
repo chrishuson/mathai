@@ -8,6 +8,11 @@ import csv
 import pickle
 from collections import namedtuple
 
+
+import numpy as np
+import pandas as pd
+
+
 TESTFLAG = True
 if TESTFLAG:
     os.chdir('/Users/chris/GitHub/mathai/test/src')
@@ -16,11 +21,13 @@ if TESTFLAG:
 from class_organization import ProblemSet, DifferentiatedProblemSet, Assessment, \
                                 Problem, Course, Student, assign_problem_set
 
+import crawler
 
 HOME = os.environ["HOME"]
 dbdir = HOME + "/GitHub/mathai/db/"
 outdir = HOME + "/GitHub/mathai/out/"
 indir = HOME + "/GitHub/mathai/in/"
+course_dir = HOME + "/GitHub/course-files/Geometry"
 
 if TESTFLAG:
     dbdir = HOME + "/GitHub/mathai/test/db/"
@@ -213,7 +220,15 @@ def print_set_legacy(problem_ids, title, pflag=1, sflag=0, wflag=0, idflag=0, nu
             for line in foot:
                 newfile.write(line)
 
+def parse_tex_files(file_list=None):
+    """ Reads a list of worksheet files and returns a ProblemSet dataframe
 
+        file_list - list, str names of files to be read
+        returns dataframe, filename, date, heading, ProblemSet instance
+        """
+    if file_list is None:
+        file_list = []
+    
 
 def parsetexfile(infile):
     """ divide tex file into three sections

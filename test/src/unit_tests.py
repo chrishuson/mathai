@@ -13,9 +13,9 @@ indir = HOME + "/GitHub/mathai/test/in/"
 
 def make_test_problem_db():
     test_problem_db = {}
-    test_problem_db[1] = Problem(1, 'unassigned', {'question':'text for problem number 3 \nwith a second line'}, 'Arc Length', 4, 5, 0, 'test')
-    test_problem_db[2] = Problem(2, 'Area of Circles', {'question':'more text for problem number 3 \nwith a second line'}, 'Sector', 4, 5, 0, 'test')
-    test_problem_db[3] = Problem(3, 'unassigned', {'question':'even more text for problem number 3 \nwith a second line'}, 'Arc Length', 4, 5, 0, 'test')
+    test_problem_db[1] = Problem(1, 'unassigned', {'question':'text for problem number 1 \nwith a second line'}, 'Arc Length', 4, 5, 0, 'test')
+    test_problem_db[2] = Problem(2, 'Area of Circles', {'question':'more text \nThis problem (\#2) has \nthree lines'}, 'Sector', 4, 5, 0, 'test')
+    test_problem_db[3] = Problem(3, 'unassigned', {'question':'Problem text for problem number 3 \nwith a second line'}, 'Arc Length', 4, 5, 0, 'test')
     return test_problem_db
 
 
@@ -29,15 +29,18 @@ def make_problem_set(problem_set_id=1):
     return ProblemSet(problem_set_id, problems, spacing, title, course_title, unit)
 
 def make_suite():
-    test_problem_db = unit_tests.make_test_problem_db() #delete module prefix
-    test_problem_set_db = {1: unit_tests.make_problem_set()} #
+    test_problem_db = make_test_problem_db()
+    test_problem_set_db = {1: make_problem_set()}
+    print('Returning test problem_db and problem_set_db dicts')
+    return test_problem_db, test_problem_set_db
 
 
-def test_global_load(long = False):
+def test_global_load(long = False): #Doesn't work because can't see variables in main
     """ Several short commands to confirm key data has loaded properly
 
         """
     comments = []
+    global standards
     if len(standards) != 0:
         comments.append(str(len(standards)) + " standards")
     else:
