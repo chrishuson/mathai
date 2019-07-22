@@ -8,10 +8,8 @@ import csv
 import pickle
 from collections import namedtuple
 
-
 import numpy as np
 import pandas as pd
-
 
 TESTFLAG = True
 if TESTFLAG:
@@ -220,134 +218,6 @@ def print_set_legacy(problem_ids, title, pflag=1, sflag=0, wflag=0, idflag=0, nu
             for line in foot:
                 newfile.write(line)
 
-def parse_tex_files(file_list=None):
-    """ Reads a list of worksheet files and returns a ProblemSet dataframe
-
-        file_list - list, str names of files to be read
-        returns dataframe, filename, date, heading, ProblemSet instance
-        """
-    if file_list is None:
-        file_list = []
-    
-
-def parsetexfile(infile):
-    """ divide tex file into three sections
-    
-        infile - str, full directory name of file
-        returns tuple of three lists of text lines:
-        the top packages section, header lines, and body text
-        """
-    packages = []
-    header = []
-    body = []
-    
-    try:
-        with open(infile, "r") as texfile:
-            lines = texfile.readlines()
-            print(len(lines))
-    except FileNotFoundError:
-        print('Tried to open non-existent file: ' + infile)
-        return None, None, None
-
-    line = lines.pop(0)
-    print('1', line)
-    while lines and r'\begin{document}' not in line:
-        packages.append(line)
-        line = lines.pop(0)
-    print('2', line)
-    while lines and r'\begin{enumerate}' not in line:
-        header.append(line)
-        line = lines.pop(0)
-    print('3', line)
-    line = lines.pop(0)
-    while lines and r'\end{document}' not in line:
-        body.append(line)
-        line = lines.pop(0)
-    print('4', line)
-    print('finished first parse.')
-    return packages, header, body
-
-def parsebody(body):
-    """ Parses the body of a tex problem set into separate problems
-        
-        body - list of text lines
-        returns - problems: list of problem strings
-            spacing: list of section and formatting text lines
-        """
-    spacing = []
-    nested = False
-    problem = []
-    problems = []
-    
-    if type(body) != list:
-        print('body needs to be a list, but its type was: ', type(body))
-        return None, None
-    try:
-        line = body.pop(0)
-    except IndexError:
-        print('Tried to run parsebody on empty file')
-        return None, None
-
-    while body:
-        if r'\subsection' in line:
-            spacing.append(line)
-            problems.append(problem)
-            problem = []
-        elif r'\newpage' in line:
-            spacing.append(line)
-            problems.append(problem)
-            problem = []
-        elif r'\item' in line and not nested:
-            problems.append(problem)
-            problem = []
-            problem.append(line)
-        elif r'\begin{enumerate}' in line:
-            nested = True
-            problem.append(line)
-        elif r'\end{enumerate}' in line:
-            if nested:
-                nested = False
-                problem.append(line)
-            else:
-                spacing.append(line)
-                problems.append(problem)
-                problem = []
-        else:
-            problem.append(line)
-        line = body.pop(0)
-    problems.append(problem)
-
-    newline = ['\n']
-    while True:
-        try: 
-            problems.remove(newline)
-        except:
-            break
-    empty = []
-    while True:
-        try: 
-            problems.remove(empty)
-        except:
-            break
-    trimmedproblems = [trim_item_prefix(problem) for problem in problems]
-    problemstextblock = [''.join(problem) for problem in trimmedproblems]
-    return problemstextblock, spacing
-
-def trim_item_prefix(problem):
-    """ Deletes the initial 'item' text, and preceding spaces, 
-        from a problem"""
-    try:
-        firstline = problem[0]
-    except IndexError:
-        print('Attempt to trim "item" from empty problem: IndexError in trim_item_prefix')
-        print(problem)
-        return problem
-    if r'\item' in firstline:
-        for index in range(len(firstline) - 6):
-            if firstline[index:index+5] == r'\item':
-                problem[0] = firstline[index+6 :]
-    return problem
-
 
 def import_students_from_files(course_title = "11.1 IB Math SL"):
     """ Upload student (& skills) data from text files in indir
@@ -532,71 +402,6 @@ def test_global_load(long = False):
 
     return comments
 
-
-def test_parse(testtitles = []):
-    """ Uploads tex file, parses it into sections then problems
-
-        testtitles - list of title tuples, each containing (filename, date, worksheet title)
-        returns 5-tuple of intermediate results: problems, spacing, packages, header, body
-        """
-    if testtitles == []:
-        print('loading default filenames')
-        testtitles.append(('parse_test1', '07/11/2019', 'First file to parse'))
-        testtitles.append(('parse_test2', '07/12/2019', '2nd file to parse'))
-        testtitles.append(('parse_test3', '05/12/2019', '11-2HW_slope-applications'))
-        testtitles.append(("13-5HW-triangles", "ids in margin", \
-                "Parsed from file: in/13-5HW-triangles.tex")) #non-existent file
-
-    for title in testtitles:
-        print('\n', 'running test on: ', title)
-        if type(title) != tuple:
-            print('title must be tuple of filename, date, heading note. it was:')
-            print(title)
-        else:
-            infile = indir + title[0] + ".tex"
-
-            packages, header, body = parsetexfile(infile)
-            if packages and header and body:
-                if title[0] == 'parse_test1':
-                    print('lengths should be 11, 3, 37')
-                print(len(packages), len(header), len(body))
-                savebody = body[:]
-            else:
-                print('parsetexfile returned empty file(s)')
-
-            problems, spacing = parsebody(body)
-            if problems and spacing:
-                if title[0] == 'parse_test1':
-                    print('length of problems should be 8: ')
-                elif title[0] == 'parse_test3':
-                    print('length of problems should be 10: ')
-                print(len(problems))
-                print(problems[-1])
-            else:
-                print('parsebody returned empty file(s)')
-    return problems, spacing, packages, header, savebody
-
-def test_problem_tex(problem_db=None, 
-            title=('My Worksheet title', '7/16/2019', '3rd string in title')):
-    """ Prints various configurations of the class problems' tex output string
-
-        problem_db - dict, of Problem instances to run the test on. 
-        title - 3-tuple, strings of worksheet title, date, comment
-        """
-    for problem_id in problem_db:
-        print('cycle for problem_id = ', problem_id)
-        print('#1 arguments: ', 'no function arguments')
-        print(problem_db[problem_id].tex())
-        print('#2 arguments: ', 'meta=True')
-        print(problem_db[problem_id].tex(meta=True))
-        print('#3 arguments: ', "question=False, meta=True, head='short extra'")
-        print(problem_db[problem_id].tex(question=False, meta=True, head='short extra'))
-        print('#4 arguments: ', 'naked=False, numflag=True')
-        print(problem_db[problem_id].tex(naked=False, numflag=True))
-        print('#5 runs make_tex_head with no arguments')
-        print(problem_db[problem_id].make_tex_head())
-        print('#6 runs make_tex_head with given title tuple argument')
-        print(problem_db[problem_id].make_tex_head(title=title))
 
 def summary():
     """ Prints listing of global_problem_dict """
