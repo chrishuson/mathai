@@ -13,7 +13,7 @@ def map_course_files(course_dir='/Users/chris/GitHub/course-files/Geometry'):
         course_dir - str, path to local directory of files
         returns course files as dict and as dataframe
             {unit: list of file names} (strings)
-            "unit", "worksheet count" (int), "worksheet file name"
+            "unit", "file count" (int), "filename"
         """
     #use scandir instead of listdir
     unit_directories = []
@@ -35,10 +35,10 @@ def map_course_files(course_dir='/Users/chris/GitHub/course-files/Geometry'):
     file_list = []
     for unit in course_files:
         length = len(course_files[unit])
-        for worksheet in course_files[unit]:
-            file_list.append((unit, length, worksheet))
+        for filename in course_files[unit]:
+            file_list.append((unit, length, filename))
     course_files_df = pd.DataFrame(file_list)
-    column_names = ['unit', 'worksheet_count', 'worksheet_file_name']
+    column_names = ['unit', 'file count', 'filename']
     course_files_df.columns = column_names
 
     return course_files, course_files_df
@@ -49,29 +49,33 @@ def parse_course_files(course_files_df,
     """ Steps through worksheets and parses them into problem sets and problems.
 
         course_dir - str, path to local directory of files
-        course_files_df - "unit", "worksheet count" (int), "worksheet file name"
+        course_files_df - "unit", "file count" (int), "filename"
         returns 
-            problem_sets_df: "worksheet file name", ProblemSet instance
-            problems_df: "worksheet file name", Problem instance
+            problem_sets_df: 'filename', 'problem set instance', 'problem count'
+            problems_df: 'filename', 'problem instance'
         """
     problem_set_tuples = []
     problem_tuples = []
-    for file_index in range(5):
+    for file_index in range(len(course_files_df)):
         filename = (course_dir + r'/' + course_files_df['unit'][file_index] 
-            + r'/' + course_files_df['worksheet_file_name'][file_index])
+            + r'/' + course_files_df['filename'][file_index])
         packages, header, body = parsetexfile(filename)
         problemstextblock, spacing = parsebody(body)
         problems = []
-        for problem_text in problemstextblock:
-            problems.append(Problem(texts={'question':problem_text}))
-        problem_tuples.extend([(course_files_df['worksheet_file_name'][file_index], 
+        try:
+            for problem_text in problemstextblock:
+                problems.append(Problem(texts={'question':problem_text}))
+        except TypeError:
+            print('my TypeError: NoneType object is not iterable', filename)
+            break
+        problem_tuples.extend([(course_files_df['filename'][file_index], 
                 problem) for problem in problems])
-        problem_set_tuples.append((course_files_df['worksheet_file_name'][file_index], 
-                ProblemSet(problems)))
+        problem_set_tuples.append((course_files_df['filename'][file_index], 
+                ProblemSet(problems=problems), len(problems)))
     problems_df = pd.DataFrame(problem_tuples)
-    problems_df.columns = ['worksheet file name', 'problem instance']
+    problems_df.columns = ['filename', 'problem instance']
     problem_sets_df = pd.DataFrame(problem_set_tuples)
-    problem_sets_df.columns = ['worksheet file name', 'problem set instance']
+    problem_sets_df.columns = ['filename', 'problem set instance', 'problem count']
     return problem_sets_df, problems_df
 
 
@@ -100,27 +104,30 @@ def parsetexfile(infile):
     try:
         with open(infile, "r") as texfile:
             lines = texfile.readlines()
-            print(len(lines))
+            print('Opened and read file: \n', infile)
+            print('length in lines: ', len(lines))
     except FileNotFoundError:
         print('Tried to open non-existent file: ' + infile)
         return None, None, None
 
     line = lines.pop(0)
-    print('1', line)
+    print('1 - packages section. first line: \n', line)
     while lines and r'\begin{document}' not in line:
         packages.append(line)
         line = lines.pop(0)
-    print('2', line)
+    print('2 - header section. first line: \n', line)
     while lines and r'\begin{enumerate}' not in line:
         header.append(line)
         line = lines.pop(0)
-    print('3', line)
-    line = lines.pop(0)
+    print('3 - body section. first line \n', line)
+    try:
+        line = lines.pop(0)
+    except IndexError:
+        print('my IndexError: pop from empty list', infile)
     while lines and r'\end{document}' not in line:
         body.append(line)
         line = lines.pop(0)
-    print('4', line)
-    print('finished first parse.')
+    print('4 - last line: \n', line)
     return packages, header, body
 
 def parsebody(body):

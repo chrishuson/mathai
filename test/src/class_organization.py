@@ -388,6 +388,7 @@ class Problem():
 			problem_string += self.texts.get("rubric")
 		if meta:
 			problem_string += '\n' + self.meta
+		#newfile.write(r'\marginpar{' + str(id) +r'}' + '\n')
 		if numflag:
 			problem_string = r'\item ' + problem_string
 		#print('Problem string is: ', problem_string)
@@ -407,16 +408,22 @@ class Problem():
 	def make_tex_head(self, title=None):
 		""" Reads the head.tex file for the first lines of a tex file
 
-			title - tuple, (str worksheet heading, str date, str other)
+			title - 3-tuple, str (worksheet sub heading, date, margin head)
 			"""
 		try:
 			with open(dbdir + 'head.tex', 'r') as f:
 				head = f.read()
 		except FileNotFoundError:
 				print('Found no file head.tex in directory', dbdir)
-				head = None
-		if title is not None:
-			head = str(head) + '\n' + title[0]
+				head = ''
+		if title is None:
+			head += (r'\fancyhead[L]{BECA / Dr. Huson}' + '\n'*2 
+					+ r'\begin{document}' + '\n'*2)
+		else:
+			head += (r'\fancyhead[L]{BECA / Dr. Huson / '
+					+ title[2] + r'\\* ' + title[1] + r'}')
+			head += '\n'*2 + r'\begin{document}' + '\n'*2
+			head += r'\subsubsection*{' + title[0] + '}\n'
 		return head
 	"""
 	def print_all(problem_id):

@@ -1,21 +1,36 @@
-\documentclass[12pt, oneside]{article}
-\usepackage[letterpaper, margin=1in]{geometry}
+\documentclass[12pt, twoside]{article}
+\usepackage[letterpaper, margin=1in, head=30pt, headsep=0.1in]{geometry}
 \usepackage[english]{babel}
 \usepackage[utf8]{inputenc}
 \usepackage{amsmath}
 \usepackage{amsfonts}
 \usepackage{amssymb}
 \usepackage{tikz}
+%\usetikzlibrary{quotes, angles}
+
+\usepackage{graphicx}
+\usepackage{enumitem}
+\usepackage{multicol}
+
+%\usepackage{pgfplots}
+%\pgfplotsset{width=10cm,compat=1.9}
+%\usepgfplotslibrary{statistics}
+%\usepackage{pgfplotstable}
+%\usepackage{tkz-fct}
+%\usepackage{venndiagram}
 
 \usepackage{fancyhdr}
 \pagestyle{fancy}
 \fancyhf{}
-\rhead{\thepage  \\* Name: \hspace{1.5in} }
-\lhead{BECA / Dr. Huson / IB Math SL \\* 30 December 2017}
-\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\headrulewidth}{0pt} % disable the underline of the header
 
 \title{Math AI Worksheet Generator and Formative Assessment System}
 \author{Chris Huson}
-\date{January 2018}
+\date{July 2018}
 
-\begin{document}
+\fancyhead[RE]{\thepage}
+\fancyhead[RO]{\thepage \\ Name: \hspace{3cm}}
+%\fancyhead[L]{BECA / Dr. Huson / 10th Grade Geometry\\* 7 June 2019}
+%
+%\begin{document}
+%\subsubsection*{13.7 Homework: Cross sections, distance applications}

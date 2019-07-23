@@ -16,8 +16,8 @@ if TESTFLAG:
     os.chdir('/Users/chris/GitHub/mathai/test/src')
     import unit_tests
 
-from class_organization import ProblemSet, DifferentiatedProblemSet, Assessment, \
-                                Problem, Course, Student, assign_problem_set
+from class_organization import ProblemSet, Problem, \
+            DifferentiatedProblemSet, Assessment, Course, Student, assign_problem_set
 
 import crawler
 
@@ -133,48 +133,51 @@ def print_standards_descriptions(standards_desc):
     for s in standards_desc.keys():
         print(s + " " + standards_desc[s])
 
-def print_problemset(problem_ids, title, pflag=1, sflag=0, wflag=0, idflag=0, numflag=1):
-    """ Creates a worksheet LaTeX file
+def print_problemset(problems, filename='tmp', title=None, meta=False, numflag=True):
+    """ Creates a worksheet LaTeX file composed of problem texts
 
-        problem_ids: list of problem_ids to be included, in order
-        title: (out_filename, date, title)
-        #flags specify inclusion of problem text, solution & workspace
-        idflag: 1 print problem id (enhance for standards & meta info)
-        #numflag: 0 - no problem numbers; 1 prefix w "\item" &includes "\begin{enumerate}"
-        output file is out_filename.tex in the /out/ directory
+        problems - list, Problem instances
+        filename - str, name of tex file created in out directory
+        title - 3-tuple, str (worksheet sub heading, date, margin head)
+        meta - bool, include Problem meta data (ID, Topic, difficulty, etc.)
+        numflag - bool, include "{enumerate}" environment, "item" Problem prefix
+        output file is filename.tex in the outdir directory
         """
-    outfile = outdir + title[0] + ".tex"
-
-    with open(outfile, "w") as newfile:
-        with open(dbdir + "head.tex", "r") as head:
-            for line in head:
-                newfile.write(line)
-        newfile.write(title[1] + r"\\*" + '\n' + r"\begin{center}{" + \
-                      title[2] + r"}\end{center}" + '\n')
-        #with open(dbdir + "title.tex", "r") as title:
-            #for line in title:
-                #newfile.write(line)
-        if numflag == 1:
+    out_file = outdir + filename + ".tex"
+    head = make_tex_head(title)
+    with open(out_file, "w") as newfile:
+        for line in head:
+            newfile.write(line)
+        if numflag:
             newfile.write(r'\begin{enumerate}' + '\n')
-
-        for id in problem_ids:
-            if numflag == 1:
-                newfile.write(r'\item ' + problem[id][0])
-            else:
-                newfile.write(problem[id][0].rstrip("\n")+r'\\*'+'\n')
-            if idflag == 1:
-                s = str(id) + " " + problem_meta[id][0] + " " +\
-                 problem_meta[id][1]
-                newfile.write(r'\\' + s + '\n')
-            elif idflag == 2:
-                newfile.write(r'\marginpar{' + str(id) +r'}' + '\n')
-
-        if numflag == 1:
-            newfile.write(r'\end{enumerate}'+'\n')
-        with open(dbdir + "foot.tex", "r") as foot:
-            for line in foot:
+        for problem in problems:
+            problem_tex = problem.tex(meta=meta, numflag=numflag)
+            for line in problem_tex:
                 newfile.write(line)
+        if numflag:
+            newfile.write('\n' + r'\end{enumerate}'+'\n')
+        newfile.write(r'\end{document}' + '\n')
 
+def make_tex_head(title=None):
+    """ Reads the head.tex file for the first lines of a tex file
+
+        title - 3-tuple, str (worksheet sub heading, date, margin head)
+        """
+    try:
+        with open(dbdir + 'head.tex', 'r') as f:
+            head = f.read()
+    except FileNotFoundError:
+            print('Found no file head.tex in directory', dbdir)
+            head = ''
+    if title is None:
+        head += (r'\fancyhead[L]{BECA / Dr. Huson}' + '\n'*2 
+                + r'\begin{document}' + '\n'*2)
+    else:
+        head += (r'\fancyhead[L]{BECA / Dr. Huson / '
+                + title[2] + r'\\* ' + title[1] + r'}')
+        head += '\n'*2 + r'\begin{document}' + '\n'*2
+        head += r'\subsubsection*{' + title[0] + '}\n'
+    return head
 
 def print_set_legacy(problem_ids, title, pflag=1, sflag=0, wflag=0, idflag=0, numflag=1):
     """ Creates a worksheet LaTeX file
@@ -183,7 +186,7 @@ def print_set_legacy(problem_ids, title, pflag=1, sflag=0, wflag=0, idflag=0, nu
         title: (out_filename, date, title)
         #flags specify inclusion of problem text, solution & workspace
         idflag: 1 print problem id (enhance for standards & meta info)
-        #numflag: 0 - no problem numbers; 1 prefix w "\item" &includes "\begin{enumerate}"
+        #numflag: 0 - no problem numbers; 1 prefix w "item" & "{enumerate}"
         output file is out_filename.tex in the /out/ directory
         """
     outfile = outdir + title[0] + ".tex"
