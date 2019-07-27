@@ -13,7 +13,7 @@ def map_course_files(course_dir='/Users/chris/GitHub/course-files/Geometry'):
         course_dir - str, path to local directory of files
         returns course files as dict and as dataframe
             {unit: list of file names} (strings)
-            "unit", "file count" (int), "filename"
+            "unit", "file_count" (int), "filename"
         """
     #use scandir instead of listdir
     unit_directories = []
@@ -38,7 +38,7 @@ def map_course_files(course_dir='/Users/chris/GitHub/course-files/Geometry'):
         for filename in course_files[unit]:
             file_list.append((unit, length, filename))
     course_files_df = pd.DataFrame(file_list)
-    column_names = ['unit', 'file count', 'filename']
+    column_names = ['unit', 'file_count', 'filename']
     course_files_df.columns = column_names
 
     return course_files, course_files_df
@@ -49,18 +49,24 @@ def parse_course_files(course_files_df,
     """ Steps through worksheets and parses them into problem sets and problems.
 
         course_dir - str, path to local directory of files
-        course_files_df - "unit", "file count" (int), "filename"
+        course_files_df - "unit", "file_count" (int), "filename"
         returns 
-            problem_sets_df: 'filename', 'problem set instance', 'problem count'
-            problems_df: 'filename', 'problem instance'
+            problem_sets_df: 'filename', 'problem_set_instance', 'problem_count'
+            problems_df: 'filename', 'problem_instance'
         """
     problem_set_tuples = []
     problem_tuples = []
-    for file_index in range(len(course_files_df)):
-        filename = (course_dir + r'/' + course_files_df['unit'][file_index] 
-            + r'/' + course_files_df['filename'][file_index])
-        packages, header, body = parsetexfile(filename)
-        problemstextblock, spacing = parsebody(body)
+    filenames = (course_dir + '/' + course_files_df.unit + '/'
+                + course_files_df.filename)
+    #for file_index in range(len(course_files_df)):
+    for filename in filenames:
+        #filename = (course_dir + r'/' + course_files_df['unit'][file_index] 
+        #    + r'/' + course_files_df['filename'][file_index])
+        packages, header, body = parse_tex_file(filename)
+        problem_tuples.append((packages, header, body))
+    print('ran new version')
+    return problem_tuples
+    """problemstextblock, spacing = parse_body(body)
         problems = []
         try:
             for problem_text in problemstextblock:
@@ -73,10 +79,10 @@ def parse_course_files(course_files_df,
         problem_set_tuples.append((course_files_df['filename'][file_index], 
                 ProblemSet(problems=problems), len(problems)))
     problems_df = pd.DataFrame(problem_tuples)
-    problems_df.columns = ['filename', 'problem instance']
+    problems_df.columns = ['filename', 'problem_instance']
     problem_sets_df = pd.DataFrame(problem_set_tuples)
-    problem_sets_df.columns = ['filename', 'problem set instance', 'problem count']
-    return problem_sets_df, problems_df
+    problem_sets_df.columns = ['filename', 'problem_set_instance', 'problem_count']
+    return problem_sets_df, problems_df"""
 
 
 
@@ -90,7 +96,7 @@ def parse_tex_files(file_list=None):
         file_list = []
     
 
-def parsetexfile(infile):
+def parse_tex_file(infile):
     """ divide tex file into three sections
     
         infile - str, full directory name of file
@@ -130,7 +136,7 @@ def parsetexfile(infile):
     print('4 - last line: \n', line)
     return packages, header, body
 
-def parsebody(body):
+def parse_body(body):
     """ Parses the body of a tex problem set into separate problems
         
         body - list of text lines
@@ -148,7 +154,7 @@ def parsebody(body):
     try:
         line = body.pop(0)
     except IndexError:
-        print('Tried to run parsebody on empty file')
+        print('Tried to run parse_body on empty file')
         return None, None
 
     while body:
@@ -213,6 +219,15 @@ def trim_item_prefix(problem):
 
 
 """
+
+short_df['fullfilename'] = course_dir + '/' + short_df.unit + '/' + short_df.filename
+
+short_df['text_tuple'] = short_df.fullfilename.apply(parse_tex_file)
+
+short_df[['packages', 'header', 'body']] = pd.DataFrame(short_df.text_tuple.tolist(), index=short_df.index)
+
+short_df[['problems', 'spacing']] = pd.DataFrame(short_df.problem_tuple.tolist(), index=short_df.index)
+
 for unit in course_files:
     print(unit, len(course_files[unit]))
 

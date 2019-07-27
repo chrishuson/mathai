@@ -3,8 +3,9 @@
 
 import os
 
-from crawler import parsebody, parsetexfile
 from class_organization import Problem, ProblemSet
+from crawler import map_course_files, parse_course_files, parse_body, parse_tex_file
+
 
 HOME = os.environ["HOME"]
 dbdir = HOME + "/GitHub/mathai/test/db/"
@@ -35,6 +36,8 @@ def make_suite():
     print('Returning test problem_db and problem_set_db dicts')
     return test_problem_db, test_problem_set_db
 
+#worksheet_files_df = pd.read_csv(dbdir + 'worksheet_files_df.csv', index_col=0)
+#worksheet_files_df.head()
 
 def test_problem_tex(problem_db=None, #TODO fails for empty problem_db
             title=('My Worksheet title', '7/16/2019', '3rd string in title')):
@@ -59,22 +62,22 @@ def test_problem_tex(problem_db=None, #TODO fails for empty problem_db
         print(problem_db[problem_id].make_tex_head(title=title))
 
 
-def test_parse(testtitles=None):
-    """ Uploads tex file, parses it into sections then problems
+def test_titles(test_titles=None):
+    """ Uploads tex files, parses it into sections then problems
 
-        testtitles - list of title tuples, each containing (filename, date, worksheet title)
-        returns 5-tuple of intermediate results: problems, spacing, packages, header, body
+        test_titles - list of title 3-tuples, str: filename, date, worksheet title
+        returns 5-tuple of last file's results: problems, spacing, packages, header, body
         """
-    if testtitles is None:
-        testtitles = []
+    if test_titles is None:
+        test_titles = []
         print('loading default filenames')
-        testtitles.append(('parse_test1', '07/11/2019', 'First file to parse'))
-        testtitles.append(('parse_test2', '07/12/2019', '2nd file to parse'))
-        testtitles.append(('parse_test3', '05/12/2019', '11-2HW_slope-applications'))
-        testtitles.append(("13-5HW-triangles", "ids in margin", \
+        test_titles.append(('parse_test1', '07/11/2019', 'First file to parse'))
+        test_titles.append(('parse_test2', '07/12/2019', '2nd file to parse'))
+        test_titles.append(('parse_test3', '05/12/2019', '11-2HW_slope-applications'))
+        test_titles.append(("13-5HW-triangles", "ids in margin", \
                 "Parsed from file: in/13-5HW-triangles.tex")) #non-existent file
 
-    for title in testtitles:
+    for title in test_titles:
         print('\n', 'running test on: ', title)
         if type(title) != tuple:
             print('title must be tuple of filename, date, heading note. it was:')
@@ -82,7 +85,7 @@ def test_parse(testtitles=None):
         else:
             infile = indir + title[0] + ".tex"
 
-            packages, header, body = parsetexfile(infile)
+            packages, header, body = parse_tex_file(infile)
             if packages and header and body:
                 if title[0] == 'parse_test1':
                     print('lengths should be 11, 3, 37')
@@ -91,7 +94,7 @@ def test_parse(testtitles=None):
             else:
                 print('parsetexfile returned empty file(s)')
 
-            problems, spacing = parsebody(body)
+            problems, spacing = parse_body(body)
             if problems and spacing:
                 if title[0] == 'parse_test1':
                     print('length of problems should be 8: ')

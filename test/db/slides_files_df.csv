@@ -1,0 +1,18 @@
+,unit,file count,filename
+2,01-Intro,10,1-Slides.tex
+4,01-Intro,10,1b-Slides.tex
+6,01-Intro,10,1c-Slides-Geom.tex
+21,02-Proof,12,2-Slides-Geom.tex
+29,03-Analytic-Geometry,8,3-Slides-Geom.tex
+31,04-Triangle-Congruence,13,4-01-congruence-slides+.tex
+32,04-Triangle-Congruence,13,4-01-congruence-slides.tex
+42,04-Triangle-Congruence,13,4-Slides-Geom.tex
+57,06-Similarity,9,6-Slides-Geom.tex
+76,07-Analytic-Geometry,19,7-Slides-Geom.tex
+91,08-Transformations,15,8-Slides-Geom.tex
+108,09-Circles,17,9-Slides-Geom.tex
+119,10-Area+Volume,11,10-Slides-Geom.tex
+125,11-Capstone,6,11-Slides-Geom.tex
+134,11-Quadrilaterals,9,11-Slides-Geom.tex
+151,13-Review,17,13-Slides-Geom.tex
+153,14-Misc,7,Plan-Slides-Geom.tex

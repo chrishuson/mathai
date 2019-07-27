@@ -19,7 +19,7 @@ if TESTFLAG:
 from class_organization import ProblemSet, Problem, \
             DifferentiatedProblemSet, Assessment, Course, Student, assign_problem_set
 
-import crawler
+from crawler import map_course_files, parse_course_files, parse_body, parse_tex_file
 
 HOME = os.environ["HOME"]
 dbdir = HOME + "/GitHub/mathai/db/"
