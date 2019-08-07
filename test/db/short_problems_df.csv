@@ -1,0 +1,34 @@
+,Unnamed: 0,problem_set_ID,question
+1,1,0,"Use symbols to write the name of each geometric figure.
+    \begin{enumerate}
+    \item %Ray DE
+      \begin{tikzpicture}
+        \draw [->, thick] (0,0)--(3,1.5);
+        \draw [fill] (0,0) circle [radius=0.05] node[below]{$G$};
+        \draw [fill] (2,1) circle [radius=0.05] node[below]{$H$};
+      \end{tikzpicture} \bigskip
+    \item \hspace{1cm}%Line AB
+      \begin{tikzpicture}
+        \draw [<->, thick] (1,0)--(1,3);
+        \draw [fill] (1,0.5) circle [radius=0.05] node[right]{$A$};
+        \draw [fill] (1,2.5) circle [radius=0.05] node[right]{$B$};
+      \end{tikzpicture} \bigskip
+      \item %Line segment XY
+        \begin{tikzpicture}
+          \draw [-, thick] (1,0)--(0,2);
+          \draw [fill] (1,0) circle [radius=0.05] node[below]{$E$};
+          \draw [fill] (0,2) circle [radius=0.05] node[left]{$F$};
+        \end{tikzpicture}
+    \end{enumerate}
+
+"
+2,2,0,"A flat surface is a(n) $\rule{4cm}{0.15mm}$. \bigskip
+
+"
+3,3,0,"Find the value of $|2.5-3|$.
+
+"
+4,4,0,"Two line segments or angles of equal measure are $\rule{4cm}{0.15mm}$.
+      \bigskip
+
+"

@@ -8,7 +8,7 @@ import pandas as pd
 from class_organization import Problem, ProblemSet
 
 def map_course_files(course_dir='/Users/chris/GitHub/course-files/Geometry'):
-    """ Crawls through unit directories to return dict of tex files
+    """ Crawl through unit directories to return dict & df of tex files.
 
         course_dir - str, path to local directory of files
         returns course files as dict and as dataframe
@@ -46,48 +46,48 @@ def map_course_files(course_dir='/Users/chris/GitHub/course-files/Geometry'):
 
 def parse_course_files(course_files_df,
             course_dir='/Users/chris/GitHub/course-files/Geometry'):
-    """ Steps through worksheets and parses them into problem sets and problems.
+    """ Step through worksheets and parse them into problem sets.
 
-        course_dir - str, path to local directory of files
         course_files_df - "unit", "file_count" (int), "filename"
-        returns 
-            problem_sets_df: 'filename', 'problem_set_instance', 'problem_count'
-            problems_df: 'filename', 'problem_instance'
+        course_dir - str, path to local directory of files
+        returns problem_sets_df: 'filename', 'head', 'body', 'problems_list',                                   'problem_count', 'problem_set_ID'
         """
     problem_set_tuples = []
-    problem_tuples = []
     filenames = (course_dir + '/' + course_files_df.unit + '/'
                 + course_files_df.filename)
-    #for file_index in range(len(course_files_df)):
     for filename in filenames:
-        #filename = (course_dir + r'/' + course_files_df['unit'][file_index] 
-        #    + r'/' + course_files_df['filename'][file_index])
-        packages, header, body = parse_tex_file(filename)
-        problem_tuples.append((packages, header, body))
-    print('ran new version')
-    return problem_tuples
-    """problemstextblock, spacing = parse_body(body)
-        problems = []
-        try:
-            for problem_text in problemstextblock:
-                problems.append(Problem(texts={'question':problem_text}))
-        except TypeError:
-            print('my TypeError: NoneType object is not iterable', filename)
-            break
-        problem_tuples.extend([(course_files_df['filename'][file_index], 
-                problem) for problem in problems])
-        problem_set_tuples.append((course_files_df['filename'][file_index], 
-                ProblemSet(problems=problems), len(problems)))
-    problems_df = pd.DataFrame(problem_tuples)
-    problems_df.columns = ['filename', 'problem_instance']
+        packages, head, body = parse_tex_file(filename)
+        problem_set_tuples.append((filename, head, body))
     problem_sets_df = pd.DataFrame(problem_set_tuples)
-    problem_sets_df.columns = ['filename', 'problem_set_instance', 'problem_count']
-    return problem_sets_df, problems_df"""
+    problem_sets_df.columns = ['filename', 'head', 'body']
+    problem_sets_df['problem_set_ID'] = problem_sets_df.index
+        
+    try:
+        problem_sets_df['problems_list'] = problem_sets_df['body'].apply(parse_body)
+    except:
+        print('Exception on apply (parse_body). Returning partial problem_sets_df')
+        return problem_sets_df
+    problem_sets_df['problem_count'] = problem_sets_df['problems_list'].apply(len)
+    return problem_sets_df
 
+
+def parse_problem_sets(problem_sets_df):
+    """ Expand problem_sets' problems lists into separate rows of a df.
+
+        problem_sets_df: 'problem_set_ID', 'problems_list'
+        returns problems_df: 'problem_set_ID', 'question' - str
+        """
+    all_questions = np.hstack(problem_sets_df.problems_list)
+    all_problem_set_IDs = np.hstack([[ID]*len(problems) for ID, problems in 
+                        problem_sets_df[['problem_set_ID', 'problems_list']].values])
+    
+    problems_df = pd.DataFrame({'problem_set_ID':all_problem_set_IDs, 
+                                'question':all_questions})
+    return problems_df
 
 
 def parse_tex_files(file_list=None):
-    """ Reads a list of worksheet files and returns a ProblemSet dataframe
+    """ Read a list of worksheet files and returns a ProblemSet dataframe.
 
         file_list - list, str names of files to be read
         returns dataframe, filename, date, heading, ProblemSet instance
@@ -136,13 +136,14 @@ def parse_tex_file(infile):
     print('4 - last line: \n', line)
     return packages, header, body
 
-def parse_body(body):
+def parse_body(body_lines):
     """ Parses the body of a tex problem set into separate problems
         
         body - list of text lines
         returns - problems: list of problem strings
             spacing: list of section and formatting text lines
         """
+    body = body_lines.copy()
     spacing = []
     nested = False
     problem = []
@@ -150,12 +151,12 @@ def parse_body(body):
     
     if type(body) != list:
         print('body needs to be a list, but its type was: ', type(body))
-        return None, None
+        return []
     try:
         line = body.pop(0)
     except IndexError:
         print('Tried to run parse_body on empty file')
-        return None, None
+        return []
 
     while body:
         if r'\subsection' in line:
@@ -200,7 +201,7 @@ def parse_body(body):
             break
     trimmedproblems = [trim_item_prefix(problem) for problem in problems]
     problemstextblock = [''.join(problem) for problem in trimmedproblems]
-    return problemstextblock, spacing
+    return problemstextblock #, spacing
 
 def trim_item_prefix(problem):
     """ Deletes the initial 'item' text, and preceding spaces, 
@@ -234,6 +235,24 @@ for unit in course_files:
 print(set(course_frame['unit']))
 print(course_frame[course_frame['unit'].isin(['Misc'])])
 
-course_frame.to_csv('crawler_course_frame.csv')
+course_frame.to_csv('crawler_course_frame.csv') # ,index=False to avoid saving
 new = pd.read_csv('crawler_course_frame.csv')
+
+worksheet_path = dbdir + '/' + 'worksheet_files_df.csv' #better os.path.join(list)
+worksheet_files_df = pd.read_csv(worksheet_path)
+worksheet_files_df.tail(10)
+
+filename = 'problems_df'
+problems_df.to_csv(os.path.join(dbdir, filename+'.csv'))
+short_problems_df = pd.read_csv(os.path.join(dbdir, 'short_problems_df.csv'))
+
+problem_sets_df = parse_course_files(worksheet_files_df)
+
+To combine problem question text from a dataframe, first make list into string:
+    lines = ps_df.agg(lambda x: ''.join(x))
+        then join into a long string for printing
+    out = lines.str.cat(sep=r'\n') , or also line = 'abc'.join(lines)
+
+pass unit and filename to parse_tex_file:
+filenames = os.path.join([course_dir, worksheet_files_df.unit, worksheet_files_df.filename])
     """

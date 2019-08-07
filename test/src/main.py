@@ -19,7 +19,8 @@ if TESTFLAG:
 from class_organization import ProblemSet, Problem, \
             DifferentiatedProblemSet, Assessment, Course, Student, assign_problem_set
 
-from crawler import map_course_files, parse_course_files, parse_body, parse_tex_file
+from crawler import map_course_files, parse_course_files, parse_body, \
+            parse_tex_file, parse_problem_sets
 
 HOME = os.environ["HOME"]
 dbdir = HOME + "/GitHub/mathai/db/"
@@ -158,10 +159,38 @@ def print_problemset(problems, filename='tmp', title=None, meta=False, numflag=T
             newfile.write('\n' + r'\end{enumerate}'+'\n')
         newfile.write(r'\end{document}' + '\n')
 
+def print_problems_df(problems_df, filename='tmp', title=None, meta=False, numflag=True):
+    """ Creates a worksheet LaTeX file composed of problem questions.
+
+        problems_df - 'question' str, 'problem_set_ID'
+        filename - str, name of tex file created in out directory
+        title - 3-tuple, str (worksheet sub heading, date, margin head)
+        meta - bool, include Problem meta data (ID, Topic, difficulty, etc.)
+        numflag - bool, include "{enumerate}" environment, "item" Problem prefix
+        output file is filename.tex in the outdir directory
+        """
+    out_file = outdir + filename + ".tex"
+    head = make_tex_head(title)
+    with open(out_file, "w") as newfile:
+        for line in head:
+            newfile.write(line)
+        if numflag:
+            newfile.write(r'\begin{enumerate}' + '\n')
+        
+        prefix = '\n' + r'\item '
+        problem_tex = problems_df.question.str.cat(sep=prefix)
+        problem_tex = prefix + problem_tex
+        newfile.write(problem_tex)
+
+        if numflag:
+            newfile.write('\n' + r'\end{enumerate}'+'\n')
+        newfile.write(r'\end{document}' + '\n')
+
 def make_tex_head(title=None):
-    """ Reads the head.tex file for the first lines of a tex file
+    """ Reads the head.tex file to make the first lines of a tex file.
 
         title - 3-tuple, str (worksheet sub heading, date, margin head)
+        returns - str, tex header section of printable problem set file
         """
     try:
         with open(dbdir + 'head.tex', 'r') as f:
