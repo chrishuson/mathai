@@ -1,0 +1,315 @@
+course,chapter,topic,ccss_ID
+algebra1,"numbers, operations and properties",Modeling Expressions,6.EE.A.2
+algebra1,"numbers, operations and properties",Order of Operations,6.EE.A.2
+algebra1,"numbers, operations and properties",Evaluating Expressions,6.EE.A.2
+algebra1,"numbers, operations and properties",Comparing Reals,8.NS.A.2
+algebra1,"numbers, operations and properties",Classifying Numbers,8.NS.A.1
+algebra1,"numbers, operations and properties",Identifying Properties,A.REI.A.1
+algebra1,"numbers, operations and properties",Set Theory,S.CP.A.1
+algebra1,graphs and statistics,Average Known with Missing Data,6.SP.B.5
+algebra1,graphs and statistics,Central Tendency and Dispersion,6.SP.B.5
+algebra1,graphs and statistics,Central Tendency and Dispersion,S.ID.A.2
+algebra1,graphs and statistics,Central Tendency and Dispersion,S.ID.A.3
+algebra1,graphs and statistics,Frequency Tables,S.ID.B.5
+algebra1,graphs and statistics,Frequency Histograms,S.ID.A.1
+algebra1,graphs and statistics,Box Plots,S.ID.A.1
+algebra1,graphs and statistics,Dot Plots,S.ID.A.1
+algebra1,graphs and statistics,Stem-and-Leaf Plots,S.ID.A.1
+algebra1,graphs and statistics,Circle Graphs,S.ID.A.1
+algebra1,graphs and statistics,Scatter Plots,S.ID.B.6
+algebra1,graphs and statistics,Analysis of Data,S.ID.C.9
+algebra1,graphs and statistics,Regression,S.ID.B.6
+algebra1,graphs and statistics,Correlation Coefficient,S.ID.C.8
+algebra1,graphs and statistics,Residuals,S.ID.B.6
+algebra1,expressions and equations,Dependent and Independent Variables,A.SSE.A.1
+algebra1,expressions and equations,Modeling Expressions,A.SSE.A.1
+algebra1,expressions and equations,Solving Linear Equations,A.REI.B.3
+algebra1,expressions and equations,Direct Variation,A.CED.A.1
+algebra1,expressions and equations,Modeling Linear Equations,A.CED.A.1
+algebra1,expressions and equations,Modeling Linear Equations,A.CED.A.2
+algebra1,expressions and equations,Modeling Linear Equations,A.CED.A.3
+algebra1,expressions and equations,Transforming Formulas,A.CED.A.4
+algebra1,rate,Percents,7.RP.A.3
+algebra1,rate,Error,7.RP.A.3
+algebra1,rate,Conversions,N.Q.A.1
+algebra1,rate,Using Rate,N.Q.A.2
+algebra1,rate,Speed,A.CED.A.2
+algebra1,rate,Rate of Change,F.IF.B.6
+algebra1,linear equations,Modeling Linear Functions,F.BF.A.1
+algebra1,linear equations,Modeling Linear Functions,F.LE.A.2
+algebra1,linear equations,Modeling Linear Functions,F.LE.B.5
+algebra1,linear equations,Modeling Linear Functions,S.ID.C.7
+algebra1,linear equations,Graphing Linear Functions,A.CED.A.2
+algebra1,linear equations,Graphing Linear Functions,F.BF.B.3
+algebra1,linear equations,Graphing Linear Functions,F.IF.B.4
+algebra1,linear equations,Writing Linear Equations,A.REI.D.10
+algebra1,linear equations,Identifying Solutions,A.REI.D.10
+algebra1,inequalities,Solving Linear Inequalities,A.REI.B.3
+algebra1,inequalities,Interpreting Solutions,A.REI.B.3
+algebra1,inequalities,Modeling Linear Inequalities,A.CED.A.1
+algebra1,inequalities,Modeling Linear Inequalities,A.CED.A.3
+algebra1,inequalities,Graphing Linear Inequalities,A.REI.D.12
+algebra1,absolute value,Graphing Absolute Value Functions,F.IF.C.7
+algebra1,absolute value,Graphing Absolute Value Functions,F.BF.B.3
+algebra1,quadratics,Solving Quadratics,A.SSE.B.3
+algebra1,quadratics,Solving Quadratics,A.REI.B.4
+algebra1,quadratics,Using the Discriminant,A.REI.B.4
+algebra1,quadratics,Modeling Quadratics,A.CED.A.1
+algebra1,quadratics,Geometric Applications of Quadratics,A.CED.A.1
+algebra1,quadratics,Vertex Form of a Quadratic,F.IF.C.8
+algebra1,quadratics,Graphing Quadratic Functions,F.IF.B.4
+algebra1,quadratics,Graphing Quadratic Functions,F.IF.C.7
+algebra1,systems,Solving Linear Systems,A.REI.C.5
+algebra1,systems,Solving Linear Systems,A.REI.C.6
+algebra1,systems,Modeling Linear Systems,A.CED.A.3
+algebra1,systems,Graphing Linear Systems,A.REI.C.6
+algebra1,systems,Modeling Systems of Linear Inequalities,A.CED.A.3
+algebra1,systems,Graphing Systems of Linear Inequalities,A.REI.D.12
+algebra1,systems,Quadratic-Linear Systems,A.REI.C.7
+algebra1,systems,Quadratic-Linear Systems,A.REI.D.11
+algebra1,systems,Other Systems,A.REI.D.11
+algebra1,powers,Multiplication of Powers,8.EE.A.1
+algebra1,powers,Division of Powers,8.EE.A.1
+algebra1,powers,Powers of Powers,8.EE.A.1
+algebra1,powers,Scientific Notation,8.EE.A.3
+algebra1,powers,Operations with Scientific Notation,8.EE.A.4
+algebra1,powers,Modeling Exponential Functions,A.SSE.B.3
+algebra1,powers,Modeling Exponential Functions,A.CED.A.1
+algebra1,powers,Modeling Exponential Functions,F.BF.A.1
+algebra1,powers,Modeling Exponential Functions,F.LE.A.2
+algebra1,powers,Modeling Exponential Functions,F.LE.B.5
+algebra1,powers,Graphing Exponential Functions,F.IF.C.7
+algebra1,polynomials,Operations with Polynomials,A.APR.A.1
+algebra1,polynomials,Factoring Polynomials,A.SSE.A.2
+algebra1,polynomials,Factoring the Difference of Perfect Squares,A.SSE.A.2
+algebra1,polynomials,Zeros of Polynomials,A.APR.B.3
+algebra1,polynomials,Graphing Polynomial Functions,F.BF.B.3
+algebra1,radicals,Square Roots,8.NS.A.2
+algebra1,radicals,Simplifying Radicals,N.RN.B.3
+algebra1,radicals,Operations with Radicals,N.RN.B.3
+algebra1,radicals,Graphing Root Functions,F.IF.C.7
+algebra1,functions,Defining Functions,F.IF.A.1
+algebra1,functions,Functional Notation,F.IF.A.2
+algebra1,functions,Evaluating Functions,F.IF.A.2
+algebra1,functions,Domain and Range,F.IF.A.2
+algebra1,functions,Domain and Range,F.IF.B.5
+algebra1,functions,Operations with Functions,F.BF.A.1
+algebra1,functions,Families of Functions,F.LE.A.1
+algebra1,functions,Families of Functions,F.LE.A.2
+algebra1,functions,Families of Functions,F.LE.A.3
+algebra1,functions,Transformations with Functions,F.BF.B.3
+algebra1,functions,Comparing Functions,F.IF.C.9
+algebra1,functions,Relating Graphs to Events,F.IF.B.4
+algebra1,functions,Graphing Piecewise-Defined Functions,F.IF.C.7
+algebra1,functions,Graphing Step Functions,F.IF.C.7
+algebra1,sequences and series,Sequences,F.IF.A.3
+algebra1,sequences and series,Sequences,F.LE.A.2
+geometry,tools of geometry,Planes,G.CO.A.1
+geometry,tools of geometry,Solids,G.MG.A.1
+geometry,tools of geometry,Rotations of Two-Dimensional Objects,G.GMD.B.4
+geometry,tools of geometry,Cross-Sections of Three-Dimensional Objects,G.GMD.B.4
+geometry,tools of geometry,Constructions,G.CO.D.12
+geometry,tools of geometry,Constructions,G.CO.D.13
+geometry,lines and angles,Midpoint,G.CO.A.1
+geometry,lines and angles,Distance,G.CO.A.1
+geometry,lines and angles,Directed Line Segments,G.GPE.B.6
+geometry,lines and angles,Lines and Angles,G.CO.C.9
+geometry,lines and angles,Parallel and Perpendicular Lines,G.GPE.B.5
+geometry,triangles,Pythagorean Theorem,G.SRT.C.8
+geometry,triangles,30-60-90 Triangles,G.SRT.C.8
+geometry,triangles,Isosceles Triangle Theorem,G.SRT.B.5
+geometry,triangles,Side Splitter Theorem,G.SRT.B.5
+geometry,triangles,Interior and Exterior Angles of Triangles,G.CO.C.10
+geometry,triangles,Exterior Angle Theorem,G.CO.C.10
+geometry,triangles,Triangle Inequality Theorem,G.CO.C.10
+geometry,triangles,Angle Side Relationship,G.CO.C.10
+geometry,triangles,"Medians, Altitudes and Bisectors",G.CO.C.10
+geometry,triangles,Midsegments,G.CO.C.10
+geometry,triangles,"Centroid, Orthocenter, Incenter and Circumcenter",G.CO.C.10
+geometry,triangles,Triangles in the Coordinate Plane,G.GPE.B.4
+geometry,polygons,Interior and Exterior Angles of Polygons,G.CO.C.11
+geometry,polygons,Parallelograms,G.CO.C.11
+geometry,polygons,Trapezoids,G.CO.C.11
+geometry,polygons,Special Quadrilaterals,G.CO.C.11
+geometry,polygons,Quadrilaterals in the Coordinate Plane,G.GPE.B.4
+geometry,polygons,Polygons in the Coordinate Plane,G.GPE.B.7
+geometry,conics,"Chords, Secants and Tangents",G.C.A.2
+geometry,conics,Inscribed Quadrilaterals,G.C.A.3
+geometry,conics,Equations of Circles,G.GPE.A.1
+geometry,conics,Circles in the Coordinate Plane,G.GPE.B.4
+geometry,measuring in the plane and space,Perimeter,G.MG.A.3
+geometry,measuring in the plane and space,Area of Polygons,G.MG.A.3
+geometry,measuring in the plane and space,Heron's Formula,G.MG.A.3
+geometry,measuring in the plane and space,Surface Area and Lateral Area,G.MG.A.3
+geometry,measuring in the plane and space,Circumference,G.GMD.A.1
+geometry,measuring in the plane and space,Area of Circles,G.GMD.A.1
+geometry,measuring in the plane and space,Compositions of Polygons and Circles,G.MG.A.3
+geometry,measuring in the plane and space,Arc Length,G.C.B.5
+geometry,measuring in the plane and space,Sectors,G.C.B.5
+geometry,measuring in the plane and space,Volume,G.GMD.A.1
+geometry,measuring in the plane and space,Volume,G.GMD.A.3
+geometry,measuring in the plane and space,Density,G.MG.A.2
+geometry,measuring in the plane and space,Similarity,G.SRT.B.5
+geometry,transformations,Line Dilations,G.SRT.A.1
+geometry,transformations,Symmetry,G.CO.A.5
+geometry,transformations,Rotations,G.CO.A.5
+geometry,transformations,Reflections,G.CO.A.5
+geometry,transformations,Translations,G.CO.A.5
+geometry,transformations,Dilations,G.SRT.A.2
+geometry,transformations,Mapping a Polygon onto Itself,G.CO.A.3
+geometry,transformations,Compositions of Transformations,G.CO.A.5
+geometry,transformations,Compositions of Transformations,G.SRT.A.2
+geometry,transformations,Properties of Transformations,G.CO.B.6
+geometry,transformations,Identifying Transformations,G.CO.A.2
+geometry,transformations,Analytical Representations of Transformations,G.CO.A.2
+geometry,trigonometry,Trigonometric Ratios,G.SRT.C.6
+geometry,trigonometry,Cofunctions,G.SRT.C.7
+geometry,trigonometry,Using Trigonometry to Find a Side,G.SRT.C.8
+geometry,trigonometry,Using Trigonometry to Find an Angle,G.SRT.C.8
+geometry,logic,Line and Angle Proofs,G.CO.C.9
+geometry,logic,Triangle Congruency,G.CO.B.7
+geometry,logic,Triangle Congruency,G.CO.B.8
+geometry,logic,Triangle Congruency,G.SRT.B.5
+geometry,logic,Triangle Proofs,G.CO.C.10
+geometry,logic,Triangle Proofs,G.SRT.B.5
+geometry,logic,Quadrilateral Proofs,G.CO.C.11
+geometry,logic,Quadrilateral Proofs,G.SRT.B.5
+geometry,logic,Circle Proofs,G.SRT.B.5
+geometry,logic,Similarity Proofs,G.SRT.A.3
+geometry,logic,Similarity Proofs,G.C.A.1
+algebra2,graphs and statistics,Analysis of Data,S.IC.A.2
+algebra2,graphs and statistics,Analysis of Data,S.IC.B.3
+algebra2,graphs and statistics,Analysis of Data,S.IC.B.4
+algebra2,graphs and statistics,Analysis of Data,S.IC.B.5
+algebra2,graphs and statistics,Analysis of Data,S.IC.B.6
+algebra2,graphs and statistics,Regression,S.ID.B.6
+algebra2,graphs and statistics,Normal Distributions,S.ID.A.4
+algebra2,probability,Sample Space,7.SP.C.8
+algebra2,probability,Probability Models,7.SP.C.7
+algebra2,probability,Theoretical Probability,7.SP.C.5
+algebra2,probability,Theoretical Probability,S.CP.A.2
+algebra2,probability,Theoretical Probability,S.CP.B.7
+algebra2,probability,Geometric Probability,7.SP.C.5
+algebra2,probability,ExperimentalÊProbability,7.SP.C.6
+algebra2,probability,Probability of Compound Events,7.SP.C.8
+algebra2,probability,Venn Diagrams,S.CP.A.1
+algebra2,probability,Conditional Probability,S.CP.A.3
+algebra2,probability,Conditional Probability,S.CP.A.4
+algebra2,probability,Conditional Probability,S.CP.B.6
+algebra2,rate,Rate of Change,F.IF.B.6
+algebra2,quadratics,Solving Quadratics,A.REI.B.4
+algebra2,quadratics,Using the Discriminant,A.REI.B.4
+algebra2,quadratics,Roots of Quadratics,A.REI.B.4
+algebra2,quadratics,Complex Conjugate Root Theorem,A.REI.B.4
+algebra2,quadratics,Graphing Quadratic Functions,G.GPE.A.2
+algebra2,systems,Solving Linear Systems,A.REI.C.6
+algebra2,systems,Quadratic-Linear Systems,A.REI.C.7
+algebra2,systems,Quadratic-Linear Systems,A.REI.D.11
+algebra2,systems,Other Systems,A.REI.D.11
+algebra2,powers,Modeling Exponential Functions,A.SSE.B.3
+algebra2,powers,Modeling Exponential Functions,F.IF.C.8
+algebra2,powers,Modeling Exponential Functions,F.BF.A.1
+algebra2,powers,Modeling Exponential Functions,F.LE.A.2
+algebra2,powers,Modeling Exponential Functions,F.LE.B.5
+algebra2,powers,Evaluating Exponential Expressions,F.IF.B.4
+algebra2,powers,Evaluating Logarithmic Expressions,F.IF.B.4
+algebra2,powers,Graphing Exponential Functions,F.BF.B.3
+algebra2,powers,Graphing Exponential Functions,F.IF.C.7
+algebra2,powers,Graphing Logarithmic Functions,F.IF.C.7
+algebra2,powers,"Exponential Equations, Exponential Growth, Exponential Decay",A.CED.A.1
+algebra2,powers,"Exponential Equations, Exponential Growth, Exponential Decay",F.LE.A.4
+algebra2,powers,Logarithmic Equations,F.LE.A.4
+algebra2,polynomials,Factoring Polynomials,A.SSE.A.2
+algebra2,polynomials,Factoring the Difference of Perfect Squares,A.SSE.A.2
+algebra2,polynomials,Zeros of Polynomials,A.APR.B.3
+algebra2,polynomials,Solving Polynomial Equations,A.APR.B.3
+algebra2,polynomials,Graphing Polynomial Functions,F.IF.B.4
+algebra2,polynomials,Graphing Polynomial Functions,F.IF.C.7
+algebra2,polynomials,Remainder Theorem,A.APR.B.2
+algebra2,polynomials,Polynomial Identities,A.APR.C.4
+algebra2,radicals,Simplifying Radicals,N.RN.A.2
+algebra2,radicals,Operations with Radicals,N.RN.A.2
+algebra2,radicals,Solving Radicals,A.REI.A.2
+algebra2,radicals,Radicals and Rational Exponents,N.RN.A.1
+algebra2,radicals,Radicals and Rational Exponents,N.RN.A.2
+algebra2,radicals,Square Roots of Negative Numbers,N.CN.A.2
+algebra2,radicals,Imaginary Numbers,N.CN.A.1
+algebra2,radicals,Operations with Complex Numbers,N.CN.A.2
+algebra2,rationals,Undefined Rationals,A.APR.D.6
+algebra2,rationals,Expressions with Negative Exponents,A.APR.D.6
+algebra2,rationals,Rational Expressions,A.APR.D.6
+algebra2,rationals,Division of Polynomials,A.APR.D.6
+algebra2,rationals,Modeling Rationals,A.CED.A.1
+algebra2,rationals,Solving Rationals,A.REI.A.2
+algebra2,functions,Domain and Range,F.IF.A.2
+algebra2,functions,Operations with Functions,F.BF.A.1
+algebra2,functions,Families of Functions,F.LE.A.2
+algebra2,functions,Comparing Functions,F.IF.C.9
+algebra2,functions,Even and Odd Functions,F.BF.B.3
+algebra2,functions,Inverse of Functions,F.BF.B.4
+algebra2,sequences and series,Sequences,F.LE.A.2
+algebra2,sequences and series,Sequences,F.IF.A.3
+algebra2,sequences and series,Sequences,F.BF.A.2
+algebra2,sequences and series,Sigma Notation,F.BF.B.6
+algebra2,sequences and series,Series,A.SSE.B.4
+algebra2,sequences and series,Series,F.BF.B.6
+algebra2,trigonometry,Radian Measure,F.TF.A.1
+algebra2,trigonometry,Unit Circle,F.TF.A.1
+algebra2,trigonometry,Unit Circle,F.TF.A.2
+algebra2,trigonometry,Reciprocal Trigonometric Relationships,F.TF.A.2
+algebra2,trigonometry,Finding the Terminal Side of an Angle,F.TF.A.2
+algebra2,trigonometry,Reference Angles,F.TF.A.2
+algebra2,trigonometry,Determining Trigonometric Functions,F.TF.A.2
+algebra2,trigonometry,Determining Trigonometric Functions,F.TF.C.8
+algebra2,trigonometry,Using Inverse Trigonometric Functions,F.TF.A.2
+algebra2,trigonometry,Simplifying Trigonometric Expressions,F.TF.C.8
+algebra2,trigonometry,Proving Trigonometric Identities,F.TF.C.8
+algebra2,trigonometry,Modeling Trigonometric Functions,F.TF.B.5
+algebra2,trigonometry,Graphing Trigonometric Functions,F.IF.B.4
+algebra2,trigonometry,Graphing Trigonometric Functions,F.IF.C.7
+algebra2,conics,Equations of Circles,G.GPE.A.1
+precalculus,"numbers, operations and properties",Matrices,N.VM.C.6
+precalculus,"numbers, operations and properties",Matrices,N.VM.C.7
+precalculus,"numbers, operations and properties",Matrices,N.VM.C.8
+precalculus,"numbers, operations and properties",Matrices,N.VM.C.11
+precalculus,"numbers, operations and properties",Matrices,N.VM.C.12
+precalculus,"numbers, operations and properties",Matrices,A.REI.C.14
+precalculus,probability,Multiplication Counting Principle,S.CP.B.9
+precalculus,probability,Permutations,S.CP.B.9
+precalculus,probability,Combinations,S.CP.B.9
+precalculus,probability,Differentiating Permutations and Combinations,S.CP.B.9
+precalculus,probability,Binomial Probability,S.CP.B.9
+precalculus,absolute value,Absolute Value Equations,A.REI.D.11
+precalculus,absolute value,Absolute Value Inequalities,A.REI.D.11
+precalculus,quadratics,Quadratic Inequalities,A.REI.D.11
+precalculus,systems,Other Systems,G.GPE.A.3
+precalculus,powers,Properties of Logarithms,F.BF.B.5
+precalculus,powers,Logarithmic Equations,F.BF.B.5
+precalculus,powers,Binomial Expansions,A.APR.C.5
+precalculus,radicals,Conjugates of Complex Numbers,N.CN.A.3
+precalculus,radicals,Division of Complex Numbers,N.CN.A.3
+precalculus,radicals,Moduli of Complex Numbers,N.CN.A.3
+precalculus,radicals,Graphing Complex Numbers,N.CN.B.4
+precalculus,radicals,Graphing Complex Numbers,N.CN.B.5
+precalculus,rationals,Graphing Rationals,F.IF.C.7
+precalculus,rationals,Multiplication and Division of Rationals,A.APR.D.7
+precalculus,rationals,Addition and Subtraction of Rationals,A.APR.D.7
+precalculus,rationals,Complex Fractions,A.APR.D.7
+precalculus,rationals,Rationalizing Denominators,A.APR.D.7
+precalculus,rationals,Inverse Variation,A.APR.D.7
+precalculus,rationals,Rational Inequalities,A.APR.D.7
+precalculus,functions,Defining Functions,F.BF.B.3
+precalculus,functions,Inverse of Functions,F.BF.B.4
+precalculus,functions,Compositions of Functions,F.BF.A.1
+precalculus,trigonometry,Graphing Trigonometric Functions,F.TF.B.6
+precalculus,trigonometry,Domain and Range,F.TF.B.6
+precalculus,trigonometry,Angle Sum and Difference Identities,F.TF.C.9
+precalculus,trigonometry,Double and Half Angle Identities,F.TF.C.9
+precalculus,trigonometry,Trigonometric Equations,F.TF.B.7
+precalculus,trigonometry,Using Trigonometry to Find Area,G.SRT.D.9
+precalculus,trigonometry,Law of Sines,G.SRT.D.11
+precalculus,trigonometry,Law of Sines - The Ambiguous Case,G.SRT.D.10
+precalculus,trigonometry,Law of Cosines,G.SRT.D.11
+precalculus,trigonometry,Vectors,N.VM.A.3
+precalculus,trigonometry,Vectors,G.SRT.D.11
+precalculus,conics,Equations of Conics,G.GPE.A.3

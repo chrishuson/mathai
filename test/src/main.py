@@ -15,18 +15,18 @@ if TESTFLAG:
     #import unit_tests
 
 HOME = os.environ["HOME"]
-dbdir = HOME + "/GitHub/mathai/db/"
-outdir = HOME + "/GitHub/mathai/out/"
-indir = HOME + "/GitHub/mathai/in/"
+db_dir = HOME + "/GitHub/mathai/db/"
+out_dir = HOME + "/GitHub/mathai/out/"
+in_dir = HOME + "/GitHub/mathai/in/"
 course_dir = HOME + "/GitHub/course-files/Geometry"
 
 if TESTFLAG:
-    dbdir = HOME + "/GitHub/mathai/test/db/"
-    outdir = HOME + "/GitHub/mathai/test/out/"
-    indir = HOME + "/GitHub/mathai/test/in/"
+    db_dir = HOME + "/GitHub/mathai/test/db/"
+    out_dir = HOME + "/GitHub/mathai/test/out/"
+    in_dir = HOME + "/GitHub/mathai/test/in/"
 
 
-def save_csv(filenames=None, db_dir=dbdir):
+def save_csv(filenames=None, db_dir=db_dir): #convert to **arg format
     """ Save persistent record in db directory of dataframes
 
         filenames - list of tuples, dataframe and csv filenames to save
@@ -44,7 +44,7 @@ def save_csv(filenames=None, db_dir=dbdir):
     return None
 
 
-def load_csv(filenames=None, db_dir=dbdir):
+def load_csv(filenames=None, db_dir=db_dir):
     """ Return records of dataframes from db directory csv files
 
         filenames - list of csv filenames to load
@@ -71,9 +71,9 @@ def print_problems_df(problems_df, filename='tmp', title=None, meta=False, numfl
         title - 3-tuple, str (worksheet sub heading, date, margin head)
         meta - bool, include Problem meta data (ID, Topic, difficulty, etc.)
         numflag - bool, include "{enumerate}" environment, "item" Problem prefix
-        output file is filename.tex in the outdir directory
+        output file is filename.tex in the out_dir directory
         """
-    out_file = outdir + filename + ".tex"
+    out_file = out_dir + filename + ".tex"
     head = make_tex_head(title)
     with open(out_file, "w") as newfile:
         for line in head:
@@ -97,10 +97,10 @@ def make_tex_head(title=None):
         returns - str, tex header section of printable problem set file
         """
     try:
-        with open(dbdir + 'head.tex', 'r') as f:
+        with open(db_dir + 'head.tex', 'r') as f:
             head = f.read()
     except FileNotFoundError:
-            print('Found no file head.tex in directory', dbdir)
+            print('Found no file head.tex in directory', db_dir)
             head = ''
     if title is None:
         head += (r'\fancyhead[L]{BECA / Dr. Huson}' + '\n'*2 
@@ -166,7 +166,7 @@ def parse_course_files(course_files_df,
         problem_set_tuples.append((filename, head, body))
     problem_sets_df = pd.DataFrame(problem_set_tuples)
     problem_sets_df.columns = ['filename', 'head', 'body']
-    problem_sets_df['problem_set_ID'] = problem_sets_df.index
+    problem_sets_df['problem_set_ID'] = problem_sets_df.index #TODO set as index
         
     try:
         problem_sets_df['problems_list'] = problem_sets_df['body'].apply(parse_body)
@@ -185,7 +185,7 @@ def parse_problem_sets(problem_sets_df):
         """
     all_questions = np.hstack(problem_sets_df.problems_list)
     all_problem_set_IDs = np.hstack([[ID]*len(problems) for ID, problems in 
-                        problem_sets_df[['problem_set_ID', 'problems_list']].values])
+                        problem_sets_df[['problem_set_ID', 'problems_list']].values]) #TODO set as index
     
     problems_df = pd.DataFrame({'problem_set_ID':all_problem_set_IDs, 
                                 'question':all_questions})
@@ -314,12 +314,48 @@ def trim_item_prefix(problem):
                 problem[0] = firstline[index+6 :]
     return problem
 
-worksheet_files_df, problem_sets_df, problems_df = load_csv(['worksheet_files_df', 'problem_sets_df', 'problems_df'])
+worksheet_files_df, standards_df = load_csv(['worksheet_files_df', 'standards_df'])
+
+filename = 'problem_sets_df'
+path_plus_filename = os.path.join(db_dir, filename+'.csv')
+problem_sets_df = pd.read_csv(path_plus_filename, index_col='problem_set_ID')
+
+filename = 'problems_df'
+path_plus_filename = os.path.join(db_dir, filename+'.csv')
+problems_df = pd.read_csv(path_plus_filename, index_col='problem_ID')
+
+filename = 'standards_desc_df'
+path_plus_filename = os.path.join(db_dir, filename+'.csv')
+standards_desc_df = pd.read_csv(path_plus_filename, index_col='ccss_ID')
+#standards_desc_df.to_csv(path_plus_filename)
+
+"""
+filename = 'standards_df'
+path_plus_filename = os.path.join(db_dir, filename+'.csv')
+standards_df.to_csv(path_plus_filename, index=False)
+        worksheets_df also doesn't have an index column """
 
 #problem_sets_df = parse_course_files(worksheet_files_df)
 #print_problems_df(problems_df[problems_df['problem_set_ID']==5], 'tmp2')
 
 print('Loaded dataframes: ')
-print('worksheet_files_df, # of rows: ', len(worksheet_files_df))
-print('problem_sets_df, # of rows: ', len(problem_sets_df))
-print('problems_df, # of rows: ', len(problems_df))
+print('worksheet_files_df:\n', 
+        'index name: ', worksheet_files_df.index.name,
+        '\ncolumns: ', worksheet_files_df.columns, 
+        '\n149 rows: ', len(worksheet_files_df), '\n')
+print('problem_sets_df:\n', 
+        'index name: ', problem_sets_df.index.name,
+        '\ncolumns: ', problem_sets_df.columns, 
+        '\n149 rows: ', len(problem_sets_df), '\n')
+print('problems_df:\n', 
+        'index name: ', problems_df.index.name,
+        '\ncolumns: ', problems_df.columns, 
+        '\n1855 rows: ', len(problems_df), '\n')
+print('standards_df:\n', 
+        'index name: ', standards_df.index.name,
+        '\ncolumns: ', standards_df.columns, 
+        '\n314 rows: ', len(standards_df), '\n')
+print('standards_desc_df:\n', 
+        'index name: ', standards_desc_df.index.name,
+        '\ncolumns: ', standards_desc_df.columns, 
+        '\n131 rows: ', len(standards_desc_df), '\n')
