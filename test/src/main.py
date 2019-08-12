@@ -5,6 +5,7 @@
 import sys
 import os
 import csv
+import ast
 
 import numpy as np
 import pandas as pd
@@ -62,6 +63,25 @@ def load_csv(filenames=None, db_dir=db_dir):
             print('Something wrong. arg should be list of filenames without extension.')
     return result_dfs
 
+def print_problem_set_df(problem_sets_df, problems_df, out_dir=out_dir):
+    """ Save tex file for each problem set row's problem list.
+
+        problem_sets_df - 'problem_IDs', list; 'unit', str; 'out_filename', str
+                        'title', 3-tuple str's
+        problems_df - index problem_ID, 'question', str
+        out_dir - str, path to save problem set files, under unit directories
+        returns out_files_df - 'filename', 'unit'
+        """
+    out_files = []
+    for problem_set_ID, problem_set_row in problem_sets_df.iterrows():
+        filename = 'Problem_set_ID_' + str(problem_set_ID) + '.tex'
+        path_plus_filename = os.path.join(out_dir, 'unit_tmp', filename)
+        title = ('Problem set subheading', 
+                'Problem set ID ' + str(problem_set_ID), 'tmp Geometry')
+        ps_problems_df = problems_df.loc[problem_set_row.problem_IDs]
+        print_problems_df(ps_problems_df, filename, title)
+        out_files.append((filename, 'unit_xyz'))
+    return pd.DataFrame(out_files, columns=['filename', 'unit'])
 
 def print_problems_df(problems_df, filename='tmp', title=None, meta=False, numflag=True):
     """ Creates a worksheet LaTeX file composed of problem questions.
@@ -152,7 +172,7 @@ def map_course_files(course_dir='/Users/chris/GitHub/course-files/Geometry'):
 
 def parse_course_files(course_files_df,
             course_dir='/Users/chris/GitHub/course-files/Geometry'):
-    """ Step through worksheets and parse them into problem sets.
+    """ Step through worksheets and parse them into problem sets df.
 
         course_files_df - "unit", "file_count" (int), "filename"
         course_dir - str, path to local directory of files
@@ -166,8 +186,7 @@ def parse_course_files(course_files_df,
         problem_set_tuples.append((filename, head, body))
     problem_sets_df = pd.DataFrame(problem_set_tuples)
     problem_sets_df.columns = ['filename', 'head', 'body']
-    problem_sets_df['problem_set_ID'] = problem_sets_df.index #TODO set as index
-        
+    problem_sets_df.index.name = 'problem_set_ID'
     try:
         problem_sets_df['problems_list'] = problem_sets_df['body'].apply(parse_body)
     except:
@@ -184,11 +203,13 @@ def parse_problem_sets(problem_sets_df):
         returns problems_df: 'problem_set_ID', 'question' - str
         """
     all_questions = np.hstack(problem_sets_df.problems_list)
-    all_problem_set_IDs = np.hstack([[ID]*len(problems) for ID, problems in 
-                        problem_sets_df[['problem_set_ID', 'problems_list']].values]) #TODO set as index
+    all_problem_set_IDs = np.hstack([[ID]*problem_count for ID, problem_count in 
+                                problem_sets_df.problem_count.iteritems()])
+                        #problem_sets_df[['problem_set_ID', 'problems_list']]#.values]) #TODO set as index
     
     problems_df = pd.DataFrame({'problem_set_ID':all_problem_set_IDs, 
                                 'question':all_questions})
+    problems_df.index.name = 'problem_ID'
     return problems_df
 
 
@@ -314,11 +335,31 @@ def trim_item_prefix(problem):
                 problem[0] = firstline[index+6 :]
     return problem
 
+def add_problem_IDs_to_set(problem_sets_df):
+    """ Add list of problem_IDs to each problem_set.
+
+        problem_sets_df - index 'problem_set_ID'
+        problems_df - index 'problem_ID
+        returns problem_sets_df with column 'problem_IDs', list
+        """
+    p_sets_copy = problem_sets_df.copy()
+    problem_IDs = []
+    for problem_set_ID in p_sets_copy.index:
+        problem_IDs.append(
+            [p_ID for p_ID in problems_df[problems_df.problem_set_ID == problem_set_ID].index])
+    p_sets_copy['problem_IDs'] = problem_IDs
+    return p_sets_copy
+
+
 worksheet_files_df, standards_df = load_csv(['worksheet_files_df', 'standards_df'])
 
 filename = 'problem_sets_df'
 path_plus_filename = os.path.join(db_dir, filename+'.csv')
 problem_sets_df = pd.read_csv(path_plus_filename, index_col='problem_set_ID')
+problem_sets_df['head'] = problem_sets_df['head'].apply(ast.literal_eval)
+problem_sets_df['body'] = problem_sets_df['body'].apply(ast.literal_eval)
+problem_sets_df['problems_list'] = problem_sets_df['problems_list'].apply(ast.literal_eval)
+problem_sets_df['problem_IDs'] = problem_sets_df['problem_IDs'].apply(ast.literal_eval)
 
 filename = 'problems_df'
 path_plus_filename = os.path.join(db_dir, filename+'.csv')
@@ -359,3 +400,9 @@ print('standards_desc_df:\n',
         'index name: ', standards_desc_df.index.name,
         '\ncolumns: ', standards_desc_df.columns, 
         '\n131 rows: ', len(standards_desc_df), '\n')
+
+""" df select for string in body, i.e. a list of strings
+    def check_for_setcounter(body_list):
+        return any('setcounter' in line for line in body_list)
+
+    setcounter_df = problem_sets_df[problem_sets_df.body.apply(check_for_setcounter)]"""
