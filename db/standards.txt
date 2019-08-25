@@ -1,6 +1,0 @@
-exponents
-logs
-function-inverse
-substitution
-g-quad-vertex
-exponent-fin

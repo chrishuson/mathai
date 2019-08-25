@@ -1,2 +1,0 @@
-\item   Derive the inverse of $f(x)=2x+1$
-\item   Find the inverse of $f(x)=\sqrt{x+2}$
