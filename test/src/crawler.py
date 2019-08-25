@@ -1,26 +1,8 @@
 # Functions to list files and crawl directories for problem set files
 
-import os
-
-import numpy as np
-import pandas as pd
-
-from class_organization import Problem, ProblemSet
-
-
-def parse_tex_files(file_list=None):
-    """ Read a list of worksheet files and returns a ProblemSet dataframe.
-
-        file_list - list, str names of files to be read
-        returns dataframe, filename, date, heading, ProblemSet instance
-        """
-    if file_list is None:
-        file_list = []
-    
-
 
 """
-
+Notes 
 short_df['fullfilename'] = course_dir + '/' + short_df.unit + '/' + short_df.filename
 
 short_df['text_tuple'] = short_df.fullfilename.apply(parse_tex_file)
