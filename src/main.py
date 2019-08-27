@@ -45,7 +45,7 @@ def save_csv(filenames=None, db_dir=db_dir): #convert to **arg format
     return None
 
 
-def load_csv(filenames=None, db_dir=db_dir):
+def load_csv(filenames=None, db_dir=db_dir): #TODO eliminate function
     """ Return records of dataframes from db directory csv files
 
         filenames - list of csv filenames to load
@@ -335,7 +335,7 @@ def trim_item_prefix(problem):
                 problem[0] = firstline[index+6 :]
     return problem
 
-def add_problem_IDs_to_set(problem_sets_df):
+def add_problem_IDs_to_set(problem_sets_df): #TODO pass in problems_df as argument
     """ Add list of problem_IDs to each problem_set.
 
         problem_sets_df - index 'problem_set_ID'

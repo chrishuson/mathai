@@ -1,17 +1,6 @@
 # Suite of functions to test functions in main.py
 # 
 
-import os
-
-from class_organization import Problem, ProblemSet
-from crawler import map_course_files, parse_course_files, parse_body, parse_tex_file
-
-
-HOME = os.environ["HOME"]
-dbdir = HOME + "/GitHub/mathai/test/db/"
-outdir = HOME + "/GitHub/mathai/test/out/"
-indir = HOME + "/GitHub/mathai/test/in/"
-
 
 def make_test_problem_db():
     test_problem_db = {}
@@ -160,3 +149,33 @@ def test_global_load(long = False): #Doesn't work because can't see variables in
                     #print(global_problem_dict[topic][difficulty][id].tex(1))
 
     return comments
+
+""" Utility snippets
+
+analytics_df = problem_sets_df[problem_sets_df.filename.str.contains('03-Analytic')]
+analytics_df.filename.str[42:]
+
+filenames = [(analytics_df, 'test_problem_sets_df')]
+test_dir = HOME + '/GitHub/mathai/in/'
+save_csv(filenames, test_dir)
+
+path_plus_filename = os.path.join(test_dir, 'test_problem_sets_df.csv')
+test_problem_sets_df = pd.read_csv(path_plus_filename, index_col='problem_set_ID')
+test_problem_sets_df['head'] = test_problem_sets_df['head'].apply(ast.literal_eval)
+test_problem_sets_df['body'] = test_problem_sets_df['body'].apply(ast.literal_eval)
+test_problem_sets_df['problems_list'] = test_problem_sets_df['problems_list'].apply(ast.literal_eval)
+test_problem_sets_df['problem_IDs'] = test_problem_sets_df['problem_IDs'].apply(ast.literal_eval)
+
+filename = 'test_problems_df'
+path_plus_filename = os.path.join(test_dir, filename+'.csv')
+test_problems_df = pd.read_csv(path_plus_filename, index_col='problem_ID')
+
+print_problem_set_df(test_problem_sets_df, test_problems_df)
+
+title = ('All problems in test_problems_df', '27 Aug 2019', 'Geometry')
+print_problems_df(test_problems_df, 'all_problems', title)
+
+worksheet_problem_sets_df = parse_course_files(worksheet_files_df)
+worksheet_problems_df = parse_problem_sets(worksheet_problem_sets_df)
+worksheet_problem_sets_df = add_problem_IDs_to_set(worksheet_problem_sets_df)
+"""
