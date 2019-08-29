@@ -280,8 +280,16 @@ def parse_body(body_lines):
             spacing.append(line)
             problems.append(problem)
             problem = []
-        elif r'\newpage' in line:
+        elif r'\subsubsection' in line:
+            while r'\item' not in line and body:
+                line = body.pop(0)
+            problem = []
+            problem.append(line)
+        elif r'\newpage' in line: #newlines are saved as problems
             spacing.append(line)
+            problems.append(problem)
+            problem = []
+            problem.append(line)
             problems.append(problem)
             problem = []
         elif r'\item' in line and not nested:
@@ -301,7 +309,8 @@ def parse_body(body_lines):
                 problem = []
         else:
             problem.append(line)
-        line = body.pop(0)
+        if body:
+            line = body.pop(0)
     problems.append(problem)
 
     newline = ['\n']

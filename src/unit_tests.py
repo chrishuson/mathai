@@ -178,4 +178,9 @@ print_problems_df(test_problems_df, 'all_problems', title)
 worksheet_problem_sets_df = parse_course_files(worksheet_files_df)
 worksheet_problems_df = parse_problem_sets(worksheet_problem_sets_df)
 worksheet_problem_sets_df = add_problem_IDs_to_set(worksheet_problem_sets_df)
+
+test_files_df = pd.DataFrame({'unit':['in', 'in', 'in'],
+'file_count': [3, 3, 3], 'filename':['parse_test4.tex', 'parse_test5.tex', 'parse_test6.tex']})
+test_problem_sets_df = parse_course_files(test_files_df, '/Users/chris/GitHub/mathai')
+test_problems_df = parse_problem_sets(test_problem_sets_df)
 """
