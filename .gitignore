@@ -9,6 +9,7 @@ src/tmp*.py
 src/__pycache__/*
 */*copy
 src/*copy.py
+*.pyc
 
 # MAC OSX
 */.DS_Store
