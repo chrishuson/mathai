@@ -176,7 +176,8 @@ def parse_course_files(course_files_df,
 
         course_files_df - "unit", "file_count" (int), "filename"
         course_dir - str, path to local directory of files
-        returns problem_sets_df: 'filename', 'head', 'body', 'problems_list',                                   'problem_count', 'problem_set_ID'
+        returns problem_sets_df: 'filename', 'head', 'body', 'problems_list',
+                                    'problem_count', 'problem_set_ID'
         """
     problem_set_tuples = []
     filenames = (course_dir + '/' + course_files_df.unit + '/'
