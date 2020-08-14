@@ -184,7 +184,7 @@ def parse_course_files(course_files_df,
                 + course_files_df.filename)
     for filename in filenames:
         head, body = parse_tex_file(filename)
-        problem_set_tuples.append((filename, head, body))
+        problem_set_tuples.append((filename, head, body)) # TODO make filename w/o path by using course_files_df
     problem_sets_df = pd.DataFrame(problem_set_tuples)
     problem_sets_df.columns = ['filename', 'head', 'body']
     problem_sets_df.index.name = 'problem_set_ID'
@@ -228,22 +228,22 @@ def parse_tex_file(infile):
     try:
         with open(infile, "r") as texfile:
             lines = texfile.readlines()
-            print('Opened and read file: \n', infile)
-            print('length in lines: ', len(lines))
+            #print('Opened and read file: \n', infile)
+            #print('length in lines: ', len(lines))
     except FileNotFoundError:
         print('Tried to open non-existent file: ' + infile)
         return None, None, None
 
     line = lines.pop(0)
-    print('1 - packages section. first line: \n', line)
+    #print('1 - packages section. first line: \n', line)
     while lines and r'\begin{document}' not in line:
         packages.append(line)
         line = lines.pop(0)
-    print('2 - header section. first line: \n', line)
+    #print('2 - header section. first line: \n', line)
     while lines and r'\begin{enumerate}' not in line:
         header.append(line)
         line = lines.pop(0)
-    print('3 - body section. first line \n', line)
+    #print('3 - body section. first line \n', line)
     try:
         line = lines.pop(0)
     except IndexError:
@@ -251,7 +251,7 @@ def parse_tex_file(infile):
     while lines and r'\end{document}' not in line:
         body.append(line)
         line = lines.pop(0)
-    print('4 - last line: \n', line)
+    #print('4 - last line: \n', line)
     return header, body
 
 def parse_body(body_lines):
@@ -260,6 +260,8 @@ def parse_body(body_lines):
         body - list of text lines
         returns - problems: list of problem strings
             spacing: list of section and formatting text lines
+
+        ISSUES: newlines new pages, bracketed items or begin multicols before item (eg 9-1DN...)
         """
     body = body_lines.copy()
     spacing = []
