@@ -322,6 +322,24 @@ def parse_body(body_lines):
             problems.remove(newline)
         except:
             break
+    newline2 = [r'\n\n']
+    while True:
+        try: 
+            problems.remove(newline2)
+        except:
+            break
+    newline3 = [r' \n']
+    while True:
+        try: 
+            problems.remove(newline3)
+        except:
+            break
+    newline4 = [r'  \n']
+    while True:
+        try: 
+            problems.remove(newline4)
+        except:
+            break
     empty = []
     while True:
         try: 
