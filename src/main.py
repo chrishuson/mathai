@@ -322,7 +322,7 @@ def parse_body(body_lines):
             problems.remove(newline)
         except:
             break
-    newline2 = [r'\n\n']
+    newline2 = ['\n', '\n']
     while True:
         try: 
             problems.remove(newline2)
@@ -338,6 +338,12 @@ def parse_body(body_lines):
     while True:
         try: 
             problems.remove(newline4)
+        except:
+            break
+    newline5 = [r'    \n']
+    while True:
+        try: 
+            problems.remove(newline5)
         except:
             break
     empty = []
