@@ -295,6 +295,11 @@ def parse_body(body_lines):
             problem.append(line)
             problems.append(problem)
             problem = []
+        elif r'\item' in line and r'\begin{enumerate}' in line and not nested:
+            nested = True
+            problems.append(problem)
+            problem = []
+            problem.append(line)
         elif r'\item' in line and not nested:
             problems.append(problem)
             problem = []
