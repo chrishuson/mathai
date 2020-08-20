@@ -302,7 +302,18 @@ def parse_body(body_lines):
         elif r'\begin{enumerate}' in line:
             nested = True
             problem.append(line)
+        elif r'\begin{itemize}' in line:
+            nested = True
+            problem.append(line)
         elif r'\end{enumerate}' in line:
+            if nested:
+                nested = False
+                problem.append(line)
+            else:
+                spacing.append(line)
+                problems.append(problem)
+                problem = []
+        elif r'\end{itemize}' in line:
             if nested:
                 nested = False
                 problem.append(line)
