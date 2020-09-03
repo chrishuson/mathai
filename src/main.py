@@ -74,13 +74,13 @@ def print_problem_set_df(problem_sets_df, problems_df, out_dir=out_dir):
         """
     out_files = []
     for problem_set_ID, problem_set_row in problem_sets_df.iterrows():
-        filename = 'Problem_set_ID_' + str(problem_set_ID) + '.tex' #the '.tex' is duplicated here and in print_problems_df
-        path_plus_filename = os.path.join(out_dir, 'unit_tmp', filename)
+        filename = 'Problem_set_ID_' + str(problem_set_ID)
+        #path_plus_filename = os.path.join(out_dir, 'unit_tmp', filename)
         title = ('Problem set subheading', 
                 'Problem set ID ' + str(problem_set_ID), 'tmp Geometry')
         ps_problems_df = problems_df.loc[problem_set_row.problem_IDs]
         print_problems_df(ps_problems_df, filename, title)
-        out_files.append((filename, 'unit_xyz'))
+        out_files.append((filename + '.tex', 'unit_xyz'))
     return pd.DataFrame(out_files, columns=['filename', 'unit']) #index should match problem_set_ID
 
 def print_problems_df(problems_df, filename='tmp', title=None, meta=False, numflag=True):
