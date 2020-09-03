@@ -63,7 +63,64 @@ def load_csv(filenames=None, db_dir=db_dir): #TODO eliminate function
             print('Something wrong. arg should be list of filenames without extension.')
     return result_dfs
 
-def print_problem_set_df(problem_sets_df, problems_df, out_dir=out_dir):
+def build_pset_df_tex(pset_df, problem_df):
+    """ Save tex file for each problem set row's problem list.
+
+        pset_df - index 'pset_ID'; 'problem_IDs', list; 'unit', str; 'file', str
+        problem_df - index 'problem_ID'; 'question', str
+        returns built tex files df - index 'pset_ID', 'filename', 'unit'
+        """
+    out_files = []
+    for pset_ID, pset_row in pset_df.iterrows():
+        unit = pset_row.unit
+        filename = pset_row.file[:-4] #strip '.tex'
+        title = (filename.replace('_', '-'), #underbars in text cause pdflatex error
+                'pset ID: ' + str(pset_ID),
+                'Geometry ' + unit.replace('_', '-'))
+        build_problem_df_tex(problem_df.loc[pset_row.problem_IDs],
+                            filename, title)
+        out_files.append((pset_ID, filename + '.tex', unit))
+    return pd.DataFrame(out_files, columns=['pset_ID', 'filename', 'unit']).set_index('pset_ID')
+
+def build_problem_df_tex(problem_df, filename='tmp', title=None, meta=False):
+    """ Creates a worksheet LaTeX file composed of problem questions.
+
+        problem_df - 'question' str, 'problem_set_ID'
+        filename - str, name of tex file created in out directory (w/o '.tex' extension)
+        title - 3-tuple, str (worksheet sub heading, date, margin head)
+        meta - bool, include Problem meta data (ID, Topic, difficulty, etc.)
+        tex doc is saved as filename.tex in the out_dir directory
+        """
+    try:
+        with open(db_dir + 'header.tex', 'r') as f:
+            latex_body = f.read()
+    except FileNotFoundError:
+            print('Found no file header.tex in directory', db_dir)
+            latex_body = r'\documentclass[12pt, twoside]{article}' + '\n'
+    if title is None:
+        latex_body += (r'\fancyhead[L]{BECA / Dr. Huson}' + '\n'*2 
+                + r'\begin{document}' + '\n'*2)
+    else:
+        latex_body += (r'\fancyhead[L]{BECA / Dr. Huson / '
+                + title[2].replace('_', '-') + r'\\* '  #underbars in text cause pdflatex error
+                + title[1].replace('_', '-') + r'}')
+        latex_body += '\n'*2 + r'\begin{document}' + '\n'*2
+        latex_body += (r'\subsubsection*{' 
+                + title[0].replace('_', '-') + '}\n')
+    latex_body += r'\begin{enumerate}' + '\n'
+
+    for q in problem_df.question:
+        if r'\newpage' in q:
+            latex_body += q
+        else:
+            latex_body += r'\item ' + q
+    latex_body += (r'\end{enumerate}' + '\n'
+                + r'\end{document}')
+    #pdf = latex.build_pdf(latex_body)
+    with open(out_dir + filename + ".tex", "w") as f:
+        f.write(latex_body)
+
+def print_problem_set_df(problem_sets_df, problems_df, out_dir=out_dir): #replaced by build_pset_df_tex
     """ Save tex file for each problem set row's problem list.
 
         problem_sets_df - 'problem_IDs', list; 'unit', str; 'out_filename', str
@@ -83,7 +140,7 @@ def print_problem_set_df(problem_sets_df, problems_df, out_dir=out_dir):
         out_files.append((filename + '.tex', 'unit_xyz'))
     return pd.DataFrame(out_files, columns=['filename', 'unit']) #index should match problem_set_ID
 
-def print_problems_df(problems_df, filename='tmp', title=None, meta=False, numflag=True):
+def print_problems_df(problems_df, filename='tmp', title=None, meta=False, numflag=True):  #replaced by build_problem_df_tex
     """ Creates a worksheet LaTeX file composed of problem questions.
 
         problems_df - 'question' str, 'problem_set_ID'
@@ -110,7 +167,7 @@ def print_problems_df(problems_df, filename='tmp', title=None, meta=False, numfl
             newfile.write('\n' + r'\end{enumerate}'+'\n')
         newfile.write(r'\end{document}' + '\n')
 
-def make_tex_head(title=None):
+def make_tex_head(title=None):  #replaced by build_problem_df_tex
     """ Reads the head.tex file to make the first lines of a tex file.
 
         title - 3-tuple, str (worksheet sub heading, date, margin head)
