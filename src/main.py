@@ -110,7 +110,7 @@ def build_problem_df_tex(problem_df, filename='tmp', title=None, meta=False):
     latex_body += r'\begin{enumerate}' + '\n'
 
     for q in problem_df.question:
-        if r'\newpage' in q:
+        if r'\newpage' in q or 'subsection' in q:
             latex_body += q
         else:
             latex_body += r'\item ' + q
@@ -314,15 +314,17 @@ def parse_tex_file(infile):
 def parse_body(body_lines):
     """ Parses the body of a tex problem set into separate problems
         
-        body - list of text lines
-        returns - problems: list of problem strings
-            spacing: list of section and formatting text lines
+        body_lines - list of tex lines in problem set
+        returns - problems: list of problem and format strings
+            kind, list: 'question', 'section', 'newpage', 'multicols'
 
         ISSUES: newlines new pages, bracketed items or begin multicols before item (eg 9-1DN...)
         """
     body = body_lines.copy()
-    spacing = []
     nested = False
+    question = False
+    multicols = False
+    kind = []
     problem = []
     problems = []
     
@@ -336,59 +338,89 @@ def parse_body(body_lines):
         return []
 
     while body:
-        if r'\subsection' in line:
-            spacing.append(line)
-            problems.append(problem)
-            problem = []
-        elif r'\subsubsection' in line:
-            while r'\item' not in line and body:
-                line = body.pop(0)
-            problem = []
-            problem.append(line)
-        elif r'\newpage' in line: #newlines are saved as problems
-            spacing.append(line)
-            problems.append(problem)
-            problem = []
-            problem.append(line)
-            problems.append(problem)
-            problem = []
-        elif r'\item' in line and r'\begin{enumerate}' in line and not nested:
+        if r'\subsection' in line or r'\subsubsection' in line:
+            if problem:
+                problems.append(problem)
+            #print('section start: ', line)
+            kind.append('section')
+            question = False
+            problem = [line]
+        elif r'\newpage' in line: 
+            if problem:
+                problems.append(problem)
+            #print('newpage start/end: ', line)
+            kind.append('newpage')
+            question = False
+            problem = [line]
+        elif r'{multicols}' in line and not question:
+            if problem:
+                problems.append(problem)
+            #print('multicols "start": ', line)
+            kind.append('multicols')
+            question = False
+            multicols = True
+            problem = [line]
+        elif r'{multicols}' in line and question and multicols:
+            if problem:
+                problems.append(problem)
+            #print('multicols "start": ', line)
+            kind.append('multicols')
+            question = False
+            multicols = False
+            problem = [line]
+        elif r'\item' in line and r'\begin{enumerate}' in line and not nested: #missing check for begin-itemize
+            if problem:
+                problems.append(problem)
+            #print('question(+enum) start: ', line)
+            kind.append('question')
             nested = True
-            problems.append(problem)
-            problem = []
-            problem.append(line)
+            question = True
+            problem = [line]
         elif r'\item' in line and not nested:
-            problems.append(problem)
-            problem = []
-            problem.append(line)
+            if problem:
+                problems.append(problem)
+            #print('question start: ', line)
+            kind.append('question')
+            question = True
+            problem = [line]
         elif r'\begin{enumerate}' in line:
+            #print('continue. enum start: ', line)
+            if nested:
+                print('Warning: Double nested. Not parsed properly.', '\n', problem)
             nested = True
             problem.append(line)
         elif r'\begin{itemize}' in line:
+            #print('continue. itemize start: ', line)
+            if nested:
+                print('Warning: double nested (itemize). Not parsed properly.', '\n', problem)
             nested = True
             problem.append(line)
         elif r'\end{enumerate}' in line:
             if nested:
+                #print('continue. enum end: ', line)
                 nested = False
                 problem.append(line)
             else:
-                spacing.append(line)
+                #print('end of enum / doc: ', line)
                 problems.append(problem)
                 problem = []
         elif r'\end{itemize}' in line:
             if nested:
+                #print('continue. itemize end: ', line)
                 nested = False
                 problem.append(line)
             else:
-                spacing.append(line)
+                #print('end of itemize / doc: ', line)
                 problems.append(problem)
                 problem = []
         else:
+            #print('continue: ', line)
             problem.append(line)
         if body:
             line = body.pop(0)
-    problems.append(problem)
-
+    if problem:
+        problems.append(problem)
+        
     newline = ['\n']
     while True:
         try: 
@@ -401,7 +433,7 @@ def parse_body(body_lines):
             problems.remove(newline2)
         except:
             break
-    newline3 = [r' \n']
+    '''newline3 = [r' \n']
     while True:
         try: 
             problems.remove(newline3)
@@ -424,7 +456,7 @@ def parse_body(body_lines):
         try: 
             problems.remove(empty)
         except:
-            break
+            break'''
     trimmedproblems = [trim_item_prefix(problem) for problem in problems]
     problemstextblock = [''.join(problem) for problem in trimmedproblems]
     return problemstextblock #, spacing
