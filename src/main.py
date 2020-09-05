@@ -227,31 +227,42 @@ def map_course_files(course_dir='/Users/chris/GitHub/course-files/Geometry'):
     return course_files, course_files_df
 
 
-def parse_course_files(course_files_df,
+def parse_course_files(course_file_df,
             course_dir='/Users/chris/GitHub/course-files/Geometry'):
-    """ Step through worksheets and parse them into problem sets df.
+    """ Step through worksheets and parse them into problem set df.
 
-        course_files_df - "unit", "file_count" (int), "filename"
+        course_file_df - "unit", "file_count" (int), "filename"
         course_dir - str, path to local directory of files
-        returns problem_sets_df: 'filename', 'head', 'body', 'problems_list',
-                                    'problem_count', 'problem_set_ID'
+        returns pset_df: 'unit', 'file', 'problem_count', 'problems_list', 'problem_kind', 
+                        'head', 'body',  'path', 'filename'
         """
-    problem_set_tuples = []
-    filenames = (course_dir + '/' + course_files_df.unit + '/'
-                + course_files_df.filename)
-    for filename in filenames:
-        head, body = parse_tex_file(filename)
-        problem_set_tuples.append((filename, head, body)) # TODO make filename w/o path by using course_files_df
-    problem_sets_df = pd.DataFrame(problem_set_tuples)
-    problem_sets_df.columns = ['filename', 'head', 'body']
-    problem_sets_df.index.name = 'problem_set_ID'
+    #pset_tuples = []
+    #filenames = (course_dir + '/' + course_file_df.unit + '/'
+    #            + course_file_df.filename)
+    #for filename in filenames:
+    #    head, body = parse_tex_file(filename)
+    #    pset_tuples.append((filename, head, body)) # TODO make filename w/o path by using course_file_df
+    
+    pset_df = course_file_df[['unit', 'filename']].copy()
+    pset_df.index.name = 'problem_set_ID'
+    
+    pset_df[['head', 'body']] = pset_df.apply(lambda x: parse_tex_file(course_dir + '/' + x.unit + '/' + x.filename), axis=1, result_type='expand')
+
+    #pset_df = pd.DataFrame(pset_tuples)
+    #pset_df.columns = ['filename', 'head', 'body']
+    #pset_df.index.name = 'problem_set_ID'
     try:
-        problem_sets_df['problems_list'] = problem_sets_df['body'].apply(parse_body)
+        pset_df[['problems_list', 'problem_kind']] = pset_df.apply(lambda x: parse_body(x.body), axis=1, result_type='expand')
     except:
-        print('Exception on apply (parse_body). Returning partial problem_sets_df')
-        return problem_sets_df
-    problem_sets_df['problem_count'] = problem_sets_df['problems_list'].apply(len)
-    return problem_sets_df
+        print('Exception on apply (parse_body). Returning partial pset_df')
+        return pset_df
+    pset_df['problem_count'] = pset_df['problems_list'].apply(len)
+    
+    #pset_df[['path', 'unit', 'file']] = pset_df.filename.str.rsplit('/', n=2, expand=True)
+    new_cols = ['unit', 'filename', 'problem_count', 'problems_list', 'problem_kind', 'head', 'body']
+    pset_df = pset_df.reindex(columns=new_cols)
+    
+    return pset_df
 
 
 def parse_problem_sets(problem_sets_df):
@@ -433,33 +444,9 @@ def parse_body(body_lines):
             problems.remove(newline2)
         except:
             break
-    '''newline3 = [r' \n']
-    while True:
-        try: 
-            problems.remove(newline3)
-        except:
-            break
-    newline4 = [r'  \n']
-    while True:
-        try: 
-            problems.remove(newline4)
-        except:
-            break
-    newline5 = [r'    \n']
-    while True:
-        try: 
-            problems.remove(newline5)
-        except:
-            break
-    empty = []
-    while True:
-        try: 
-            problems.remove(empty)
-        except:
-            break'''
     trimmedproblems = [trim_item_prefix(problem) for problem in problems]
     problemstextblock = [''.join(problem) for problem in trimmedproblems]
-    return problemstextblock #, spacing
+    return problemstextblock, kind
 
 def trim_item_prefix(problem):
     """ Deletes the initial 'item' text, and preceding spaces, 
