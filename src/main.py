@@ -190,7 +190,7 @@ def make_tex_head(title=None):  #replaced by build_problem_df_tex
     return head
 
 
-def map_course_files(course_dir='/Users/chris/GitHub/course-files/Geometry'):
+def map_course_files(course_dir='/Users/chris/GitHub/course-files/Geom'):
     """ Crawl through unit directories to return dict & df of tex files.
 
         course_dir - str, path to local directory of files
@@ -228,7 +228,7 @@ def map_course_files(course_dir='/Users/chris/GitHub/course-files/Geometry'):
 
 
 def parse_course_files(course_file_df,
-            course_dir='/Users/chris/GitHub/course-files/Geometry'):
+            course_dir='/Users/chris/GitHub/course-files/Geom'):
     """ Step through worksheets and parse them into problem set df.
 
         course_file_df - "unit", "file_count" (int), "filename"
@@ -258,68 +258,76 @@ def parse_course_files(course_file_df,
         return pset_df
     pset_df['problem_count'] = pset_df['problems_list'].apply(len)
     
-    #pset_df[['path', 'unit', 'file']] = pset_df.filename.str.rsplit('/', n=2, expand=True)
-    new_cols = ['unit', 'filename', 'problem_count', 'problems_list', 'problem_kind', 'head', 'body']
+    problem_df = parse_problem_sets(pset_df)
+
+    problem_IDs = []
+    for problem_set_ID in pset_df.index:
+        problem_IDs.append(
+            [p_ID for p_ID in problem_df[problem_df.problem_set_ID == problem_set_ID].index])
+    pset_df['problem_IDs'] = problem_IDs
+    
+    new_cols = ['unit', 'filename', 'problem_count', 'problem_IDs', 'problems_list', 'problem_kind', 'head', 'body']
     pset_df = pset_df.reindex(columns=new_cols)
     
-    return pset_df
+    return pset_df, problem_df
 
 
-def parse_problem_sets(problem_sets_df):
-    """ Expand problem_sets' problems lists into separate rows of a df.
+def parse_problem_sets(pset_df):
+    """ Expand problem_sets' problems lists into separate rows of a problem df
 
-        problem_sets_df: 'problem_set_ID', 'problems_list'
-        returns problems_df: 'problem_set_ID', 'question' - str
+        pset_df: index 'problem_set_ID'; 'problems_list', 'problem_kind'
+        returns problem_df: 'problem_set_ID', 'question' (str), 'kind', 'filename', 
+                            'q_len' (length of question text)
         """
-    all_questions = np.hstack(problem_sets_df.problems_list)
+    all_questions = np.hstack(pset_df.problems_list)
+    all_kinds = np.hstack(pset_df.problem_kind)
     all_problem_set_IDs = np.hstack([[ID]*problem_count for ID, problem_count in 
-                                problem_sets_df.problem_count.iteritems()])
-                        #problem_sets_df[['problem_set_ID', 'problems_list']]#.values]) #TODO set as index
+                                pset_df.problem_count.iteritems()])
     
-    problems_df = pd.DataFrame({'problem_set_ID':all_problem_set_IDs, 
-                                'question':all_questions})
-    problems_df.index.name = 'problem_ID'
-    return problems_df
+    problem_df = pd.DataFrame({'problem_set_ID':all_problem_set_IDs, 
+                                'question':all_questions, 'kind':all_kinds})
+    problem_df.index.name = 'problem_ID'
+
+    problem_df['filename'] = problem_df.problem_set_ID.apply(lambda x: pset_df.loc[x, 'filename'])
+    problem_df['q_len'] = problem_df.question.str.len()
+
+    return problem_df
 
 
-def parse_tex_file(infile):
+def parse_tex_file(full_filename):
     """ divide tex file into three sections
     
-        infile - str, full directory name of file
-        returns tuple of three lists of text lines:
-        the top packages section, header lines, and body text
+        full_filename - str, full directory name of file
+        returns tuple of two lists of text lines:
+            header lines, and body text
         """
     packages = []
     header = []
     body = []
     
     try:
-        with open(infile, "r") as texfile:
+        with open(full_filename, "r") as texfile:
             lines = texfile.readlines()
-            #print('Opened and read file: \n', infile)
-            #print('length in lines: ', len(lines))
     except FileNotFoundError:
-        print('Tried to open non-existent file: ' + infile)
-        return None, None, None
+        print('Tried to open non-existent file: ' + full_filename)
+        return None, None
 
     line = lines.pop(0)
-    #print('1 - packages section. first line: \n', line)
     while lines and r'\begin{document}' not in line:
         packages.append(line)
         line = lines.pop(0)
-    #print('2 - header section. first line: \n', line)
     while lines and r'\begin{enumerate}' not in line:
         header.append(line)
         line = lines.pop(0)
-    #print('3 - body section. first line \n', line)
+
     try:
         line = lines.pop(0)
     except IndexError:
-        print('my IndexError: pop from empty list', infile)
+        print('my IndexError: pop from empty list', full_filename)
     while lines and r'\end{document}' not in line:
         body.append(line)
         line = lines.pop(0)
-    #print('4 - last line: \n', line)
+
     return header, body
 
 def parse_body(body_lines):
@@ -463,7 +471,7 @@ def trim_item_prefix(problem):
                 problem[0] = firstline[index+6 :]
     return problem
 
-def add_problem_IDs_to_set(problem_sets_df): #TODO pass in problems_df as argument
+def add_problem_IDs_to_set(problem_sets_df): # Legacy, no longer used
     """ Add list of problem_IDs to each problem_set.
 
         problem_sets_df - index 'problem_set_ID'
