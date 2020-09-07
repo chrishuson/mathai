@@ -63,34 +63,43 @@ def load_csv(filenames=None, db_dir=db_dir): #TODO eliminate function
             print('Something wrong. arg should be list of filenames without extension.')
     return result_dfs
 
+def build_pset_df_pdf(pset_df, problem_df):
+    os.chdir('/Users/chris/GitHub/course-files/Geom2021/02-Midpoint+distance') #needs to move to proper unit directory
+    for pset in pset_df.itertuples():
+        os.system('pdflatex -output-directory=pdf ' + pset.filename)
+
 def build_pset_df_tex(pset_df, problem_df):
     """ Save tex file for each problem set row's problem list.
 
         pset_df - index 'pset_ID'; 'problem_IDs', list; 'unit', str; 'file', str
+            optionally full path to filename saved
         problem_df - index 'problem_ID'; 'question', str
         returns built tex files df - index 'pset_ID', 'filename', 'unit'
         """
     out_files = []
-    for pset_ID, pset_row in pset_df.iterrows():
-        unit = pset_row.unit
-        filename = pset_row.file[:-4] #strip '.tex'
-        title = (filename.replace('_', '-'), #underbars in text cause pdflatex error
-                'pset ID: ' + str(pset_ID),
-                'Geometry ' + unit.replace('_', '-'))
-        build_problem_df_tex(problem_df.loc[pset_row.problem_IDs],
-                            filename, title)
-        out_files.append((pset_ID, filename + '.tex', unit))
+    for pset in pset_df.itertuples():
+        if 'path_plus_filename' in pset_df.columns:
+            path_plus_filename = pset.path_plus_filename
+        else: path_plus_filename = None
+
+        title = (pset.filename.replace('_', '-')[:-4], #underbars in text cause pdflatex error
+                'pset ID: ' + str(pset.Index),
+                'Geometry ' + pset.unit.replace('_', '-'))
+        build_problem_df_tex(problem_df.loc[pset.problem_IDs],
+                            pset.filename, title, path_plus_filename)
+        out_files.append((pset.Index, pset.filename, pset.unit))
     return pd.DataFrame(out_files, columns=['pset_ID', 'filename', 'unit']).set_index('pset_ID')
 
-def build_problem_df_tex(problem_df, filename='tmp', title=None, meta=False):
+def build_problem_df_tex(problem_df, filename='tmp.tex', title=None, path_plus_filename=None, meta=False):
     """ Creates a worksheet LaTeX file composed of problem questions.
 
         problem_df - 'question' str, 'problem_set_ID'
-        filename - str, name of tex file created in out directory (w/o '.tex' extension)
+        filename - str, name of tex file created in out directory (with '.tex' extension)
         title - 3-tuple, str (worksheet sub heading, date, margin head)
         meta - bool, include Problem meta data (ID, Topic, difficulty, etc.)
-        tex doc is saved as filename.tex in the out_dir directory
+        tex doc is saved as filename.tex in the out_dir, or full path and filename if given
         """
+    if path_plus_filename==None: path_plus_filename = out_dir + filename
     try:
         with open(db_dir + 'header.tex', 'r') as f:
             latex_body = f.read()
@@ -117,7 +126,7 @@ def build_problem_df_tex(problem_df, filename='tmp', title=None, meta=False):
     latex_body += (r'\end{enumerate}' + '\n'
                 + r'\end{document}')
     #pdf = latex.build_pdf(latex_body)
-    with open(out_dir + filename + ".tex", "w") as f:
+    with open(path_plus_filename, "w") as f:
         f.write(latex_body)
 
 def print_problem_set_df(problem_sets_df, problems_df, out_dir=out_dir): #replaced by build_pset_df_tex
