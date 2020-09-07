@@ -19,7 +19,7 @@ HOME = os.environ["HOME"]
 db_dir = HOME + "/GitHub/mathai/db/"
 out_dir = HOME + "/GitHub/mathai/out/"
 in_dir = HOME + "/GitHub/mathai/in/"
-course_dir = HOME + "/GitHub/course-files/Geometry"
+course_dir = HOME + "/GitHub/course-files/Geom2021/"
 
 if TESTFLAG:
     db_dir = HOME + "/GitHub/mathai/test/db/"
@@ -63,12 +63,17 @@ def load_csv(filenames=None, db_dir=db_dir): #TODO eliminate function
             print('Something wrong. arg should be list of filenames without extension.')
     return result_dfs
 
-def build_pset_df_pdf(pset_df, problem_df):
-    os.chdir('/Users/chris/GitHub/course-files/Geom2021/02-Midpoint+distance') #needs to move to proper unit directory
+def build_pset_df_pdf(pset_df, problem_df, course_dir='/Users/chris/GitHub/course-files/Geom2021/'):
+    #os.chdir('/Users/chris/GitHub/course-files/Geom2021/02-Midpoint+distance') #needs to move to proper unit directory
     for pset in pset_df.itertuples():
-        os.system('pdflatex -output-directory=pdf ' + pset.filename)
+        if 'path_plus_filename' in pset_df.columns:
+            path_plus_filename = pset.path_plus_filename
+        else: path_plus_filename = course_dir + '/' + pset.unit + '/' + pset.filename
+        pdf_dir = path_plus_filename.rsplit('/', 1)[0] + '/pdf'
+        os.system('pdflatex -output-directory=' + pdf_dir + ' ' + path_plus_filename) #TODO check for pdf subdirectory
 
-def build_pset_df_tex(pset_df, problem_df):
+
+def build_pset_df_tex(pset_df, problem_df, course_dir='/Users/chris/GitHub/course-files/Geom2021/'):
     """ Save tex file for each problem set row's problem list.
 
         pset_df - index 'pset_ID'; 'problem_IDs', list; 'unit', str; 'file', str
@@ -80,15 +85,15 @@ def build_pset_df_tex(pset_df, problem_df):
     for pset in pset_df.itertuples():
         if 'path_plus_filename' in pset_df.columns:
             path_plus_filename = pset.path_plus_filename
-        else: path_plus_filename = None
+        else: path_plus_filename = course_dir + pset.unit + '/' + pset.filename
 
         title = (pset.filename.replace('_', '-')[:-4], #underbars in text cause pdflatex error
                 'pset ID: ' + str(pset.Index),
                 'Geometry ' + pset.unit.replace('_', '-'))
         build_problem_df_tex(problem_df.loc[pset.problem_IDs],
                             pset.filename, title, path_plus_filename)
-        out_files.append((pset.Index, pset.filename, pset.unit))
-    return pd.DataFrame(out_files, columns=['pset_ID', 'filename', 'unit']).set_index('pset_ID')
+        out_files.append((pset.Index, pset.filename, pset.unit, path_plus_filename))
+    return pd.DataFrame(out_files, columns=['pset_ID', 'filename', 'unit', 'path_plus_filename']).set_index('pset_ID')
 
 def build_problem_df_tex(problem_df, filename='tmp.tex', title=None, path_plus_filename=None, meta=False):
     """ Creates a worksheet LaTeX file composed of problem questions.
