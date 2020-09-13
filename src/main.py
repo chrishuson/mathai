@@ -66,10 +66,16 @@ def load_csv(filenames=None, db_dir=db_dir): #TODO eliminate function
 def build_pset_df_pdf(pset_df, problem_df, course_dir='/Users/chris/GitHub/course-files/Geom2021/'):
     #os.chdir('/Users/chris/GitHub/course-files/Geom2021/02-Midpoint+distance') #needs to move to proper unit directory
     for pset in pset_df.itertuples():
+        unit_dir = course_dir + pset.unit
+        path_plus_filename = unit_dir + '/' + pset.filename
         if 'path_plus_filename' in pset_df.columns:
             path_plus_filename = pset.path_plus_filename
-        else: path_plus_filename = course_dir + '/' + pset.unit + '/' + pset.filename
-        pdf_dir = path_plus_filename.rsplit('/', 1)[0] + '/pdf'
+            unit_dir = path_plus_filename.rsplit('/', 1)[0]
+        pdf_dir = unit_dir + '/pdf'
+        try:
+            os.chdir(unit_dir)
+        except: 
+            print('could not change directory to ', unit_dir)
         os.system('pdflatex -output-directory=' + pdf_dir + ' ' + path_plus_filename) #TODO check for pdf subdirectory
 
 
