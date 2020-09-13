@@ -100,7 +100,7 @@ def build_problem_df_tex(problem_df, filename='tmp.tex', title=None, path_plus_f
 
         problem_df - 'question' str, 'problem_set_ID'
         filename - str, name of tex file created in out directory (with '.tex' extension)
-        title - 3-tuple, str (worksheet sub heading, date, margin head)
+        title - 3-tuple, str (worksheet sub heading, date, margin header)
         meta - bool, include Problem meta data (ID, Topic, difficulty, etc.)
         tex doc is saved as filename.tex in the out_dir, or full path and filename if given
         """
@@ -112,10 +112,10 @@ def build_problem_df_tex(problem_df, filename='tmp.tex', title=None, path_plus_f
             print('Found no file header.tex in directory', db_dir)
             latex_body = r'\documentclass[12pt, twoside]{article}' + '\n'
     if title is None:
-        latex_body += (r'\fancyhead[L]{BECA / Dr. Huson}' + '\n'*2 
+        latex_body += (r'\fancyhead[LO]{BECA / Dr. Huson}' + '\n'*2 
                 + r'\begin{document}' + '\n'*2)
     else:
-        latex_body += (r'\fancyhead[L]{BECA / Dr. Huson / '
+        latex_body += (r'\fancyhead[LO]{BECA / Dr. Huson / '
                 + title[2].replace('_', '-') + r'\\* '  #underbars in text cause pdflatex error
                 + title[1].replace('_', '-') + r'}')
         latex_body += '\n'*2 + r'\begin{document}' + '\n'*2
@@ -159,15 +159,15 @@ def print_problems_df(problems_df, filename='tmp', title=None, meta=False, numfl
 
         problems_df - 'question' str, 'problem_set_ID'
         filename - str, name of tex file created in out directory
-        title - 3-tuple, str (worksheet sub heading, date, margin head)
+        title - 3-tuple, str (worksheet sub heading, date, margin header)
         meta - bool, include Problem meta data (ID, Topic, difficulty, etc.)
         numflag - bool, include "{enumerate}" environment, "item" Problem prefix
         output file is filename.tex in the out_dir directory
         """
     out_file = out_dir + filename + ".tex"
-    head = make_tex_head(title)
+    header = make_tex_header(title)
     with open(out_file, "w") as newfile:
-        for line in head:
+        for line in header:
             newfile.write(line)
         if numflag:
             newfile.write(r'\begin{enumerate}' + '\n')
@@ -181,27 +181,27 @@ def print_problems_df(problems_df, filename='tmp', title=None, meta=False, numfl
             newfile.write('\n' + r'\end{enumerate}'+'\n')
         newfile.write(r'\end{document}' + '\n')
 
-def make_tex_head(title=None):  #replaced by build_problem_df_tex
-    """ Reads the head.tex file to make the first lines of a tex file.
+def make_tex_header(title=None):  #replaced by build_problem_df_tex
+    """ Reads the header.tex file to make the first lines of a tex file.
 
-        title - 3-tuple, str (worksheet sub heading, date, margin head)
+        title - 3-tuple, str (worksheet sub heading, date, margin header)
         returns - str, tex header section of printable problem set file
         """
     try:
-        with open(db_dir + 'head.tex', 'r') as f:
-            head = f.read()
+        with open(db_dir + 'header.tex', 'r') as f:
+            header = f.read()
     except FileNotFoundError:
-            print('Found no file head.tex in directory', db_dir)
-            head = ''
+            print('Found no file header.tex in directory', db_dir)
+            header = ''
     if title is None:
-        head += (r'\fancyhead[L]{BECA / Dr. Huson}' + '\n'*2 
+        header += (r'\fancyhead[LO]{BECA / Dr. Huson}' + '\n'*2 
                 + r'\begin{document}' + '\n'*2)
     else:
-        head += (r'\fancyhead[L]{BECA / Dr. Huson / '
+        header += (r'\fancyhead[LO]{BECA / Dr. Huson / '
                 + title[2] + r'\\* ' + title[1] + r'}')
-        head += '\n'*2 + r'\begin{document}' + '\n'*2
-        head += r'\subsubsection*{' + title[0] + '}\n'
-    return head
+        header += '\n'*2 + r'\begin{document}' + '\n'*2
+        header += r'\subsubsection*{' + title[0] + '}\n'
+    return header
 
 
 def map_course_files(course_dir='/Users/chris/GitHub/course-files/Geom'):
@@ -500,13 +500,15 @@ def add_problem_IDs_to_set(problem_sets_df): # Legacy, no longer used
     p_sets_copy['problem_IDs'] = problem_IDs
     return p_sets_copy
 
+print('ran main')
 
+"""
 worksheet_files_df, standards_df = load_csv(['worksheet_files_df', 'standards_df'])
 
 filename = 'problem_sets_df'
 path_plus_filename = os.path.join(db_dir, filename+'.csv')
 problem_sets_df = pd.read_csv(path_plus_filename, index_col='problem_set_ID')
-problem_sets_df['head'] = problem_sets_df['head'].apply(ast.literal_eval)
+problem_sets_df['header'] = problem_sets_df['header'].apply(ast.literal_eval)
 problem_sets_df['body'] = problem_sets_df['body'].apply(ast.literal_eval)
 problem_sets_df['problems_list'] = problem_sets_df['problems_list'].apply(ast.literal_eval)
 problem_sets_df['problem_IDs'] = problem_sets_df['problem_IDs'].apply(ast.literal_eval)
@@ -520,7 +522,6 @@ path_plus_filename = os.path.join(db_dir, filename+'.csv')
 standards_desc_df = pd.read_csv(path_plus_filename, index_col='ccss_ID')
 #standards_desc_df.to_csv(path_plus_filename)
 
-"""
 filename = 'standards_df'
 path_plus_filename = os.path.join(db_dir, filename+'.csv')
 standards_df.to_csv(path_plus_filename, index=False)
@@ -529,6 +530,7 @@ standards_df.to_csv(path_plus_filename, index=False)
 #problem_sets_df = parse_course_files(worksheet_files_df)
 #print_problems_df(problems_df[problems_df['problem_set_ID']==5], 'tmp2')
 
+"""
 print('Loaded dataframes: ')
 print('worksheet_files_df:\n', 
         'index name: ', worksheet_files_df.index.name,
@@ -551,7 +553,7 @@ print('standards_desc_df:\n',
         '\ncolumns: ', standards_desc_df.columns, 
         '\n131 rows: ', len(standards_desc_df), '\n')
 
-""" df select for string in body, i.e. a list of strings
+    df select for string in body, i.e. a list of strings
     def check_for_setcounter(body_list):
         return any('setcounter' in line for line in body_list)
 
