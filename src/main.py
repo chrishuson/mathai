@@ -63,7 +63,7 @@ def load_csv(filenames=None, db_dir=db_dir): #TODO eliminate function
             print('Something wrong. arg should be list of filenames without extension.')
     return result_dfs
 
-def build_pset_df_pdf(pset_df, problem_df, course_dir='/Users/chris/GitHub/course-files/Geom2021/'):
+def build_pset_df_pdf(pset_df, problem_df, course_dir='/Users/chris/GitHub/course-files/Geom2021/'): # consider .to_pdf, tex
     #os.chdir('/Users/chris/GitHub/course-files/Geom2021/02-Midpoint+distance') #needs to move to proper unit directory
     for pset in pset_df.itertuples():
         unit_dir = course_dir + pset.unit
