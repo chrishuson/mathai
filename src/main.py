@@ -360,6 +360,7 @@ def parse_body(body_lines):
         ISSUES: newlines new pages, bracketed items or begin multicols before item (eg 9-1DN...)
         """
     body = body_lines.copy()
+    enum_ended = False
     nested = False
     question = False
     multicols = False
@@ -424,16 +425,26 @@ def parse_body(body_lines):
             problem = [line]
         elif r'\begin{enumerate}' in line:
             #print('continue. enum start: ', line)
-            if nested:
-                print('Warning: Double nested. Not parsed properly.', '\n', problem)
-            nested = True
-            problem.append(line)
+            if enum_ended:
+                enum_ended = False
+                problems.append(problem)
+                problem = []
+            else:
+                if nested:
+                    print('Warning: Double nested. Not parsed properly.', '\n', problem)
+                nested = True
+                problem.append(line)
         elif r'\begin{itemize}' in line:
             #print('continue. itemize start: ', line)
-            if nested:
-                print('Warning: double nested (itemize). Not parsed properly.', '\n', problem)
-            nested = True
-            problem.append(line)
+            if enum_ended:
+                enum_ended = False
+                problems.append(problem)
+                problem = []
+            else:
+                if nested:
+                    print('Warning: double nested (itemize). Not parsed properly.', '\n', problem)
+                nested = True
+                problem.append(line)
         elif r'\end{enumerate}' in line:
             if nested:
                 #print('continue. enum end: ', line)
@@ -443,6 +454,7 @@ def parse_body(body_lines):
                 #print('end of enum / doc: ', line)
                 problems.append(problem)
                 problem = []
+                enum_ended = True
         elif r'\end{itemize}' in line:
             if nested:
                 #print('continue. itemize end: ', line)
@@ -452,6 +464,7 @@ def parse_body(body_lines):
                 #print('end of itemize / doc: ', line)
                 problems.append(problem)
                 problem = []
+                enum_ended = True
         else:
             #print('continue: ', line)
             problem.append(line)
