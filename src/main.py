@@ -278,6 +278,8 @@ def parse_course_files(course_file_df,
         return pset_df
     pset_df['problem_count'] = pset_df['problems_list'].apply(len)
     
+    #return pset_df, None
+
     problem_df = parse_problem_sets(pset_df)
 
     problem_IDs = []
@@ -304,14 +306,14 @@ def parse_problem_sets(pset_df):
     all_problem_set_IDs = np.hstack([[ID]*problem_count for ID, problem_count in 
                                 pset_df.problem_count.iteritems()])
     
-    print('all_kinds: ', len(all_kinds))
-    print('all_problem_set_IDs: ', len(all_problem_set_IDs))
-    print('all_questions: ', len(all_questions))
+    #print('all_kinds: ', len(all_kinds))
+    #print('all_problem_set_IDs: ', len(all_problem_set_IDs))
+    #print('all_questions: ', len(all_questions))
     #print('all_questions: ', all_questions)
     #return None
 
     problem_df = pd.DataFrame({'problem_set_ID':all_problem_set_IDs, 
-                                'question':all_questions, 'kind':all_problem_set_IDs}) #all_kinds}) # bug mismatched lengths
+                                'question':all_questions, 'kind':all_kinds}) # bug mismatched lengths
     problem_df.index.name = 'problem_ID'
 
     problem_df['filename'] = problem_df.problem_set_ID.apply(lambda x: pset_df.loc[x, 'filename'])
