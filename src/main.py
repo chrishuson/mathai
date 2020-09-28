@@ -304,8 +304,14 @@ def parse_problem_sets(pset_df):
     all_problem_set_IDs = np.hstack([[ID]*problem_count for ID, problem_count in 
                                 pset_df.problem_count.iteritems()])
     
+    print('all_kinds: ', len(all_kinds))
+    print('all_problem_set_IDs: ', len(all_problem_set_IDs))
+    print('all_questions: ', len(all_questions))
+    #print('all_questions: ', all_questions)
+    #return None
+
     problem_df = pd.DataFrame({'problem_set_ID':all_problem_set_IDs, 
-                                'question':all_questions, 'kind':all_kinds})
+                                'question':all_questions, 'kind':all_problem_set_IDs}) #all_kinds}) # bug mismatched lengths
     problem_df.index.name = 'problem_ID'
 
     problem_df['filename'] = problem_df.problem_set_ID.apply(lambda x: pset_df.loc[x, 'filename'])
@@ -361,7 +367,7 @@ def parse_body(body_lines):
         """
     body = body_lines.copy()
     enum_ended = False
-    nested = False
+    nested = 0
     question = False
     multicols = False
     kind = []
@@ -413,7 +419,7 @@ def parse_body(body_lines):
                 problems.append(problem)
             #print('question(+enum) start: ', line)
             kind.append('question')
-            nested = True
+            nested = 1
             question = True
             problem = [line]
         elif r'\item' in line and not nested:
@@ -430,9 +436,9 @@ def parse_body(body_lines):
                 problems.append(problem)
                 problem = []
             else:
-                if nested:
-                    print('Warning: Double nested. Not parsed properly.', '\n', problem)
-                nested = True
+                #if nested:
+                    #print('Warning: Double nested. Not parsed properly.', '\n', problem)
+                nested += 1
                 problem.append(line)
         elif r'\begin{itemize}' in line:
             #print('continue. itemize start: ', line)
@@ -441,14 +447,14 @@ def parse_body(body_lines):
                 problems.append(problem)
                 problem = []
             else:
-                if nested:
-                    print('Warning: double nested (itemize). Not parsed properly.', '\n', problem)
-                nested = True
+                #if nested:
+                    #print('Warning: double nested (itemize). Not parsed properly.', '\n', problem)
+                nested  += 1
                 problem.append(line)
         elif r'\end{enumerate}' in line:
             if nested:
                 #print('continue. enum end: ', line)
-                nested = False
+                nested -= 1
                 problem.append(line)
             else:
                 #print('end of enum / doc: ', line)
@@ -458,7 +464,7 @@ def parse_body(body_lines):
         elif r'\end{itemize}' in line:
             if nested:
                 #print('continue. itemize end: ', line)
-                nested = False
+                nested  -= 1
                 problem.append(line)
             else:
                 #print('end of itemize / doc: ', line)
@@ -479,10 +485,16 @@ def parse_body(body_lines):
             problems.remove(newline)
         except:
             break
-    newline2 = ['\n', '\n']
+    newline2 = [' \n']
     while True:
         try: 
             problems.remove(newline2)
+        except:
+            break
+    newline3 = ['\n', '\n']
+    while True:
+        try: 
+            problems.remove(newline3)
         except:
             break
     trimmedproblems = [trim_item_prefix(problem) for problem in problems]
