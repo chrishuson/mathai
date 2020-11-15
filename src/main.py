@@ -68,7 +68,7 @@ def build_pset_df_pdf(pset_df, problem_df, course_dir='/Users/chris/GitHub/cours
     for pset in pset_df.itertuples():
         unit_dir = course_dir + pset.unit
         path_plus_filename = unit_dir + '/' + pset.filename
-        if 'path_plus_filename' in pset_df.columns:
+        if 'path_plus_filename' in pset_df.columns: #filter this first, unit optional
             path_plus_filename = pset.path_plus_filename
             unit_dir = path_plus_filename.rsplit('/', 1)[0]
         pdf_dir = unit_dir + '/pdf'
